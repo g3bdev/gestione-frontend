@@ -12,6 +12,7 @@ export class DataComponent implements OnInit {
   }
 
   items = [1, 2, 3, 4, 5];
+  users = [];
 
   selectedID = 1;
 
@@ -20,12 +21,13 @@ export class DataComponent implements OnInit {
       console.log(data);
       document.getElementById('box')!.innerHTML = data.first_name + '<br>' + data.last_name + '<br>' + data.id;
     });
-
-
   }
 
-
   ngOnInit(): void {
+    this.dataService.getUsers().subscribe((data: any) => {
+      console.log(data);
+      this.users = data;
+    });
   }
 
 

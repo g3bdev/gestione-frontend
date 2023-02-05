@@ -14,4 +14,8 @@ export class DataService {
     return this.httpClient.get(`http://localhost:8000/users/${id}?application_name=angular`);
   }
 
+  getUsers() {
+    return this.httpClient.get(`http://localhost:8000/users?application_name=angular`);
+  }
+
 }

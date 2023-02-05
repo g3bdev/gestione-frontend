@@ -1,4 +1,8 @@
 <select [ngModel]="selectedID" (ngModelChange)="onChange($event)">
-  <option *ngFor="let item of items">{{item}}</option>
+  <option *ngFor="let item of users; index as i;" [value]="users[i]['id']">
+    {{users[i]['first_name'] + ' ' + users[i]['last_name']}}
+  </option>
 </select>
-<div id="box">gabriel<br>andreata<br>1</div>
+
+<div id="box" *ngIf="users">
+</div>
