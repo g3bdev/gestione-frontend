@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {DataService} from "../data.service";
 
 @Component({
   selector: 'app-data',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dataService: DataService) {
+  }
+
+  items = [1, 2, 3, 4, 5];
+
+  selectedID = 1;
+
+  onChange(id: number) {
+    this.dataService.getUserById(id).subscribe((data: any) => {
+      console.log(data);
+      document.getElementById('box')!.innerHTML = data.first_name + '<br>' + data.last_name + '<br>' + data.id;
+    });
+
+
+  }
+
 
   ngOnInit(): void {
   }
+
 
 }
