@@ -11,10 +11,16 @@ export class AddActivityComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   newActivityForm = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.minLength(3)]],
-    description: ['', Validators.required],
     date: ['', Validators.required],
-    location: ['', Validators.required]
+    intervention_duration: ['', Validators.required],
+    intervention_type: ['', Validators.required],
+    intervention_location: ['', Validators.required],
+    client: ['', Validators.required],
+    side: ['', Validators.required],
+    description: ['', Validators.required],
+    notes: ['', Validators.required],
+    trip_kms: ['', Validators.required],
+    cost: ['', Validators.required],
   });
 
   submitForm() {
