@@ -1,0 +1,24 @@
+<form [formGroup]="newActivityForm" (ngSubmit)="submitForm()">
+
+  <label for="title">title: </label>
+  <input id="title" type="text"
+         class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent
+         focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+         formControlName="title">
+
+  <label for="description">description: </label>
+  <input id="description" type="text" formControlName="description">
+
+  <label for="date">date: </label>
+  <input id="date" type="text" formControlName="date">
+
+  <label for="location">location: </label>
+  <input id="location" type="text" formControlName="location">
+
+
+  <button type="submit" [disabled]="!newActivityForm.valid">submit</button>
+</form>
+
+<p>form status: {{ newActivityForm.status }}</p>
+<p>form value: {{ newActivityForm.value | json }}</p>
+<p>title: {{ newActivityForm.get('title')?.value }}</p>
