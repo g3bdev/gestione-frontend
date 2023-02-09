@@ -18,4 +18,8 @@ export class DataService {
     return this.httpClient.get(`http://localhost:8000/users?application_name=angular`);
   }
 
+  sendActivity(activity: any) {
+    return this.httpClient.post(`http://localhost:8000/work?application_name=angular`, activity);
+  }
+
 }

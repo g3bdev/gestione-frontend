@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
+import {DataService} from "../data.service";
 
 @Component({
   selector: 'app-add-activity',
@@ -8,7 +9,8 @@ import {FormBuilder, Validators} from "@angular/forms";
 })
 export class AddActivityComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+              private dataService: DataService) { }
 
   newActivityForm = this.formBuilder.group({
     date: ['', Validators.required],
@@ -16,15 +18,18 @@ export class AddActivityComponent implements OnInit {
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
     client: ['', Validators.required],
-    side: ['', Validators.required],
+    site: ['', Validators.required],
     description: ['', Validators.required],
     notes: ['', Validators.required],
     trip_kms: ['', Validators.required],
     cost: ['', Validators.required],
+    operator_id: ['', Validators.required],
   });
 
   submitForm() {
-    console.log(this.newActivityForm.value);
+    this.dataService.sendActivity(JSON.stringify(this.newActivityForm.value)).subscribe((data: any) => {
+      console.log(data);
+    });
   }
 
 

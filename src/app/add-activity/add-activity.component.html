@@ -15,7 +15,7 @@
 
         <div class="relative mr-4 md:w-full lg:w-full xl:w-1/2">
           <label for="intervention_duration" class="leading-7 text-sm text-gray-400">intervention duration</label>
-          <input type="time" formControlName="intervention_duration" id="intervention_duration" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <input type="text" formControlName="intervention_duration" id="intervention_duration" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         </div>
 
         <div class="relative mr-4 md:w-full lg:w-full xl:w-1/2">
@@ -56,6 +56,11 @@
         <div class="relative mr-4 md:w-full lg:w-full xl:w-1/2">
           <label for="cost" class="leading-7 text-sm text-gray-400">cost</label>
           <input type="text" formControlName="cost" id="cost" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+
+        <div class="relative mr-4 md:w-full lg:w-full xl:w-1/2">
+          <label for="operator_id" class="leading-7 text-sm text-gray-400">operator id</label>
+          <input type="number" formControlName="operator_id" id="operator_id" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         </div>
 
           <button type="submit" [disabled]="!newActivityForm.valid" class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg">submit</button>
