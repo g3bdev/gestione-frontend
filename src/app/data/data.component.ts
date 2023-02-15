@@ -10,8 +10,6 @@ export class DataComponent implements OnInit {
 
   constructor(private dataService: DataService) {
   }
-
-  items = [1, 2, 3, 4, 5];
   users = [];
 
   selectedID = 1;
