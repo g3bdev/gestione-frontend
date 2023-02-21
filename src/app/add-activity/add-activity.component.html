@@ -1,4 +1,4 @@
-<section class="text-gray-400 bg-gray-900 body-font">
+<section class="text-gray-400 bg-gray-900 body-font font-sans">
   <form [formGroup]="newActivityForm" (ngSubmit)="submitForm()">
 
     <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
@@ -62,6 +62,7 @@
           <label for="client" class="leading-7 text-sm text-gray-400">site</label>
           <select (change)="select($event, 'site')" id="site"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+            <option value="" disabled selected hidden>choose the site</option>
             <option *ngFor="let site of sites;" [value]="site['name']" class="bg-gray-800">
               {{site['name']}}
             </option>
@@ -155,11 +156,10 @@
         </thead>
         <tbody>
 
-
-        <tr *ngFor="let item of work; index as i;"
+        <tr *ngFor="let item of work;"
             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-            {{i + 1}}
+            {{item['Work']['id']}}
           </td>
           <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
             {{item['Operator']['first_name'] + ' ' + item['Operator']['last_name']}}

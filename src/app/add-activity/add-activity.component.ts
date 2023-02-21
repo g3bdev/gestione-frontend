@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {data} from "autoprefixer";
 
 @Component({
   selector: 'app-add-activity',
@@ -33,7 +32,7 @@ export class AddActivityComponent implements OnInit {
     intervention_type: ['installation', Validators.required],
     intervention_location: ['ITW', Validators.required],
     client: ['ITW', Validators.required],
-    site: ['AA01 0222 - Novotic Cloud R_D BM124 1122 Implementaz', Validators.required],
+    site: ['', Validators.required],
     description: [''],
     notes: [''],
     trip_kms: ['0'],
@@ -49,15 +48,12 @@ export class AddActivityComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getClients().subscribe((data: any) => {
-      console.log(data);
       this.clients = data;
     });
     this.dataService.getSites().subscribe((data: any) => {
-      console.log(data);
       this.sites = data;
     });
     this.dataService.getWorkTable().subscribe((data: any) => {
-      console.log(data);
       this.work = data;
     });
   }

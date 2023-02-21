@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
   providedIn: 'root'
 })
 export class DataService {
+
   data: any;
 
   constructor(private httpClient: HttpClient) {
