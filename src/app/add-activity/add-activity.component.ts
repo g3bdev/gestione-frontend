@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-add-activity',
   templateUrl: './add-activity.component.html',
   styleUrls: ['./add-activity.component.css']
 })
-export class AddActivityComponent implements OnInit {
+export class AddActivityComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder,
               private dataService: DataService) {
@@ -46,15 +47,44 @@ export class AddActivityComponent implements OnInit {
     });
   }
 
+  error: any;
+  isError = true;
+  // loading$ = new BehaviorSubject<boolean>(true);
+  private getClientsSubscription: Subscription | null = null;
+  private getSitesSubscription: Subscription | null = null;
+  private getWorkTableSubscription: Subscription | null = null;
+
+
   ngOnInit(): void {
-    this.dataService.getClients().subscribe((data: any) => {
-      this.clients = data;
+    this.dataService.getOk().subscribe({
+      next: () => {
+        this.isError = false;
+        this.getClientsSubscription = this.dataService.getClients().subscribe((data: any) => {
+          this.clients = data;
+        });
+        this.getSitesSubscription = this.dataService.getSites().subscribe((data: any) => {
+          this.sites = data;
+        });
+        this.getWorkTableSubscription = this.dataService.getWorkTable().subscribe((data: any) => {
+          this.work = data;
+        });
+      },
+      error: (error) => {
+        this.isError = true;
+        this.error = error;
+      }
     });
-    this.dataService.getSites().subscribe((data: any) => {
-      this.sites = data;
-    });
-    this.dataService.getWorkTable().subscribe((data: any) => {
-      this.work = data;
-    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.getClientsSubscription) {
+      this.getClientsSubscription.unsubscribe();
+    }
+    if (this.getSitesSubscription) {
+      this.getSitesSubscription.unsubscribe();
+    }
+    if (this.getWorkTableSubscription) {
+      this.getWorkTableSubscription.unsubscribe();
+    }
   }
 }

@@ -11,6 +11,10 @@ export class DataService {
   constructor(private httpClient: HttpClient) {
   }
 
+  getOk() {
+    return this.httpClient.get(`http://localhost:8000/`);
+  }
+
   getUserById(id: number) {
     return this.httpClient.get(`http://localhost:8000/users/${id}`);
   }

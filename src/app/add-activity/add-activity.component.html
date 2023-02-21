@@ -1,6 +1,5 @@
-<section class="text-gray-400 bg-gray-900 body-font font-sans">
+<section *ngIf="!isError" class="text-gray-400 bg-gray-900 body-font font-sans">
   <form [formGroup]="newActivityForm" (ngSubmit)="submitForm()">
-
     <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
         <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">inserisci nuovo intervento</h1>
@@ -197,6 +196,15 @@
         </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</section>
+
+<section *ngIf="error" class="text-gray-400 bg-gray-900 body-font font-sans">
+  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+    <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">qualcosa è andato storto</h1>
+      <p class="mb-8 leading-relaxed">{{error.statusText}}</p>
     </div>
   </div>
 </section>
