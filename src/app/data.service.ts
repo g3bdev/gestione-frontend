@@ -11,6 +11,12 @@ export class DataService {
   constructor(private httpClient: HttpClient) {
   }
 
+  getUserWork() {
+      return this.httpClient.get(`http://localhost:8000/users/me/work/`, {
+        headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+      });
+  }
+
   getOk() {
     return this.httpClient.get(`http://localhost:8000/`);
   }

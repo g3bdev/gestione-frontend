@@ -4,7 +4,6 @@
       login to your account
     </h5>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
       <div class="mb-4 text-base text-neutral-600">
         <div class="relative mr-4 w-full">
           <label for="username" class="leading-7 text-sm text-gray-400">username</label>
@@ -24,5 +23,10 @@
         login
       </button>
     </form>
+    <div *ngIf="errorMessage">
+      <div class="text-red-700 m-2 font-medium leading-tight text-center p-2">
+        <p>{{errorMessage}}</p>
+      </div>
+    </div>
   </div>
 </div>
