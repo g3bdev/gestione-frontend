@@ -14,6 +14,11 @@ export class AuthService {
     return this.httpClient.post('http://localhost:8000/token', formData);
   }
 
+  tokenExpired(token: string) {
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+  }
+
   getUserInfo() {
     return this.httpClient.get('http://localhost:8000/users/me', {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
@@ -31,6 +36,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('token') !== null;
+    return !!localStorage.getItem('token') && !this.tokenExpired(localStorage.getItem('token')!);
   }
 }

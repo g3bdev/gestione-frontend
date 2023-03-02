@@ -15,8 +15,8 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
 
   loginForm = this.formBuilder.group({
-    username: ['gab', Validators.required],
-    password: ['alex', Validators.required]
+    username: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
   onSubmit() {

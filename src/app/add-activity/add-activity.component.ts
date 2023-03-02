@@ -16,10 +16,11 @@ export class AddActivityComponent implements OnInit, OnDestroy {
 
   clients = [];
   sites = [];
-  intervention_types = ['installation', 'scheduled_maintenance', 'extraordinary_maintenance', 'remote_support', 'programming', 'training', 'planning', 'assembly', 'testing', 'other'];
+  intervention_types = [];
   intervention_locations = ['ITW', 'client', 'remote'];
-  work = [];
   operators = [];
+  message = '';
+
 
   select(event: Event, value: string) {
     this.newActivityForm.patchValue({
@@ -30,29 +31,34 @@ export class AddActivityComponent implements OnInit, OnDestroy {
   newActivityForm = this.formBuilder.group({
     date: ['', Validators.required],
     intervention_duration: ['', [Validators.pattern(/^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), Validators.required]],
-    intervention_type: ['installation', Validators.required],
-    intervention_location: ['ITW', Validators.required],
-    client: ['ITW', Validators.required],
+    intervention_type: ['', Validators.required],
+    intervention_location: ['', Validators.required],
+    client: ['', Validators.required],
     site: ['', Validators.required],
     description: [''],
     notes: [''],
-    trip_kms: ['0'],
-    cost: ['0'],
-    operator_id: [''],
+    trip_kms: ['', Validators.required],
+    cost: [''],
+    operator_id: ['']
   });
 
   submitForm() {
-    this.dataService.sendActivity(this.newActivityForm.value).subscribe(data => {
-      console.log(data);
+    this.dataService.sendActivity(this.newActivityForm.value).subscribe({
+        next: () => {
+          this.message = 'Intervento aggiunto con successo!';
+        },
+        error: () => {
+          this.message = '';
+        }
     });
   }
 
   error: any;
   isError = true;
-  // loading$ = new BehaviorSubject<boolean>(true);
   private getClientsSubscription: Subscription | null = null;
   private getSitesSubscription: Subscription | null = null;
-  private getWorkTableSubscription: Subscription | null = null;
+  private getInterventionTypesSubscription: Subscription | null = null;
+  private getWorkSubscription: Subscription | null = null;
 
 
   ngOnInit(): void {
@@ -65,8 +71,8 @@ export class AddActivityComponent implements OnInit, OnDestroy {
         this.getSitesSubscription = this.dataService.getSites().subscribe((data: any) => {
           this.sites = data;
         });
-        this.getWorkTableSubscription = this.dataService.getWorkTable().subscribe((data: any) => {
-          this.work = data;
+        this.getInterventionTypesSubscription = this.dataService.getInterventionTypes().subscribe((data: any) => {
+          this.intervention_types = data;
         });
       },
       error: (error) => {
@@ -83,8 +89,11 @@ export class AddActivityComponent implements OnInit, OnDestroy {
     if (this.getSitesSubscription) {
       this.getSitesSubscription.unsubscribe();
     }
-    if (this.getWorkTableSubscription) {
-      this.getWorkTableSubscription.unsubscribe();
+    if (this.getInterventionTypesSubscription) {
+      this.getInterventionTypesSubscription.unsubscribe();
+    }
+    if (this.getWorkSubscription) {
+      this.getWorkSubscription.unsubscribe();
     }
   }
 }

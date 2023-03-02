@@ -1,20 +1,23 @@
 <section *ngIf="!isError" class="text-gray-400 bg-gray-900 body-font font-sans">
-  <form [formGroup]="newActivityForm" (ngSubmit)="submitForm()">
+  <form (ngSubmit)="submitForm()" [formGroup]="newActivityForm">
     <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
       <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
-        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">inserisci nuovo intervento</h1>
-        <p class="mb-8 leading-relaxed">aggiungi un nuovo intervento al database aziendale</p>
+        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo intervento</h1>
+        <p class="mb-8 leading-relaxed">Aggiungi un nuovo intervento al database aziendale</p>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="date" class="leading-7 text-sm text-gray-400">date</label>
-          <input type="date" formControlName="date" id="date"
-                 class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="date">Data</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="date" id="date"
+            type="date">
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="intervention_location" class="leading-7 text-sm text-gray-400">intervention location</label>
-          <select (change)="select($event, 'intervention_location')" id="intervention_location"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="intervention_location">Location</label>
+          <select (change)="select($event, 'intervention_location')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="intervention_location">
             <option *ngFor="let intervention_location of intervention_locations" [value]="intervention_location"
                     class="bg-gray-800">
               {{intervention_location}}
@@ -23,9 +26,10 @@
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="client" class="leading-7 text-sm text-gray-400">client</label>
-          <select (change)="select($event, 'client')" id="client"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="client">Cliente</label>
+          <select (change)="select($event, 'client')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="client">
             <option *ngFor="let client of clients;" [value]="client['name']" class="bg-gray-800">
               {{client['name']}}
             </option>
@@ -33,35 +37,37 @@
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="intervention_type" class="leading-7 text-sm text-gray-400">intervention type</label>
-          <select (change)="select($event, 'intervention_type')" id="intervention_type"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            <option *ngFor="let intervention_type of intervention_types" [value]="intervention_type"
+          <label class="leading-7 text-sm text-gray-400" for="intervention_type">Tipo</label>
+          <select (change)="select($event, 'intervention_type')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="intervention_type">
+            <option *ngFor="let intervention_type of intervention_types" [value]="intervention_type['name']"
                     class="bg-gray-800">
-              {{intervention_type}}
+              {{intervention_type['name']}}
             </option>
           </select>
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="intervention_duration" class="leading-7 text-sm text-gray-400">intervention duration (in hh:mm
-            format)</label>
-          <input type="text" formControlName="intervention_duration" id="intervention_duration" maxlength="5"
-                 class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="intervention_duration">Durata (in formato hh:mm)</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="intervention_duration" id="intervention_duration" maxlength="5"
+            type="text">
           <div
             *ngIf="newActivityForm.get('intervention_duration')!.invalid && (newActivityForm.get('intervention_duration')!.dirty || newActivityForm.get('intervention_duration')!.touched)">
             <div *ngIf="newActivityForm.get('intervention_duration')!.hasError('required')"
-                 class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">this
-              field is required.
+                 class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">Questo campo è obbligatorio.
             </div>
           </div>
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="client" class="leading-7 text-sm text-gray-400">site</label>
-          <select (change)="select($event, 'site')" id="site"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            <option value="" disabled selected hidden>choose the site</option>
+          <label class="leading-7 text-sm text-gray-400" for="site">Cantiere</label>
+          <select (change)="select($event, 'site')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  formControlName="site" id="site">
+            <!--<option disabled hidden selected value="">choose the site</option> -->
             <option *ngFor="let site of sites;" [value]="site['name']" class="bg-gray-800">
               {{site['name']}}
             </option>
@@ -69,141 +75,59 @@
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="description" class="leading-7 text-sm text-gray-400">description</label>
-          <input type="text" formControlName="description" id="description"
-                 class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="description">Descrizione</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="description" id="description"
+            type="text">
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="notes" class="leading-7 text-sm text-gray-400">notes</label>
-          <input type="text" formControlName="notes" id="notes"
-                 class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="notes">Note viaggio</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="notes" id="notes"
+            type="text">
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="trip_kms" class="leading-7 text-sm text-gray-400">trip kms</label>
-          <input type="text" formControlName="trip_kms" id="trip_kms"
-                 class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="trip_kms">Kilometri viaggio</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="trip_kms" id="trip_kms"
+            type="text">
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="cost" class="leading-7 text-sm text-gray-400">cost</label>
-          <input type="text" formControlName="cost" id="cost"
-                 class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <label class="leading-7 text-sm text-gray-400" for="cost">Costo viaggio</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="cost" id="cost"
+            type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
-          <label for="operator_id" class="leading-7 text-sm text-gray-400">operator id</label>
-          <input type="number" formControlName="operator_id" id="operator_id"
-                 class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-        </div>
-
-        <button type="submit" [disabled]="!newActivityForm.valid"
-                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg">
-          submit
+        <button [disabled]="!newActivityForm.valid"
+                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+                type="submit">
+          Aggiungi
         </button>
+
+        <div *ngIf="message"
+             class="text-white px-6 py-4 mt-5 border-0 rounded relative mb-4 bg-green-500 w-full lg:w-1/2">
+          <span class="inline-block align-middle mr-8">
+            {{message}}
+          </span>
+        </div>
 
       </div>
     </div>
   </form>
-
-  <p>{{newActivityForm.status}}</p>
-
-  <p>form value: {{ newActivityForm.value | json }}</p>
-  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-    <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
-      <table class="bg-gray-800 min-w-full">
-        <thead class="border-b">
-        <tr>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            #
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            operator
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            date
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            intervention duration
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            intervention type
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            intervention location
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            client
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            site
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            description
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            notes
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            trip kilometers
-          </th>
-          <th scope="col" class="text-sm font-medium text-gray-400 px-6 py-4 text-left">
-            cost
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-
-        <tr *ngFor="let item of work;"
-            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-            {{item['Work']['id']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Operator']['first_name'] + ' ' + item['Operator']['last_name']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['date']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['intervention_duration']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['intervention_type']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['intervention_location']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['client']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['site']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['description']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['notes']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['trip_kms']}}
-          </td>
-          <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-            {{item['Work']['cost']}}
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 </section>
 
 <section *ngIf="error" class="text-gray-400 bg-gray-900 body-font font-sans">
   <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
     <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
-      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">qualcosa è andato storto</h1>
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Qualcosa è andato storto.</h1>
       <p class="mb-8 leading-relaxed">{{error.statusText}}</p>
     </div>
   </div>
