@@ -41,10 +41,6 @@ export class DataService {
     return this.httpClient.get(`http://localhost:8000/intervention_types`);
   }
 
-  getWorkTable() {
-    return this.httpClient.get(`http://localhost:8000/work`);
-  }
-
   sendActivity(activity: Partial<{ date: string | null; intervention_duration: string | null; intervention_type: string | null; intervention_location: string | null; client: string | null; site: string | null; description: string | null; notes: string | null; trip_kms: string | null; cost: string | null; id: string | null; operator_id: string | null; }>) {
     return this.httpClient.post(`http://localhost:8000/work`, activity, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)

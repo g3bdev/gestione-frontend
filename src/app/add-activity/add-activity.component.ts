@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-add-activity',
@@ -11,7 +12,8 @@ import {Subscription} from "rxjs";
 export class AddActivityComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder,
-              private dataService: DataService) {
+              private dataService: DataService,
+              private router: Router) {
   }
 
   clients = [];
@@ -46,6 +48,9 @@ export class AddActivityComponent implements OnInit, OnDestroy {
     this.dataService.sendActivity(this.newActivityForm.value).subscribe({
         next: () => {
           this.message = 'Intervento aggiunto con successo!';
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']).then();
+          }, 2000);
         },
         error: () => {
           this.message = '';
