@@ -1,0 +1,21 @@
+<div *ngIf="logged_role == 'admin'; else error">
+  <select (ngModelChange)="onChange($event)" [ngModel]="selectedID">
+    <option *ngFor="let user of users;" [value]="user['id']">
+      {{user['first_name'] + ' ' + user['last_name']}}
+    </option>
+  </select>
+
+  {{first_name}}
+  {{last_name}}
+  {{email}}
+  {{username}}
+  {{phone_number}}
+  {{role}}
+
+</div>
+
+
+<ng-template #error>
+  <app-forbidden></app-forbidden>
+</ng-template>
+

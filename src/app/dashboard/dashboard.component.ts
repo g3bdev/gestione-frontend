@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   constructor(private dataService: DataService, private authService: AuthService, private router: Router) { }
 
   name = '';
+  role = '';
   work = [];
 
   logout() {
@@ -26,11 +27,11 @@ export class DashboardComponent implements OnInit {
     this.authService.getUserInfo().subscribe({
       next: (data: any) => {
         this.name = data.first_name + ' ' + data.last_name;
+        this.role = data.role;
       }
     });
     this.dataService.getUserWork().subscribe({
       next: (data: any) => {
-        console.log(data)
         this.work = data;
       }
     });

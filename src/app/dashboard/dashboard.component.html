@@ -1,4 +1,4 @@
-<section class="text-gray-400 bg-gray-900 body-font font-sans">
+<section *ngIf="role" class="text-gray-400 bg-gray-900 body-font font-sans">
   <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
     <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
       <div class="flex justify-center">
@@ -6,8 +6,18 @@
           <h1 class="title-font text-3xl mb-4 font-medium text-white">Benvenuto {{name}}!</h1>
           <a
             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-            routerLink="/add">
+            routerLink="/add/activity">
             Aggiungi un nuovo intervento
+          </a>
+          <a
+            class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+            routerLink="/add/user">
+            Aggiungi un nuovo utente
+          </a>
+          <a *ngIf="role === 'admin'"
+            class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+            routerLink="/users">
+            Gestisci utenti
           </a>
           <a
             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"

@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
     formData.append('password', this.loginForm.value.password!);
     this.authService.getToken(formData).subscribe( {
       next: (data: any) => {
-        console.log(data);
         this.authService.login(data.access_token);
       },
         error: (error) => {

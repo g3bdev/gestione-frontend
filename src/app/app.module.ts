@@ -10,6 +10,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {NotFoundComponent} from './not-found/not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { LoginComponent } from './login/login.component';
     AddActivityComponent,
     NotFoundComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    CreateUserComponent,
+    ManageUsersComponent,
+    ForbiddenComponent
   ],
   imports: [
     BrowserModule,
