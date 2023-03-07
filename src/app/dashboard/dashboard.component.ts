@@ -1,23 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-dashboard', templateUrl: './dashboard.component.html', styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private dataService: DataService, private authService: AuthService, private router: Router) { }
-
   name = '';
-  role = '';
   work = [];
+  logged_role = localStorage.getItem('role');
 
-  logout() {
-    this.authService.logout();
+
+  constructor(private dataService: DataService, private authService: AuthService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -26,13 +22,7 @@ export class DashboardComponent implements OnInit {
     }
     this.authService.getUserInfo().subscribe({
       next: (data: any) => {
-        this.name = data.first_name + ' ' + data.last_name;
-        this.role = data.role;
-      }
-    });
-    this.dataService.getUserWork().subscribe({
-      next: (data: any) => {
-        this.work = data;
+        this.name = data.first_name + ' ' + data.last_name + "!";
       }
     });
   }

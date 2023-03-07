@@ -9,25 +9,24 @@ import {AuthService} from "../auth.service";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
-  }
-
   errorMessage = '';
-
   loginForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required]
   });
 
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  }
+
   onSubmit() {
     const formData = new FormData();
     formData.append('username', this.loginForm.value.username!);
     formData.append('password', this.loginForm.value.password!);
-    this.authService.getToken(formData).subscribe( {
+    this.authService.getToken(formData).subscribe({
       next: (data: any) => {
         this.authService.login(data.access_token);
       },
-        error: (error) => {
+      error: (error) => {
         this.errorMessage = error.error.detail;
       }
     });

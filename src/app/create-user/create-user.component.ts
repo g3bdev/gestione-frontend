@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {Router} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-create-user',
@@ -10,31 +11,30 @@ import {FormBuilder, Validators} from "@angular/forms";
 })
 export class CreateUserComponent implements OnInit {
 
-  constructor(private dataService: DataService, private formBuilder: FormBuilder, private router: Router) {
-  }
-
   user: any;
   isError = true;
   message = '';
+  error_message = '';
   password = '';
   roles = [];
+  logged_role = localStorage.getItem('role');
+  newUserForm = this.formBuilder.group({
+    first_name: ['', Validators.required],
+    last_name: ['', Validators.required],
+    username: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone_number: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    role: ['', Validators.required]
+  });
 
+  constructor(private dataService: DataService, private formBuilder: FormBuilder, private router: Router, private authService: AuthService) {
+  }
 
   select(event: Event, value: string) {
     this.newUserForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
     })
   }
-
-  newUserForm = this.formBuilder.group({
-    first_name: ['', Validators.required],
-    last_name: ['', Validators.required],
-    username: ['', Validators.required],
-    email: ['', Validators.required],
-    phone_number: ['', Validators.required],
-    role: ['', Validators.required]
-  });
-
 
   submitForm() {
     this.dataService.createUser(this.newUserForm.value).subscribe({
@@ -43,13 +43,19 @@ export class CreateUserComponent implements OnInit {
         this.password = this.user['temp_password'];
         this.message = 'Utente aggiunto con successo!';
       },
-      error: () => {
+      error: (e) => {
         this.message = '';
+        this.error_message = e.error.detail;
       }
     });
   }
 
   ngOnInit(): void {
+    this.authService.getUserInfo().subscribe({
+      next: (data: any) => {
+        this.logged_role = data.role;
+      }
+    });
     this.dataService.getRoles().subscribe({
       next: (data: any) => {
         this.roles = data;
@@ -58,5 +64,4 @@ export class CreateUserComponent implements OnInit {
       }
     });
   }
-
 }

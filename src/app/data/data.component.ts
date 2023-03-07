@@ -8,12 +8,11 @@ import {DataService} from "../data.service";
 })
 export class DataComponent implements OnInit {
 
+  users = [];
+  selectedID = 1;
+
   constructor(private dataService: DataService) {
   }
-
-  users = [];
-
-  selectedID = 1;
 
   onChange(id: number) {
     this.dataService.getUserById(id).subscribe((data: any) => {

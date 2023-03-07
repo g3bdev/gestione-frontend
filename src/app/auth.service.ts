@@ -25,13 +25,24 @@ export class AuthService {
     });
   }
 
+  getRole() {
+    return this.getUserInfo().subscribe((data: any) => {
+      localStorage.setItem('role', data.role);
+    });
+  }
+
   login(token: string) {
     localStorage.setItem('token', token);
-    this.router.navigate(['/dashboard']).then();
+    this.getRole();
+    setTimeout(() => {
+      this.router.navigate(['/dashboard']).then();
+    }, 1000);
   }
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.clear();
     this.router.navigate(['/login']).then();
   }
 

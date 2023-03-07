@@ -1,0 +1,24 @@
+<header class="text-gray-400 bg-gray-800 body-font">
+  <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center relative">
+    <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+      <a routerLink="/" routerLinkActive="active">
+        <svg class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" fill="none" stroke="currentColor"
+             stroke-linecap="round"
+             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+          <path d="M22 4L12 14.01l-3-3"></path>
+        </svg>
+      </a>
+      <a class="mr-5 text-gray-400 hover:text-white ml-3 text-xl" routerLink="/" routerLinkActive="active">Gestione
+        ITW</a>
+    </a>
+    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center md:pr-12">
+      <!--<a *ngIf="logged_role === 'admin'" class="mr-5 hover:text-white" routerLink="/add/user" routerLinkActive="active">Utenti</a>-->
+    </nav>
+    <fa-icon [icon]="fa_profile" [size]="fa_profile_size"
+             class="cursor-pointer bg-gray-800 focus:outline-none hover:bg-gray-700 border-0 rounded-full absolute right-0 top-0 m-4"
+             routerLink="/profile"
+             routerLinkActive="active"></fa-icon>
+  </div>
+</header>

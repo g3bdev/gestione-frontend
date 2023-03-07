@@ -11,18 +11,18 @@ export class AppComponent {
   title = 'gestione';
 
   constructor(private router: Router, private authService: AuthService) {
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationStart) {
-          if (this.authService.isLoggedIn()) {
-            if (event.url === '/' || event.url === '/login') {
-              this.router.navigate(['/dashboard']).then();
-            }
-          } else {
-            if (event.url !== '/login') {
-              this.router.navigate(['/login']).then();
-            }
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        if (this.authService.isLoggedIn()) {
+          if (event.url === '/' || event.url === '/login') {
+            this.router.navigate(['/dashboard']).then();
+          }
+        } else {
+          if (event.url !== '/login') {
+            this.router.navigate(['/login']).then();
           }
         }
-      });
-    }
+      }
+    });
+  }
 }
