@@ -19,13 +19,16 @@ import {ProfileComponent} from './profile/profile.component';
 import {ManageWorkComponent} from './manage-work/manage-work.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import { AdminManageWorkComponent } from './admin-manage-work/admin-manage-work.component';
-import { FooterComponent } from './footer/footer.component';
+import {AdminManageWorkComponent} from './admin-manage-work/admin-manage-work.component';
+import {FooterComponent} from './footer/footer.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {DeleteConfirmationComponent} from './delete-confirmation/delete-confirmation.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
-  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent],
-  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule],
+  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent],
+  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule],
   providers: [],
   bootstrap: [AppComponent]
 })
