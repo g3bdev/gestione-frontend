@@ -37,7 +37,6 @@ export class ManageUsersComponent implements OnInit {
     this.message = '';
     this.dataService.getUserById(id).subscribe({
       next: (data: any) => {
-        console.log(data);
         this.first_name = data.first_name;
         this.last_name = data.last_name;
         this.email = data.email;
@@ -53,7 +52,7 @@ export class ManageUsersComponent implements OnInit {
 
   deleteUser(id: number) {
     this.dataService.deleteUser(id).subscribe({
-      next: (data: any) => {
+      next: () => {
         this.message = 'Utente eliminato con successo!';
         setTimeout(() => {
           window.location.reload();
@@ -67,12 +66,10 @@ export class ManageUsersComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getUserInfo().subscribe({
       next: (data: any) => {
-        console.log(data)
         this.logged_role = data.role;
       }
     });
     this.dataService.getUsers().subscribe((data: any) => {
-      console.log(data);
       this.users = data;
     });
   }

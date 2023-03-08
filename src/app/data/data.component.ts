@@ -16,14 +16,12 @@ export class DataComponent implements OnInit {
 
   onChange(id: number) {
     this.dataService.getUserById(id).subscribe((data: any) => {
-      console.log(data);
       document.getElementById('box')!.innerHTML = data.first_name + '<br>' + data.last_name + '<br>' + data.id;
     });
   }
 
   ngOnInit(): void {
     this.dataService.getUsers().subscribe((data: any) => {
-      console.log(data);
       this.users = data;
     });
   }

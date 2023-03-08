@@ -5,6 +5,11 @@
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Benvenuto {{name}}</h1>
       <div class="flex justify-center">
         <div class="w-72 sm:w-96">
+          <a *ngIf="logged_role === 'admin'"
+            class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+            routerLink="/admin/work">
+            Gestisci gli interventi dell'azienda
+          </a>
           <a
             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
             routerLink="/work">
@@ -35,17 +40,5 @@
       <!-- recent work table was here -->
     </div>
   </div>
-
-
-  <footer class="text-gray-400 bg-gray-900 body-font">
-    <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-      <a class="flex title-font font-medium items-center md:justify-start justify-center text-white">
-        <span class="ml-3 text-xl">Gestione ITW</span>
-      </a>
-      <p class="text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-800 sm:py-2 sm:mt-0 mt-4">made with
-        ❤️
-        by <a class="text-gray-500" href="https://g3b.dev" rel="noopener noreferrer" target="_blank">gab</a>
-      </p>
-    </div>
-  </footer>
+  <app-footer></app-footer>
 </section>

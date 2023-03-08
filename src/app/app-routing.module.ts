@@ -8,6 +8,7 @@ import {CreateUserComponent} from "./create-user/create-user.component";
 import {ManageUsersComponent} from "./manage-users/manage-users.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {ManageWorkComponent} from "./manage-work/manage-work.component";
+import {AdminManageWorkComponent} from "./admin-manage-work/admin-manage-work.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -15,10 +16,11 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'work', component: ManageWorkComponent},
+  {path: 'admin/work', component: AdminManageWorkComponent},
+  {path: 'users', component: ManageUsersComponent},
   {path: 'add', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: 'add/work', component: CreateWorkComponent},
   {path: 'add/user', component: CreateUserComponent},
-  {path: 'users', component: ManageUsersComponent},
   {path: '**', component: NotFoundComponent}
 ];
 
