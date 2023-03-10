@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {environment} from "../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthService {
   }
 
   getToken(formData: any) {
-    return this.httpClient.post('http://localhost:8000/token', formData);
+    return this.httpClient.post(`${environment.apiUrl}token`, formData);
   }
 
   tokenExpired(token: string) {
@@ -20,7 +21,7 @@ export class AuthService {
   }
 
   getUserInfo() {
-    return this.httpClient.get('http://localhost:8000/users/me', {
+    return this.httpClient.get(`${environment.apiUrl}users/me`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
