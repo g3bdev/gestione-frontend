@@ -58,9 +58,11 @@ export class EditComponent implements OnInit {
     this.dataService.getLocations().subscribe((data: any) => {
       this.intervention_locations = data;
     });
-    this.dataService.getUsers().subscribe((data: any) => {
-      this.users = data;
-    });
+    if (this.logged_role === 'admin') {
+      this.dataService.getUsers().subscribe((data: any) => {
+        this.users = data;
+      });
+    }
     this.form.patchValue({
       date: this.data.message['Work']['date'],
       intervention_duration: this.data.message['Work']['intervention_duration'],

@@ -13,6 +13,8 @@ export class ManageWorkComponent {
 
   work = [];
   message = '';
+  error = '';
+  isEmpty = true;
 
   constructor(private dataService: DataService, private dialog: MatDialog) {
   }
@@ -30,6 +32,9 @@ export class ManageWorkComponent {
         this.dataService.deleteWork(id).subscribe({
           next: (data: any) => {
             this.message = data;
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
           }
         });
       }
@@ -53,7 +58,15 @@ export class ManageWorkComponent {
     this.dataService.getUserWork().subscribe({
       next: (data: any) => {
         this.work = data;
+        if (this.work.length > 0) {
+          this.isEmpty = false;
+        }
       }
     });
+    if (this.isEmpty) {
+      setTimeout(() => {
+        this.error = 'Non ci sono interventi da visualizzare';
+      }, 1000);
+    }
   }
 }
