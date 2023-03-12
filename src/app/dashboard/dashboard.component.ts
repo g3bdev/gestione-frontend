@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
     }
     this.authService.getUserInfo().subscribe({
       next: (data: any) => {
-        this.name = data.first_name + ' ' + data.last_name + "!";
+        this.name = data.first_name + "!";
       }
     });
   }

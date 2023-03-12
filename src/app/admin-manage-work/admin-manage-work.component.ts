@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
+import {EditComponent} from "../edit/edit.component";
 
 @Component({
   selector: 'app-admin-manage-work',
@@ -11,6 +12,7 @@ import {MatDialog} from "@angular/material/dialog";
 export class AdminManageWorkComponent implements OnInit {
 
   work = [];
+  message = '';
 
   constructor(private dataService: DataService, private dialog: MatDialog) {
   }
@@ -26,20 +28,33 @@ export class AdminManageWorkComponent implements OnInit {
 
   deleteWork(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-      data: {
-        title: 'Conferma eliminazione',
-        message: 'Sei sicuro di voler eliminare questo intervento?'
+        data: {
+          title: 'Conferma eliminazione',
+          message: 'Sei sicuro di voler eliminare questo intervento?'
+        }
       }
-    });
-
+    );
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.deleteWork(id).subscribe({
           next: (data: any) => {
-            console.log(data);
+            this.message = data;
             setTimeout(() => {
               window.location.reload();
             }, 1000);
+          }
+        });
+      }
+    });
+  }
+
+  editWork(id: number) {
+    this.dataService.getWorkById(id).subscribe({
+      next: (data: any) => {
+        this.dialog.open(EditComponent, {
+          data: {
+            title: 'Modifica intervento',
+            message: data
           }
         });
       }

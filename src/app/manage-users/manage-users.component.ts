@@ -3,6 +3,8 @@ import {DataService} from "../data.service";
 import {AuthService} from "../auth.service";
 import {faAt, faBuilding, faEnvelope, faPhone, faUser} from '@fortawesome/free-solid-svg-icons';
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
+import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-manage-users',
@@ -29,7 +31,7 @@ export class ManageUsersComponent implements OnInit {
   clicked = false;
   message = '';
 
-  constructor(private dataService: DataService, private authService: AuthService) {
+  constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog) {
   }
 
   onChange(id: number) {
@@ -51,14 +53,22 @@ export class ManageUsersComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.dataService.deleteUser(id).subscribe({
-      next: () => {
-        this.message = 'Utente eliminato con successo!';
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      }, error: (error) => {
-        this.message = error.error.detail;
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      data: {
+        title: 'Conferma eliminazione',
+        message: 'Sei sicuro di voler eliminare questo utente?'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.deleteUser(id).subscribe({
+          next: (data: any) => {
+            this.message = data;
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          }
+        });
       }
     });
   }
@@ -72,10 +82,5 @@ export class ManageUsersComponent implements OnInit {
     this.dataService.getUsers().subscribe((data: any) => {
       this.users = data;
     });
-  }
-
-
-  alert() {
-    this.message = 'in costruzione';
   }
 }

@@ -12,7 +12,7 @@ export class AuthService {
   }
 
   getToken(formData: any) {
-    return this.httpClient.post(`${environment.apiUrl}token`, formData);
+    return this.httpClient.post(`${environment.apiUrl}/token`, formData);
   }
 
   tokenExpired(token: string) {
@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   getUserInfo() {
-    return this.httpClient.get(`${environment.apiUrl}users/me`, {
+    return this.httpClient.get(`${environment.apiUrl}/users/me`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

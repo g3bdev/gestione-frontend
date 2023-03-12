@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
+import {EditComponent} from "../edit/edit.component";
 
 @Component({
   selector: 'app-manage-work',
@@ -11,26 +12,37 @@ import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirm
 export class ManageWorkComponent {
 
   work = [];
+  message = '';
 
   constructor(private dataService: DataService, private dialog: MatDialog) {
   }
 
   deleteWork(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-      data: {
-        title: 'Conferma eliminazione',
-        message: 'Sei sicuro di voler eliminare questo intervento?'
+        data: {
+          title: 'Conferma eliminazione',
+          message: 'Sei sicuro di voler eliminare questo intervento?'
+        }
       }
-    });
-
+    );
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.deleteWork(id).subscribe({
           next: (data: any) => {
-            console.log(data);
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            this.message = data;
+          }
+        });
+      }
+    });
+  }
+
+  editWork(id: number) {
+    this.dataService.getWorkById(id).subscribe({
+      next: (data: any) => {
+        this.dialog.open(EditComponent, {
+          data: {
+            title: 'Modifica intervento',
+            message: data
           }
         });
       }

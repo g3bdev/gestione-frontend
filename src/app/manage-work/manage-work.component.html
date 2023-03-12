@@ -51,9 +51,14 @@
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 {{item['client_name']}}
               </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap flex space-x-4">
+                <a (click)="editWork(item['Work']['id'])">
+                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Info
+                  </button>
+                </a>
                 <a (click)="deleteWork(item['Work']['id'])">
-                  <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                     Elimina
                   </button>
                 </a>

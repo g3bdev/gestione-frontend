@@ -14,7 +14,6 @@ export class CreateWorkComponent implements OnInit {
   sites = [];
   intervention_types = [];
   intervention_locations = [];
-  operators = [];
   message = '';
   newActivityForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
@@ -30,7 +29,6 @@ export class CreateWorkComponent implements OnInit {
     operator_id: ['']
   });
   error: any;
-  isError = true;
 
   constructor(private formBuilder: FormBuilder,
               private dataService: DataService,
@@ -45,40 +43,31 @@ export class CreateWorkComponent implements OnInit {
 
 
   submitForm() {
-    this.dataService.sendActivity(this.newActivityForm.value).subscribe({
+    this.dataService.createActivity(this.newActivityForm.value).subscribe({
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
         setTimeout(() => {
           this.router.navigate(['/dashboard']).then();
         }, 2000);
       },
-      error: (e) => {
+      error: () => {
         this.message = '';
       }
     });
   }
 
   ngOnInit(): void {
-    this.dataService.getOk().subscribe({
-      next: () => {
-        this.isError = false;
-        this.dataService.getClients().subscribe((data: any) => {
-          this.clients = data;
-        });
-        this.dataService.getSites().subscribe((data: any) => {
-          this.sites = data;
-        });
-        this.dataService.getInterventionTypes().subscribe((data: any) => {
-          this.intervention_types = data;
-        });
-        this.dataService.getLocations().subscribe((data: any) => {
-          this.intervention_locations = data;
-        });
-      },
-      error: (error) => {
-        this.isError = true;
-        this.error = error;
-      }
+    this.dataService.getClients().subscribe((data: any) => {
+      this.clients = data;
+    });
+    this.dataService.getSites().subscribe((data: any) => {
+      this.sites = data;
+    });
+    this.dataService.getInterventionTypes().subscribe((data: any) => {
+      this.intervention_types = data;
+    });
+    this.dataService.getLocations().subscribe((data: any) => {
+      this.intervention_locations = data;
     });
   }
 }

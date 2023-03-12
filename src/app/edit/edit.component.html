@@ -1,0 +1,102 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<div mat-dialog-content>
+
+  <form [formGroup]="form">
+    <ng-container *ngIf="logged_role === 'admin'">
+      <label class="leading-7 text-sm text-gray-400" for="site_id">Operatore</label>
+      <select (change)="select($event, 'operator_id')"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="operator_id">
+        <option disabled hidden selected
+                value="">{{data.message['last_name'] + ' ' + data.message['first_name']}}</option>
+        <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
+          {{user['last_name'] + ' ' + user['first_name']}}
+        </option>
+      </select>
+    </ng-container>
+
+    <label class="leading-7 text-sm text-gray-400" for="site_id">Commessa</label>
+    <select (change)="select($event, 'site_id')"
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            id="site_id">
+      <option disabled hidden selected value="">{{data.message['site_description']}}</option>
+      <option *ngFor="let site of sites;" [value]="site['id']" class="bg-gray-800">
+        {{site['code']}} - {{site['description']}}
+      </option>
+    </select>
+
+    <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
+    <select (change)="select($event, 'client_id')"
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            id="client_id">
+      <option disabled hidden selected value="">{{data.message['client_name']}}</option>
+      <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
+        {{client['name']}}
+      </option>
+    </select>
+
+    <label class="leading-7 text-sm text-gray-400" for="date">Data</label>
+    <input
+      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      formControlName="date" id="date"
+      type="date">
+
+    <label class="leading-7 text-sm text-gray-400" for="intervention_location">Location</label>
+    <select (change)="select($event, 'intervention_location')"
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            id="intervention_location">
+      <option disabled hidden selected value="">{{data.message['Work']['intervention_location']}}</option>
+      <option *ngFor="let intervention_location of intervention_locations;"
+              [value]="intervention_location['name']" class="bg-gray-800">
+        {{intervention_location['name']}}
+      </option>
+    </select>
+
+    <label class="leading-7 text-sm text-gray-400" for="intervention_type">Tipo</label>
+    <select (change)="select($event, 'intervention_type')"
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            id="intervention_type">
+      <option disabled hidden selected value="">{{data.message['Work']['intervention_type']}}</option>
+      <option *ngFor="let intervention_type of intervention_types" [value]="intervention_type['name']"
+              class="bg-gray-800">
+        {{intervention_type['name']}}
+      </option>
+    </select>
+
+    <label class="leading-7 text-sm text-gray-400" for="intervention_duration">Durata (in formato hh:mm)</label>
+    <input
+      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      formControlName="intervention_duration" id="intervention_duration" maxlength="5"
+      type="text">
+
+    <label class="leading-7 text-sm text-gray-400" for="description">Descrizione (facoltativo)</label>
+    <input
+      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      formControlName="description" id="description"
+      type="text">
+
+    <label class="leading-7 text-sm text-gray-400" for="notes">Note viaggio (facoltativo)</label>
+    <input
+      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      formControlName="notes" id="notes"
+      type="text">
+
+    <label class="leading-7 text-sm text-gray-400" for="trip_kms">Kilometri viaggio (facoltativo)</label>
+    <input
+      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      formControlName="trip_kms" id="trip_kms"
+      type="text">
+
+    <label class="leading-7 text-sm text-gray-400" for="cost">Costo viaggio (facoltativo)</label>
+    <input
+      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      formControlName="cost" id="cost"
+      type="text">
+  </form>
+</div>
+<div align="end" class="flex space-x-4" mat-dialog-actions>
+  <button (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Annulla
+  </button>
+  <button (click)="onConfirm()" class="bg-lime-500 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded">Modifica
+  </button>
+</div>
