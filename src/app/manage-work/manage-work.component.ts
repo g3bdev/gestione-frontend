@@ -47,7 +47,8 @@ export class ManageWorkComponent {
         this.dialog.open(EditComponent, {
           data: {
             title: 'Modifica intervento',
-            message: data
+            message: data,
+            type: 'work'
           }
         });
       }

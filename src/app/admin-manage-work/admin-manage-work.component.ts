@@ -54,7 +54,8 @@ export class AdminManageWorkComponent implements OnInit {
         this.dialog.open(EditComponent, {
           data: {
             title: 'Modifica intervento',
-            message: data
+            message: data,
+            type: 'work'
           }
         });
       }
