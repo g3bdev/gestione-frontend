@@ -10,3 +10,4 @@ RUN ng build
 
 FROM nginx as runtime
 COPY --from=build /app/dist/gestione-frontend /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
