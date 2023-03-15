@@ -28,12 +28,10 @@ export class AdminManageWorkComponent implements OnInit {
 
   deleteWork(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-        data: {
-          title: 'Conferma eliminazione',
-          message: 'Sei sicuro di voler eliminare questo intervento?'
-        }
+      data: {
+        title: 'Conferma eliminazione', message: 'Sei sicuro di voler eliminare questo intervento?'
       }
-    );
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.deleteWork(id).subscribe({
@@ -51,11 +49,10 @@ export class AdminManageWorkComponent implements OnInit {
   editWork(id: number) {
     this.dataService.getWorkById(id).subscribe({
       next: (data: any) => {
+        console.log(data)
         this.dialog.open(EditComponent, {
           data: {
-            title: 'Modifica intervento',
-            message: data,
-            type: 'work'
+            title: 'Modifica intervento', message: data, type: 'work'
           }
         });
       }

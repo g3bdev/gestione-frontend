@@ -1,29 +1,16 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
   <div class="container mx-auto flex px-5 py-14 flex-col items-center">
-    <div class="md:items-start md:text-left items-center text-center">
+    <div class="items-start text-left items-center text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci gli interventi di tutti gli utenti</h1>
       <div class="flex justify-center">
         <div class="container">
-          <!-- <h2 class="text-sm text-indigo-400 tracking-widest font-medium title-font mb-1"></h2> soon... -->
           <table class="bg-gray-800">
             <thead class="border-b">
             <tr>
               <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
                 <a (click)="sortBy('last_name', 'asc')"
                    class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100">Operatore</a>
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                <a (click)="sortBy('created_at', 'desc')"
-                   class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100">Data
-                  registrazione</a>
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                <a (click)="sortBy('date', 'desc')"
-                   class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100">Data</a>
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Durata
               </th>
               <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
                 Cliente
@@ -39,15 +26,6 @@
                 class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 {{item['last_name'] + ' ' + item['first_name']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['Work']['created_at'] | date:'dd/MM/yyyy'}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['Work']['date'] | date:'dd/MM/yyyy'}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['Work']['intervention_duration'] | slice:0:5}}
               </td>
               <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 {{item['site_description']}}

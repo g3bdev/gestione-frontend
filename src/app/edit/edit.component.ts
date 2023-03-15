@@ -46,9 +46,6 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getClients().subscribe((data: any) => {
-      this.clients = data;
-    });
     this.dataService.getSites().subscribe((data: any) => {
       this.sites = data;
     });
@@ -68,7 +65,6 @@ export class EditComponent implements OnInit {
       intervention_duration: this.data.message['Work']['intervention_duration'],
       intervention_type: this.data.message['Work']['intervention_type'],
       intervention_location: this.data.message['Work']['intervention_location'],
-      client_id: this.data.message['Work']['client_id'],
       site_id: this.data.message['Work']['site_id'],
       description: this.data.message['Work']['description'],
       notes: this.data.message['Work']['notes'],
@@ -79,7 +75,7 @@ export class EditComponent implements OnInit {
   }
 
   onConfirm() {
-    this.dataService.editActivity(this.form.value, this.data.message['Work']['id'], +this.form.get('operator_id')!.value!).subscribe({
+    this.dataService.editWork(this.form.value, this.data.message['Work']['id'], +this.form.get('operator_id')!.value!).subscribe({
       next: () => {
         setTimeout(() => {
           window.location.reload();

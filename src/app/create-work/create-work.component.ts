@@ -4,7 +4,7 @@ import {DataService} from "../data.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-add-activity',
+  selector: 'app-create-work',
   templateUrl: './create-work.component.html',
   styleUrls: ['./create-work.component.css']
 })
@@ -15,12 +15,11 @@ export class CreateWorkComponent implements OnInit {
   intervention_types = [];
   intervention_locations = [];
   message = '';
-  newActivityForm = this.formBuilder.group({
+  newWorkForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
     intervention_duration: ['', [Validators.pattern(/^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), Validators.required]],
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
-    client_id: ['', Validators.required],
     site_id: ['', Validators.required],
     description: [''],
     notes: [''],
@@ -36,14 +35,14 @@ export class CreateWorkComponent implements OnInit {
   }
 
   select(event: Event, value: string) {
-    this.newActivityForm.patchValue({
+    this.newWorkForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
     })
   }
 
 
   submitForm() {
-    this.dataService.createActivity(this.newActivityForm.value).subscribe({
+    this.dataService.createWork(this.newWorkForm.value).subscribe({
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
         setTimeout(() => {
@@ -57,9 +56,6 @@ export class CreateWorkComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getClients().subscribe((data: any) => {
-      this.clients = data;
-    });
     this.dataService.getSites().subscribe((data: any) => {
       this.sites = data;
     });

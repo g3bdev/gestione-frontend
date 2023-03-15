@@ -1,24 +1,32 @@
-<section *ngIf="logged_role == 'admin'; else error" class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
+<section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <form (ngSubmit)="submitForm()" [formGroup]="newUserForm">
+  <form (ngSubmit)="submitForm()" [formGroup]="newClientForm">
     <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center">
       <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
-        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo utente</h1>
-        <p class="mb-8 leading-relaxed">Aggiungi un nuovo utente al database aziendale</p>
+        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo cliente</h1>
+        <p class="mb-8 leading-relaxed">Aggiungi un nuovo cliente al database aziendale</p>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label class="leading-7 text-sm text-gray-400" for="first_name">Nome</label>
+          <label class="leading-7 text-sm text-gray-400" for="name">Nome</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            formControlName="first_name" id="first_name"
+            formControlName="name" id="name"
             type="text">
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label class="leading-7 text-sm text-gray-400" for="last_name">Cognome</label>
+          <label class="leading-7 text-sm text-gray-400" for="city">Città</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            formControlName="last_name" id="last_name"
+            formControlName="city" id="city"
+            type="text">
+        </div>
+
+        <div class="relative mr-4 w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="address">Indirizzo</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="address" id="address"
             type="text">
         </div>
 
@@ -31,10 +39,10 @@
         </div>
 
         <div class="relative mr-4 w-full lg:w-1/2">
-          <label class="leading-7 text-sm text-gray-400" for="username">Username</label>
+          <label class="leading-7 text-sm text-gray-400" for="contact">Referente</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            formControlName="username" id="username"
+            formControlName="contact" id="contact"
             type="text">
         </div>
 
@@ -46,39 +54,16 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
-          <label class="leading-7 text-sm text-gray-400" for="intervention_type">Ruolo</label>
-          <select (change)="select($event, 'role')"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="intervention_type">
-            <option disabled hidden selected value="">Seleziona il ruolo</option>
-            <option *ngFor="let role of roles" [value]="role['name']"
-                    class="bg-gray-800">
-              {{role['name']}}
-            </option>
-          </select>
-        </div>
-
-        <button [disabled]="!newUserForm.valid"
-                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 mr-4 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+        <button [disabled]="!newClientForm.valid"
+                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
                 type="submit">
           Aggiungi
         </button>
 
-        <div *ngIf="error_message"
-             class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mr-4 bg-red-500 w-full lg:w-1/2">
-          <span class="inline-block align-middle mr-10">
-            {{error_message}}
-          </span>
-        </div>
-
         <div *ngIf="message"
-             class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mr-4 bg-green-500 w-full lg:w-1/2">
-          <span class="inline-block align-middle mr-10">
+             class="text-white px-6 py-4 mt-5 border-0 rounded relative mb-4 bg-green-500 w-full lg:w-1/2">
+          <span class="inline-block align-middle mr-8">
             {{message}}
-          </span>
-          <span class="inline-block align-middle mr-10">
-            Password: <b>{{password}}</b>
           </span>
         </div>
 
@@ -87,6 +72,11 @@
   </form>
 </section>
 
-<ng-template #error>
-  <app-forbidden></app-forbidden>
-</ng-template>
+<section *ngIf="error" class="text-gray-400 bg-gray-900 body-font font-sans">
+  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+    <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Qualcosa è andato storto.</h1>
+      <p class="mb-8 leading-relaxed">{{error.statusText}}</p>
+    </div>
+  </div>
+</section>

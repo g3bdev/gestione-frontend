@@ -9,6 +9,9 @@ import {ManageUsersComponent} from "./manage-users/manage-users.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {ManageWorkComponent} from "./manage-work/manage-work.component";
 import {AdminManageWorkComponent} from "./admin-manage-work/admin-manage-work.component";
+import {CreateSiteComponent} from "./create-site/create-site.component";
+import {CreateClientComponent} from "./create-client/create-client.component";
+import {ManagementComponent} from "./management/management.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -16,11 +19,14 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'work', component: ManageWorkComponent},
-  {path: 'admin/work', component: AdminManageWorkComponent},
   {path: 'users', component: ManageUsersComponent},
+  {path: 'manage', component: ManagementComponent},
+  {path: 'admin/work', component: AdminManageWorkComponent},
   {path: 'add', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: 'add/work', component: CreateWorkComponent},
   {path: 'add/user', component: CreateUserComponent},
+  {path: 'add/client', component: CreateClientComponent},
+  {path: 'add/site', component: CreateSiteComponent},
   {path: '**', component: NotFoundComponent}
 ];
 

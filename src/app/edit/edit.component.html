@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
-<div mat-dialog-content *ngIf="data.message === ''">
+<div mat-dialog-content>
 
   <form [formGroup]="form">
     <ng-container *ngIf="logged_role === 'admin'">
@@ -19,19 +19,9 @@
     <select (change)="select($event, 'site_id')"
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             id="site_id">
-      <option disabled hidden selected value="">{{data.message['site_description']}}</option>
-      <option *ngFor="let site of sites;" [value]="site['id']" class="bg-gray-800">
-        {{site['code']}} - {{site['description']}}
-      </option>
-    </select>
-
-    <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
-    <select (change)="select($event, 'client_id')"
-            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            id="client_id">
-      <option disabled hidden selected value="">{{data.message['client_name']}}</option>
-      <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
-        {{client['name']}}
+      <option disabled hidden selected value="">{{data.message['site_code'] + ' - ' + data.message['site_description']}}</option>
+      <option *ngFor="let site of sites;" [value]="site['Site']['id']" class="bg-gray-800">
+        {{site['Site']['code']}} - {{site['Site']['description']}}
       </option>
     </select>
 
