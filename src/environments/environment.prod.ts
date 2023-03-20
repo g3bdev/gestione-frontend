@@ -1,4 +1,5 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://gestioneapi.g3b.dev'
+  production: false, // true later !!!!!!!!!!!!!!!!!!
+  // apiUrl: 'https://gestioneapi.g3b.dev'
+  apiUrl: 'http://localhost:8000'
 };

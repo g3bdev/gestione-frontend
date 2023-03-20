@@ -13,9 +13,12 @@
       <a class="mr-5 text-gray-400 hover:text-white ml-3 text-xl" routerLink="/" routerLinkActive="active">Gestione
         ITW</a>
     </a>
-    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center md:pr-12">
-      <!--<a *ngIf="logged_role === 'admin'" class="mr-5 hover:text-white" routerLink="/add/user" routerLinkActive="active">Utenti</a>-->
-    </nav>
+    <!--<nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+      <a *ngIf="logged_role === 'admin'" class="mr-5 hover:text-white" routerLink="/admin/work" routerLinkActive="active">Interventi</a>
+      <a *ngIf="logged_role === 'user'" class="mr-5 hover:text-white" routerLink="/work" routerLinkActive="active">Interventi</a>
+      <a *ngIf="logged_role === 'admin'" class="mr-5 hover:text-white" routerLink="/admin/users" routerLinkActive="active">Utenti</a>
+      <a *ngIf="logged_role === 'admin'" class="mr-5 hover:text-white" routerLink="/manage" routerLinkActive="active">Gestione</a>
+    </nav>-->
     <fa-icon [icon]="fa_profile" [size]="fa_profile_size"
              class="cursor-pointer bg-gray-800 focus:outline-none hover:bg-gray-700 border-0 rounded-full absolute right-0 top-0 m-4"
              routerLink="/profile"

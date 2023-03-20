@@ -6,7 +6,7 @@
         <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo intervento</h1>
         <p class="mb-8 leading-relaxed">Aggiungi un nuovo intervento al database aziendale</p>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="site_id">Commessa</label>
           <select (change)="select($event, 'site_id')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -18,7 +18,7 @@
           </select>
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="date">Data</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -26,7 +26,7 @@
             type="date">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="intervention_location">Location</label>
           <select (change)="select($event, 'intervention_location')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -39,7 +39,7 @@
           </select>
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="intervention_type">Tipo</label>
           <select (change)="select($event, 'intervention_type')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -52,7 +52,7 @@
           </select>
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="intervention_duration">Durata (in formato hh:mm)</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -60,7 +60,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="description">Descrizione (facoltativo)</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -68,7 +68,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="notes">Note viaggio (facoltativo)</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -76,7 +76,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="trip_kms">Kilometri viaggio (facoltativo)</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -84,7 +84,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="cost">Costo viaggio (facoltativo)</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"

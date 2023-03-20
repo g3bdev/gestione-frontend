@@ -37,6 +37,18 @@ export class DataService {
     });
   }
 
+  getAllSiteWork(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/site?site_id=${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getSiteWorkById(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/users/me/site?site_id=${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
   getUserById(id: number) {
     return this.httpClient.get(`${environment.apiUrl}/user/${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)

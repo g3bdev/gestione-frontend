@@ -1,54 +1,42 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="container mx-auto flex px-5 py-14 flex-col items-center">
+  <div class="mx-auto flex px-5 py-8 flex-col items-center">
     <div class="items-start text-left items-center text-center">
-      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci gli interventi di tutti gli utenti</h1>
+      <h1 class="title-font text-xl sm:text-3xl mb-4 font-medium text-white">Gestisci gli interventi di tutti gli
+        utenti</h1>
       <div class="flex justify-center">
-        <div class="container">
-          <table class="bg-gray-800">
-            <thead class="border-b">
-            <tr>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                <a (click)="sortBy('last_name', 'asc')"
-                   class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100">Operatore</a>
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Cliente
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Commessa
-              </th>
-            </tr>
-            </thead>
-            <tbody>
+        <table [dataSource]="work" class="mat-elevation-z16 bg-gray-800 border-b" mat-table>
+          <ng-container matColumnDef="name">
+            <th *matHeaderCellDef mat-header-cell>Operatore</th>
+            <td *matCellDef="let item" mat-cell> {{item['last_name'] + ' ' + item['first_name']}} </td>
+          </ng-container>
 
-            <tr *ngFor="let item of work;"
-                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['last_name'] + ' ' + item['first_name']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['site_description']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['client_name']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap flex space-x-4">
-                <a (click)="editWork(item['Work']['id'])">
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Info
-                  </button>
-                </a>
-                <a (click)="deleteWork(item['Work']['id'])">
-                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Elimina
-                  </button>
-                </a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+          <ng-container class="hidden" matColumnDef="site">
+            <th *matHeaderCellDef mat-header-cell>Commessa</th>
+            <td *matCellDef="let item" mat-cell> {{item['site_description']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="client">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Cliente</th>
+            <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['client_name']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+              <a (click)="editWork(item['Work']['id'])">
+                <fa-icon [icon]="fa_info" [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              </a>
+              <a (click)="deleteWork(item['Work']['id'])">
+                <fa-icon [icon]="fa_trash" [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              </a>
+            </td>
+          </ng-container>
+          <tr *matHeaderRowDef="displayed_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: displayed_columns;" mat-row></tr>
+        </table>
       </div>
     </div>
   </div>

@@ -3,6 +3,9 @@ import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
+import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {SizeProp} from "@fortawesome/fontawesome-svg-core";
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-manage-work',
@@ -11,12 +14,38 @@ import {EditComponent} from "../edit/edit.component";
 })
 export class ManageWorkComponent {
 
+  displayed_columns: string[] = ['date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
+  sites = [];
   work = [];
   message = '';
   error = '';
-  isEmpty = true;
+  fa_trash = faTrash;
+  fa_info = faInfoCircle;
+  fa_exclamation_circle = faExclamationCircle;
+  fa_size: SizeProp = "xl";
+  filterForm = this.formBuilder.group({
+    site: ['', Validators.required],
+  });
 
-  constructor(private dataService: DataService, private dialog: MatDialog) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder) {
+  }
+
+  select(event: Event, value: string) {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    this.filterForm.patchValue({
+      [value]: selectedValue
+    });
+    this.dataService.getSiteWorkById(+selectedValue).subscribe({
+      next: (data: any) => {
+        console.log(data)
+        this.work = data;
+        if (this.work.length > 0) {
+          this.error = '';
+        } else {
+          this.error = 'Non ci sono interventi da visualizzare';
+        }
+      }
+    });
   }
 
   deleteWork(id: number) {
@@ -59,15 +88,13 @@ export class ManageWorkComponent {
     this.dataService.getUserWork().subscribe({
       next: (data: any) => {
         this.work = data;
-        if (this.work.length > 0) {
-          this.isEmpty = false;
-        }
       }
     });
-    if (this.isEmpty) {
-      setTimeout(() => {
-        this.error = 'Non ci sono interventi da visualizzare';
-      }, 1000);
-    }
+    this.dataService.getSites().subscribe({
+      next: (data: any) => {
+        console.log(data)
+        this.sites = data;
+      }
+    });
   }
 }

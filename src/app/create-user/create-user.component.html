@@ -6,7 +6,7 @@
         <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo utente</h1>
         <p class="mb-8 leading-relaxed">Aggiungi un nuovo utente al database aziendale</p>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="first_name">Nome</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -14,7 +14,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="last_name">Cognome</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -22,7 +22,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="email">Email</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -30,7 +30,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="username">Username</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -38,7 +38,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="phone_number">Numero di telefono</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -46,7 +46,7 @@
             type="text">
         </div>
 
-        <div class="relative mr-4 w-full lg:w-1/2">
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="intervention_type">Ruolo</label>
           <select (change)="select($event, 'role')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -60,20 +60,20 @@
         </div>
 
         <button [disabled]="!newUserForm.valid"
-                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 mr-4 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
                 type="submit">
           Aggiungi
         </button>
 
         <div *ngIf="error_message"
-             class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mr-4 bg-red-500 w-full lg:w-1/2">
+             class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col bg-red-500 w-full lg:w-1/2">
           <span class="inline-block align-middle mr-10">
             {{error_message}}
           </span>
         </div>
 
         <div *ngIf="message"
-             class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mr-4 bg-green-500 w-full lg:w-1/2">
+             class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col bg-green-500 w-full lg:w-1/2">
           <span class="inline-block align-middle mr-10">
             {{message}}
           </span>
