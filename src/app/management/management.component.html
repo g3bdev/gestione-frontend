@@ -1,9 +1,9 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-    <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center">
-      <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
-      <h1 class="title-font text-3xl font-medium text-white">Gestisci clienti e commesse</h1>
-
+  <div class="mx-auto flex px-5 py-8 flex-col items-center">
+    <div class="items-start text-left items-center text-center">
+      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci clienti e commesse</h1>
+      <div class="flex items-center justify-center mb-8">
         <div class="text-sm text-gray-900 font-light py-4 whitespace-nowrap flex space-x-4">
           <a (click)="setCategory('clients')">
             <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
@@ -16,112 +16,88 @@
             </button>
           </a>
         </div>
+      </div>
 
-      <div class="flex justify-center">
-        <div class="container">
-          <table *ngIf="category === 'clients'" class="bg-gray-800">
-            <thead class="border-b">
-            <tr>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Nome
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Città
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Indirizzo
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Email
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Referente
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Numero di telefono
-              </th>
-            </tr>
-            </thead>
-            <tbody>
+      <div class="flex items-center justify-center mb-8">
+        <table *ngIf="category === 'clients'" [dataSource]="clients" class="mat-elevation-z16 bg-gray-800 border-b"
+               mat-table>
+          <ng-container matColumnDef="name">
+            <th *matHeaderCellDef mat-header-cell>Nome</th>
+            <td *matCellDef="let item" mat-cell> {{item['name']}} </td>
+          </ng-container>
 
-            <tr *ngFor="let item of clients;"
-                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['name']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['city']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['address']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['email']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['contact']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['phone_number']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap flex space-x-4">
-                <!--<a (click)="editWork(item['Work']['id'])">
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Info
-                  </button>
-                </a>-->
-                <a (click)="deleteClient(item['id'])">
-                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Elimina
-                  </button>
-                </a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <table *ngIf="category === 'sites'" class="bg-gray-800">
-            <thead class="border-b">
-            <tr>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Cliente
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Codice
-              </th>
-              <th class="text-sm font-medium text-gray-400 px-6 py-4 text-left" scope="col">
-                Descrizione
-              </th>
-            </tr>
-            </thead>
+          <ng-container matColumnDef="city">
+            <th *matHeaderCellDef mat-header-cell>Città</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['city']}} </td>
+          </ng-container>
 
-            <tbody>
-            <tr *ngFor="let item of sites;"
-                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['Client']['name']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['Site']['code']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{item['Site']['description']}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap flex space-x-4">
-                <!--<a (click)="editSite(item['Site']['id'])">
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Info
-                  </button>
-                </a>-->
-                <a (click)="deleteSite(item['Site']['id'])">
-                  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Elimina
-                  </button>
-                </a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+          <ng-container matColumnDef="address">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Indirizzo</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> {{item['address']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Email</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> {{item['email']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="contact">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Referente</th>
+            <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['contact']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="phone_number">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Telefono</th>
+            <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['phone_number']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+              <a (click)="deleteClient(item['id'])">
+                <fa-icon [icon]="fa_trash" [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              </a>
+            </td>
+          </ng-container>
+          <tr *matHeaderRowDef="client_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: client_columns;" mat-row></tr>
+        </table>
+
+        <table *ngIf="category === 'sites'" [dataSource]="sites" class="mat-elevation-z16 bg-gray-800 border-b"
+               mat-table>
+          <ng-container matColumnDef="name">
+            <th *matHeaderCellDef mat-header-cell>Cliente</th>
+            <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="code">
+            <th *matHeaderCellDef mat-header-cell>Codice</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['Site']['code']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Descrizione</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> {{item['Site']['description']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+              <a (click)="deleteSite(item['id'])">
+                <fa-icon [icon]="fa_trash" [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              </a>
+            </td>
+          </ng-container>
+          <tr *matHeaderRowDef="site_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: site_columns;" mat-row></tr>
+        </table>
       </div>
     </div>
   </div>

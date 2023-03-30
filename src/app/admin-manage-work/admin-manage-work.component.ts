@@ -3,9 +3,10 @@ import {DataService} from "../data.service";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EditComponent} from "../edit/edit.component";
-import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-admin-manage-work',
@@ -20,24 +21,79 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   ]
 })
 export class AdminManageWorkComponent implements OnInit {
-
-  displayed_columns: string[] = ['name', 'client', 'site', 'actions'];
+  displayed_columns: string[] = ['operator', 'date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
+  operators = [];
+  sites = [];
   work = [];
   message = '';
+  error = '';
   fa_trash = faTrash;
   fa_info = faInfoCircle;
+  fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
+  months = [];
+  userForm = this.formBuilder.group({
+    operator_id: ['0', Validators.required],
+    site_id: ['0', Validators.required],
+  });
+  monthFilterForm = this.formBuilder.group({
+    month: ['0', Validators.required]
+  });
+  intervalFilterForm = this.formBuilder.group({
+    start_date: ['', Validators.required],
+    end_date: ['', Validators.required]
+  });
+  filter = 'month';
 
-  constructor(private dataService: DataService, private dialog: MatDialog) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder) {
   }
 
-
-  sortBy(sort: string, order: string) {
-    this.dataService.getWork(sort, order).subscribe({
+  select(event: Event, value: string, form: FormGroup) {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    form.patchValue({
+      [value]: selectedValue
+    });
+    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.site_id!).subscribe({
       next: (data: any) => {
-        this.work = data;
+        this.months = data;
       }
     });
+    if (form === this.userForm && value === 'operator_id') {
+      this.userForm.patchValue({
+        site_id: '0'
+      });
+      this.monthFilterForm.patchValue({
+        month: '0'
+      });
+      this.dataService.getUserSites(this.userForm.value.operator_id!).subscribe({
+        next: (data: any) => {
+          this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
+            next: (data: any) => {
+              this.work = data;
+            }
+          });
+          this.sites = data;
+        }
+      });
+    } else if (form == this.userForm && value === 'site_id') {
+      this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
+        next: (data: any) => {
+          this.work = data;
+        }
+      });
+    } else if (form === this.monthFilterForm && value === 'month') {
+      this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
+        next: (data: any) => {
+          this.work = data;
+        }
+      });
+    } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
+      this.dataService.getUserIntervalWork(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.userForm.value.operator_id!).subscribe({
+        next: (data: any) => {
+          this.work = data;
+        }
+      });
+    }
   }
 
   deleteWork(id: number) {
@@ -53,7 +109,7 @@ export class AdminManageWorkComponent implements OnInit {
             this.message = data;
             setTimeout(() => {
               window.location.reload();
-            }, 1000);
+            }, 2000);
           }
         });
       }
@@ -76,8 +132,25 @@ export class AdminManageWorkComponent implements OnInit {
     this.dataService.getWork().subscribe({
       next: (data: any) => {
         this.work = data;
+        if (data.length === 0) {
+          this.error = 'Non ci sono interventi da visualizzare';
+        }
+      }
+    });
+    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.site_id!).subscribe({
+      next: (data: any) => {
+        this.months = data;
+      }
+    });
+    this.dataService.getUsers().subscribe({
+      next: (data: any) => {
+        this.operators = data;
+      }
+    });
+    this.dataService.getSites().subscribe({
+      next: (data: any) => {
+        this.sites = data;
       }
     });
   }
-
 }

@@ -42,10 +42,8 @@ export class CreateSiteComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.dataService.getClients().subscribe((data: any) => {
-      console.log(data)
       this.clients = data;
     });
   }

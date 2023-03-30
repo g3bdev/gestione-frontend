@@ -13,8 +13,8 @@ export class DataService {
   }
 
 
-  getUserWork(sort_by: string = 'date', sort_order: string = 'desc') {
-    return this.httpClient.get(`${environment.apiUrl}/users/me/work?sort_by=${sort_by}&sort_order=${sort_order}`, {
+  getMyWork() {
+    return this.httpClient.get(`${environment.apiUrl}/me/work`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -25,8 +25,8 @@ export class DataService {
     });
   }
 
-  getWork(sort_by: string = 'date_created', sort_order: string = 'desc') {
-    return this.httpClient.get(`${environment.apiUrl}/work?sort_by=${sort_by}&sort_order=${sort_order}`, {
+  getWork() {
+    return this.httpClient.get(`${environment.apiUrl}/work`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -37,14 +37,38 @@ export class DataService {
     });
   }
 
-  getAllSiteWork(id: number) {
-    return this.httpClient.get(`${environment.apiUrl}/site?site_id=${id}`, {
+  getUserMonthlyWork(site_id: string, month: string, user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/work/monthly/?month=${month}&operator_id=${user_id}&site_id=${site_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getSiteWorkById(id: number) {
-    return this.httpClient.get(`${environment.apiUrl}/users/me/site?site_id=${id}`, {
+  getUserIntervalWork(site_id: string, start_date: string, end_date: string, user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/work/interval/?start_date=${start_date}&end_date=${end_date}&operator_id=${user_id}&site_id=${site_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMyMonthlyWork(site_id: string, month: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/work/monthly?month=${month}&site_id=${site_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMyIntervalWork(site_id: string, start_date: string, end_date: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/work/interval?start_date=${start_date}&end_date=${end_date}&site_id=${site_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMySites() {
+    return this.httpClient.get(`${environment.apiUrl}/me/sites`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMyMonths(site_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/months/?site_id=${site_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -75,7 +99,17 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/roles`);
   }
 
-  createWork(work: Partial<{ date: string | null; intervention_duration: string | null; intervention_type: string | null; intervention_location: string | null; client_id: string | null; site_id: string | null; description: string | null; notes: string | null; trip_kms: string | null; cost: string | null; operator_id: string | null; }>) {
+  getMonths(user_id: string, site_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/months/?operator_id=${user_id}&site_id=${site_id}`);
+  }
+
+  getUserSites(user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/sites?user_id=${user_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  createWork(work: Partial<{ date: string | null; intervention_duration: string | null; intervention_type: string | null; intervention_location: string | null; site_id: string | null; supervisor: string | null; description: string | null; notes: string | null; trip_kms: string | null; cost: string | null; operator_id: string | null; }>) {
     return this.httpClient.post(`${environment.apiUrl}/work/create`, work, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
@@ -99,7 +133,7 @@ export class DataService {
     });
   }
 
-  editWork(work: Partial<{ date: string | null; intervention_duration: string | null; intervention_type: string | null; intervention_location: string | null; client_id: string | null; site_id: string | null; description: string | null; notes: string | null; trip_kms: string | null; cost: string | null; operator_id: string | null; }>, work_id: number, user_id: number) {
+  editWork(work: Partial<{ date: string | null; intervention_duration: string | null; intervention_type: string | null; intervention_location: string | null; client_id: string | null; site_id: string | null; supervisor: string | null; description: string | null; notes: string | null; trip_kms: string | null; cost: string | null; operator_id: string | null; }>, work_id: number, user_id: number) {
     return this.httpClient.put(`${environment.apiUrl}/work/update?work_id=${work_id}&user_id=${user_id}`, work, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });

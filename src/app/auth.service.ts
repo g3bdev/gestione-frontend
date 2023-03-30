@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   getUserInfo() {
-    return this.httpClient.get(`${environment.apiUrl}/users/me`, {
+    return this.httpClient.get(`${environment.apiUrl}/me`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

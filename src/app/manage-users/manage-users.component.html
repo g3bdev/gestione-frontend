@@ -1,65 +1,57 @@
 <section *ngIf="logged_role == 'admin'; else error" class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center">
-    <div class="lg:flex-grow flex flex-col items-start text-left">
+  <div class="flex px-5 py-8 flex-col items-center">
+    <div class="items-start text-left items-center text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci gli utenti</h1>
-      <div class="flex justify-center">
-        <div class="w-96">
-          <div>
-            <div class="relative w-full">
-              <select (ngModelChange)="onChange($event)" [ngModel]="selectedID"
-                      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                <option disabled hidden selected value="">Seleziona l'utente</option>
-                <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
-                  {{user['first_name'] + ' ' + user['last_name']}}
-                </option>
-              </select>
-            </div>
-
-            <div *ngIf="clicked" class="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
-              <div class="flex items-center px-6 py-3 bg-purple-400">
-                <div
-                  class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">
-                  <fa-icon [icon]="fa_user" [size]="fa_user_size"></fa-icon>
-                </div>
-                <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name + ' ' + last_name}}</h1>
+      <div class="flex items-center justify-center mb-8">
+        <div>
+          <select (ngModelChange)="onChange($event)" [ngModel]="selectedID"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+            <option disabled hidden selected value="">Seleziona l'utente</option>
+            <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
+              {{user['first_name']}} {{user['last_name']}}
+            </option>
+          </select>
+          <div *ngIf="clicked" class="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
+            <div class="flex items-center px-6 py-3 bg-purple-400">
+              <div
+                class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">
+                <fa-icon [icon]="fa_user" [size]="fa_user_size"></fa-icon>
               </div>
-              <div class="py-4 px-6 flex-col justify-center">
-
-                <p class="py-2 text-lg text-gray-700">
-                  <fa-icon [icon]="fa_envelope"></fa-icon>
-                  {{email}}</p>
-                <p class="py-2 text-lg text-gray-700">
-                  <fa-icon [icon]="fa_at"></fa-icon>
-                  {{username}}</p>
-                <p class="py-2 text-lg text-gray-700">
-                  <fa-icon [icon]="fa_phone"></fa-icon>
-                  {{phone_number}}</p>
-                <p class="py-2 text-lg text-gray-700">
-                  <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
-                  {{role}}</p>
-              </div>
+              <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name}} {{last_name}}</h1>
             </div>
-            <div class="flex flex-row justify-center justify-evenly">
-
-              <!-- <button *ngIf="clicked"
-                      class="flex-shrink-0 text-white bg-green-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-400 rounded text-lg mt-10 sm:mt-0">
-                <a (click)="()">Modifica</a>
-              </button> -->
-
-              <button *ngIf="clicked"
-                      class="flex-shrink-0 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 rounded text-lg">
-                <a (click)="deleteUser(selectedID)">Elimina</a>
-              </button>
+            <div class="py-4 px-6 flex-col justify-center">
+              <p class="py-2 text-lg text-gray-700">
+                <fa-icon [icon]="fa_envelope"></fa-icon>
+                {{email}}</p>
+              <p class="py-2 text-lg text-gray-700">
+                <fa-icon [icon]="fa_at"></fa-icon>
+                {{username}}</p>
+              <p class="py-2 text-lg text-gray-700">
+                <fa-icon [icon]="fa_phone"></fa-icon>
+                {{phone_number}}</p>
+              <p class="py-2 text-lg text-gray-700">
+                <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
+                {{role}}</p>
             </div>
+          </div>
+          <div class="flex flex-row justify-center justify-evenly">
 
-            <div *ngIf="message"
-                 class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mb-4 bg-red-500 w-full">
+            <!-- <button *ngIf="clicked"
+                    class="flex-shrink-0 text-white bg-green-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-400 rounded text-lg mt-10 sm:mt-0">
+              <a (click)="()">Modifica</a>
+            </button> -->
+
+            <button *ngIf="clicked"
+                    class="flex-shrink-0 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 rounded text-lg">
+              <a (click)="deleteUser(selectedID)">Elimina</a>
+            </button>
+          </div>
+          <div *ngIf="message"
+               class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mb-4 bg-red-500 w-full">
           <span class="inline-block align-middle mr-8">
             {{message}}
           </span>
-            </div>
-
           </div>
         </div>
       </div>

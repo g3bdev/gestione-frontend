@@ -5,7 +5,7 @@ import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirm
 import {EditComponent} from "../edit/edit.component";
 import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-manage-work',
@@ -13,7 +13,6 @@ import {FormBuilder, Validators} from "@angular/forms";
   styleUrls: ['./manage-work.component.css']
 })
 export class ManageWorkComponent {
-
   displayed_columns: string[] = ['date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
   sites = [];
   work = [];
@@ -23,39 +22,59 @@ export class ManageWorkComponent {
   fa_info = faInfoCircle;
   fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
-  filterForm = this.formBuilder.group({
-    site: ['', Validators.required],
+  months = [];
+  userForm = this.formBuilder.group({
+    site_id: ['0', Validators.required],
   });
+  monthFilterForm = this.formBuilder.group({
+    month: ['0', Validators.required]
+  });
+  intervalFilterForm = this.formBuilder.group({
+    start_date: ['', Validators.required],
+    end_date: ['', Validators.required]
+  });
+  filter = 'month';
 
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder) {
   }
 
-  select(event: Event, value: string) {
+  select(event: Event, value: string, form: FormGroup) {
     const selectedValue = (event.target as HTMLInputElement).value;
-    this.filterForm.patchValue({
+    form.patchValue({
       [value]: selectedValue
     });
-    this.dataService.getSiteWorkById(+selectedValue).subscribe({
+    this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
       next: (data: any) => {
-        console.log(data)
-        this.work = data;
-        if (this.work.length > 0) {
-          this.error = '';
-        } else {
-          this.error = 'Non ci sono interventi da visualizzare';
-        }
+        this.months = data;
       }
     });
+    if (form == this.userForm && value === 'site_id') {
+      this.dataService.getMyMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
+        next: (data: any) => {
+          this.work = data;
+        }
+      });
+    } else if (form === this.monthFilterForm && value === 'month') {
+      this.dataService.getMyMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
+        next: (data: any) => {
+          this.work = data;
+        }
+      });
+    } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
+      this.dataService.getMyIntervalWork(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
+        next: (data: any) => {
+          this.work = data;
+        }
+      });
+    }
   }
 
   deleteWork(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-        data: {
-          title: 'Conferma eliminazione',
-          message: 'Sei sicuro di voler eliminare questo intervento?'
-        }
+      data: {
+        title: 'Conferma eliminazione', message: 'Sei sicuro di voler eliminare questo intervento?'
       }
-    );
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.deleteWork(id).subscribe({
@@ -63,7 +82,7 @@ export class ManageWorkComponent {
             this.message = data;
             setTimeout(() => {
               window.location.reload();
-            }, 1000);
+            }, 2000);
           }
         });
       }
@@ -75,9 +94,7 @@ export class ManageWorkComponent {
       next: (data: any) => {
         this.dialog.open(EditComponent, {
           data: {
-            title: 'Modifica intervento',
-            message: data,
-            type: 'work'
+            title: 'Modifica intervento', message: data
           }
         });
       }
@@ -85,14 +102,21 @@ export class ManageWorkComponent {
   }
 
   ngOnInit(): void {
-    this.dataService.getUserWork().subscribe({
+    this.dataService.getMyWork().subscribe({
       next: (data: any) => {
         this.work = data;
+        if (data.length === 0) {
+          this.error = 'Non ci sono interventi da visualizzare';
+        }
       }
     });
-    this.dataService.getSites().subscribe({
+    this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
       next: (data: any) => {
-        console.log(data)
+        this.months = data;
+      }
+    });
+    this.dataService.getMySites().subscribe({
+      next: (data: any) => {
         this.sites = data;
       }
     });

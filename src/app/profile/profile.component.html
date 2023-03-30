@@ -1,40 +1,35 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center">
-    <div class="lg:flex-grow flex flex-col items-start text-left">
-      <div class="flex justify-center">
-        <div class="w-96">
-          <h1 class="title-font text-3xl mb-4 font-medium text-white">Il tuo profilo</h1>
-          <div class="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
-            <div class="flex items-center px-6 py-3 bg-purple-400">
-              <div
-                class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">
-                <fa-icon [icon]="fa_user" [size]="fa_user_size"></fa-icon>
-              </div>
-              <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name + ' ' + last_name}}</h1>
-            </div>
-
-            <div class="py-4 px-6 flex-col justify-center">
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_envelope"></fa-icon>
-                {{email}}</p>
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_at"></fa-icon>
-                {{username}}</p>
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_phone"></fa-icon>
-                {{phone_number}}</p>
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
-                {{role}}</p>
-            </div>
+  <div class="mx-auto flex px-5 py-8 flex-col items-center">
+    <h1 class="title-font text-3xl mb-4 font-medium text-white">Il tuo profilo</h1>
+    <div class="items-start text-left items-center text-center">
+      <div class="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
+        <div class="flex items-center px-6 py-3 bg-purple-400">
+          <div
+            class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">
+            <fa-icon [icon]="fa_user" [size]="fa_user_size"></fa-icon>
           </div>
+          <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name + ' ' + last_name}}</h1>
+        </div>
+        <div class="py-4 px-6 sm:w-96 flex flex-col place-items-start">
+          <div class="py-2 text-lg text-gray-700">
+            <fa-icon [icon]="fa_envelope"></fa-icon>
+            {{email}}</div>
+          <div class="py-2 text-lg text-gray-700">
+            <fa-icon [icon]="fa_at"></fa-icon>
+            {{username}}</div>
+          <div class="py-2 text-lg text-gray-700">
+            <fa-icon [icon]="fa_phone"></fa-icon>
+            {{phone_number}}</div>
+          <div class="py-2 text-lg text-gray-700">
+            <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
+            {{role}}</div>
         </div>
       </div>
-      <button (click)="logout()"
-              class="rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
-        Logout
-      </button>
     </div>
+    <button (click)="logout()"
+            class="rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
+      Logout
+    </button>
   </div>
 </section>

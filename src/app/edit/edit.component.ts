@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-edit',
@@ -9,7 +10,6 @@ import {DataService} from "../data.service";
 })
 export class EditComponent implements OnInit {
   work = [];
-  clients = [];
   sites = [];
   intervention_types = [];
   intervention_locations = [];
@@ -24,6 +24,7 @@ export class EditComponent implements OnInit {
     intervention_location: ['', Validators.required],
     client_id: ['', Validators.required],
     site_id: ['', Validators.required],
+    supervisor: [''],
     description: [''],
     notes: [''],
     trip_kms: [''],
@@ -35,6 +36,7 @@ export class EditComponent implements OnInit {
     private dialogRef: MatDialogRef<EditComponent>,
     private formBuilder: FormBuilder,
     private dataService: DataService,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { title: string; message: any }
   ) {
   }
@@ -61,9 +63,11 @@ export class EditComponent implements OnInit {
       });
     }
     this.form.patchValue({
+      client_id: undefined,
       date: this.data.message['Work']['date'],
       intervention_duration: this.data.message['Work']['intervention_duration'],
       intervention_type: this.data.message['Work']['intervention_type'],
+      supervisor: this.data.message['Work']['supervisor'],
       intervention_location: this.data.message['Work']['intervention_location'],
       site_id: this.data.message['Work']['site_id'],
       description: this.data.message['Work']['description'],
@@ -74,12 +78,21 @@ export class EditComponent implements OnInit {
     });
   }
 
+  duration = 5;
+
+  openSnackBar() {
+    this.snackBar.open('Intervento modificato con successo!', '', {
+      duration: this.duration * 1000,
+    });
+  }
+
   onConfirm() {
     this.dataService.editWork(this.form.value, this.data.message['Work']['id'], +this.form.get('operator_id')!.value!).subscribe({
       next: () => {
+        this.openSnackBar();
         setTimeout(() => {
           window.location.reload();
-        }, 1000);
+        }, 2000);
       },
       error: () => {
         this.message = '';

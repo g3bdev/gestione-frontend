@@ -21,6 +21,7 @@ export class CreateWorkComponent implements OnInit {
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
     site_id: ['', Validators.required],
+    supervisor: [''],
     description: [''],
     notes: [''],
     trip_kms: [''],
