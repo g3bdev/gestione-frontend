@@ -7,8 +7,7 @@ import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-soli
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-admin-manage-work',
@@ -43,7 +42,7 @@ export class AdminManageWorkComponent implements OnInit {
   filter = 'month';
   operator = '';
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
   }
 
   select(event: Event, value: string, form: FormGroup) {
@@ -141,32 +140,6 @@ export class AdminManageWorkComponent implements OnInit {
         });
       }
     });
-  }
-
-  printTable() {
-    const doc = new jsPDF();
-    doc.setFont('helvetica');
-    doc.setFontSize(12)
-    doc.setTextColor(100)
-    const pageSize = doc.internal.pageSize;
-    const pageWidth = pageSize.getWidth();
-    const pageHeight = pageSize.getHeight();
-    doc.text('ITW srl', pageWidth - 30, pageHeight - 10);
-    doc.text('Interventi', 14, 10);
-    doc.text('Operatore: ' + this.operator, 14, 20);
-    let str = `Totale ore: `;
-    autoTable(doc, {
-      html: '#table', headStyles: {fillColor: [155, 89, 182]},
-      didDrawPage: function (data) {
-        doc.setTextColor(40)
-        doc.setFontSize(10)
-        const pageSize = doc.internal.pageSize;
-        const pageHeight = pageSize.getHeight();
-        doc.text(str, data.settings.margin.left, pageHeight - 10)
-      },
-      startY: 30,
-    });
-    window.open(doc.output('bloburl'), '_blank');
   }
 
   ngOnInit(): void {

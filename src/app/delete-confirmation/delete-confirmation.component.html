@@ -1,6 +1,8 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 <div mat-dialog-content>{{ data.message }}</div>
-<div mat-dialog-actions align="end" class="flex space-x-4">
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="onCancel()">Annulla</button>
-  <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="onConfirm()">Elimina</button>
+<div align="end" class="flex space-x-4" mat-dialog-actions>
+  <button (click)="onCancel()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Annulla
+  </button>
+  <button (click)="onConfirm()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Elimina
+  </button>
 </div>

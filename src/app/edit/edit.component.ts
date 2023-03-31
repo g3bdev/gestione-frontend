@@ -31,6 +31,7 @@ export class EditComponent implements OnInit {
     cost: [''],
     operator_id: ['']
   });
+  duration = 5;
 
   constructor(
     private dialogRef: MatDialogRef<EditComponent>,
@@ -77,8 +78,6 @@ export class EditComponent implements OnInit {
       operator_id: this.data.message['Work']['operator_id']
     });
   }
-
-  duration = 5;
 
   openSnackBar() {
     this.snackBar.open('Intervento modificato con successo!', '', {

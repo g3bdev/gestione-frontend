@@ -109,19 +109,45 @@ export class DataService {
     });
   }
 
-  createWork(work: Partial<{ date: string | null; intervention_duration: string | null; intervention_type: string | null; intervention_location: string | null; site_id: string | null; supervisor: string | null; description: string | null; notes: string | null; trip_kms: string | null; cost: string | null; operator_id: string | null; }>) {
+  createWork(work: Partial<{
+    date: string | null;
+    intervention_duration: string | null;
+    intervention_type: string | null;
+    intervention_location: string | null;
+    site_id: string | null;
+    supervisor: string | null;
+    description: string | null;
+    notes: string | null;
+    trip_kms: string | null;
+    cost: string | null;
+    operator_id: string | null;
+  }>) {
     return this.httpClient.post(`${environment.apiUrl}/work/create`, work, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  createUser(user: Partial<{ first_name: string | null; last_name: string | null; username: string | null; email: string | null; phone_number: string | null; role: string | null; }>) {
+  createUser(user: Partial<{
+    first_name: string | null;
+    last_name: string | null;
+    username: string | null;
+    email: string | null;
+    phone_number: string | null;
+    role: string | null;
+  }>) {
     return this.httpClient.post(`${environment.apiUrl}/users/create`, user, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  createClient(client: Partial<{ name: string | null; city: string | null; address: string | null; email: string | null; contact: string | null; phone_number: string | null; }>) {
+  createClient(client: Partial<{
+    name: string | null;
+    city: string | null;
+    address: string | null;
+    email: string | null;
+    contact: string | null;
+    phone_number: string | null;
+  }>) {
     return this.httpClient.post(`${environment.apiUrl}/clients/create`, client, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
@@ -133,7 +159,20 @@ export class DataService {
     });
   }
 
-  editWork(work: Partial<{ date: string | null; intervention_duration: string | null; intervention_type: string | null; intervention_location: string | null; client_id: string | null; site_id: string | null; supervisor: string | null; description: string | null; notes: string | null; trip_kms: string | null; cost: string | null; operator_id: string | null; }>, work_id: number, user_id: number) {
+  editWork(work: Partial<{
+    date: string | null;
+    intervention_duration: string | null;
+    intervention_type: string | null;
+    intervention_location: string | null;
+    client_id: string | null;
+    site_id: string | null;
+    supervisor: string | null;
+    description: string | null;
+    notes: string | null;
+    trip_kms: string | null;
+    cost: string | null;
+    operator_id: string | null;
+  }>, work_id: number, user_id: number) {
     return this.httpClient.put(`${environment.apiUrl}/work/update?work_id=${work_id}&user_id=${user_id}`, work, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AdminManageWorkComponent } from './admin-manage-work.component';
+import {AdminManageWorkComponent} from './admin-manage-work.component';
 
 describe('AdminManageWorkComponent', () => {
   let component: AdminManageWorkComponent;
@@ -8,9 +8,9 @@ describe('AdminManageWorkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminManageWorkComponent ]
+      declarations: [AdminManageWorkComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AdminManageWorkComponent);
     component = fixture.componentInstance;
