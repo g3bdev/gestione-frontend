@@ -7,18 +7,17 @@ import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-soli
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-admin-manage-work',
   templateUrl: './admin-manage-work.component.html',
   styleUrls: ['./admin-manage-work.component.css'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ]
+  animations: [trigger('detailExpand', [state('collapsed', style({
+    height: '0px',
+    minHeight: '0'
+  })), state('expanded', style({height: '*'})), transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),]),]
 })
 export class AdminManageWorkComponent implements OnInit {
   displayed_columns: string[] = ['operator', 'date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
@@ -33,17 +32,16 @@ export class AdminManageWorkComponent implements OnInit {
   fa_size: SizeProp = "xl";
   months = [];
   userForm = this.formBuilder.group({
-    operator_id: ['0', Validators.required],
-    site_id: ['0', Validators.required],
+    operator_id: ['0', Validators.required], site_id: ['0', Validators.required],
   });
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
   });
   intervalFilterForm = this.formBuilder.group({
-    start_date: ['', Validators.required],
-    end_date: ['', Validators.required]
+    start_date: ['', Validators.required], end_date: ['', Validators.required]
   });
   filter = 'month';
+  operator = '';
 
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder) {
   }
@@ -69,7 +67,13 @@ export class AdminManageWorkComponent implements OnInit {
         next: (data: any) => {
           this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
             next: (data: any) => {
+              this.checkWork(data);
               this.work = data;
+              if (data.length > 0) {
+                this.operator = data[0].last_name + " " + data[0].first_name;
+              } else {
+                this.operator = '';
+              }
             }
           });
           this.sites = data;
@@ -78,21 +82,32 @@ export class AdminManageWorkComponent implements OnInit {
     } else if (form == this.userForm && value === 'site_id') {
       this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
         next: (data: any) => {
+          this.checkWork(data);
           this.work = data;
         }
       });
     } else if (form === this.monthFilterForm && value === 'month') {
       this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
         next: (data: any) => {
+          this.checkWork(data);
           this.work = data;
         }
       });
     } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
       this.dataService.getUserIntervalWork(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.userForm.value.operator_id!).subscribe({
         next: (data: any) => {
+          this.checkWork(data);
           this.work = data;
         }
       });
+    }
+  }
+
+  checkWork(data: any) {
+    if (data.length === 0) {
+      this.error = 'Non ci sono interventi da visualizzare';
+    } else {
+      this.error = '';
     }
   }
 
@@ -128,9 +143,36 @@ export class AdminManageWorkComponent implements OnInit {
     });
   }
 
+  printTable() {
+    const doc = new jsPDF();
+    doc.setFont('helvetica');
+    doc.setFontSize(12)
+    doc.setTextColor(100)
+    const pageSize = doc.internal.pageSize;
+    const pageWidth = pageSize.getWidth();
+    const pageHeight = pageSize.getHeight();
+    doc.text('ITW srl', pageWidth - 30, pageHeight - 10);
+    doc.text('Interventi', 14, 10);
+    doc.text('Operatore: ' + this.operator, 14, 20);
+    let str = `Totale ore: `;
+    autoTable(doc, {
+      html: '#table', headStyles: {fillColor: [155, 89, 182]},
+      didDrawPage: function (data) {
+        doc.setTextColor(40)
+        doc.setFontSize(10)
+        const pageSize = doc.internal.pageSize;
+        const pageHeight = pageSize.getHeight();
+        doc.text(str, data.settings.margin.left, pageHeight - 10)
+      },
+      startY: 30,
+    });
+    window.open(doc.output('bloburl'), '_blank');
+  }
+
   ngOnInit(): void {
     this.dataService.getWork().subscribe({
       next: (data: any) => {
+        console.log(data);
         this.work = data;
         if (data.length === 0) {
           this.error = 'Non ci sono interventi da visualizzare';

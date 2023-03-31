@@ -6,6 +6,8 @@ import {EditComponent} from "../edit/edit.component";
 import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 @Component({
   selector: 'app-manage-work',
@@ -57,15 +59,25 @@ export class ManageWorkComponent {
     } else if (form === this.monthFilterForm && value === 'month') {
       this.dataService.getMyMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
         next: (data: any) => {
+          this.checkWork(data);
           this.work = data;
         }
       });
     } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
       this.dataService.getMyIntervalWork(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
         next: (data: any) => {
+          this.checkWork(data);
           this.work = data;
         }
       });
+    }
+  }
+
+  checkWork(data: any) {
+    if (data.length === 0) {
+      this.error = 'Non ci sono interventi da visualizzare';
+    } else {
+      this.error = '';
     }
   }
 
@@ -99,6 +111,31 @@ export class ManageWorkComponent {
         });
       }
     });
+  }
+
+  printTable() {
+    const doc = new jsPDF();
+    doc.setFont('helvetica');
+    doc.setFontSize(22)
+    doc.setTextColor(100)
+    const pageSize = doc.internal.pageSize;
+    const pageWidth = pageSize.getWidth();
+    const pageHeight = pageSize.getHeight();
+    doc.text('ITW srl', pageWidth - 30, pageHeight - 10);
+    doc.text('Interventi', 14, 10);
+    let str = `Totale ore: `;
+    autoTable(doc, {
+      html: '#table', headStyles: {fillColor: [155, 89, 182]},
+      didDrawPage: function (data) {
+        doc.setTextColor(40)
+        doc.setFontSize(10)
+        const pageSize = doc.internal.pageSize;
+        const pageHeight = pageSize.getHeight();
+        doc.text(str, data.settings.margin.left, pageHeight - 10)
+      },
+      startY: 20,
+    });
+    window.open(doc.output('bloburl'), '_blank');
   }
 
   ngOnInit(): void {

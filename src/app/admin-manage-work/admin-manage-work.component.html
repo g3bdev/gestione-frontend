@@ -59,12 +59,17 @@
               mese</a>
             </small>
           </form>
+          <button (click)="printTable()"
+                  class="md:visible invisible rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
+            Stampa
+          </button>
         </div>
       </div>
     </div>
 
     <div class="flex justify-center">
-      <table *ngIf="!error; else e" [dataSource]="work" class="mat-elevation-z16 bg-gray-800 border-b" mat-table>
+      <table *ngIf="!error; else e" [dataSource]="work" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
+             mat-table>
         <ng-container matColumnDef="operator">
           <th *matHeaderCellDef mat-header-cell>Operatore</th>
           <td *matCellDef="let item" mat-cell> {{item['last_name']}} {{item['first_name']}} </td>
