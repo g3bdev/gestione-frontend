@@ -201,4 +201,11 @@ export class DataService {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
+
+  printWork(work_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/work/${work_id}/report`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`),
+      responseType: 'blob'
+    });
+  }
 }

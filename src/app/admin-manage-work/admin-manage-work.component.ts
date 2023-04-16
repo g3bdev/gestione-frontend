@@ -3,7 +3,7 @@ import {DataService} from "../data.service";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EditComponent} from "../edit/edit.component";
-import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -14,8 +14,7 @@ import {CommonService} from "../common.service";
   templateUrl: './admin-manage-work.component.html',
   styleUrls: ['./admin-manage-work.component.css'],
   animations: [trigger('detailExpand', [state('collapsed', style({
-    height: '0px',
-    minHeight: '0'
+    height: '0px', minHeight: '0'
   })), state('expanded', style({height: '*'})), transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),]),]
 })
 export class AdminManageWorkComponent implements OnInit {
@@ -27,6 +26,7 @@ export class AdminManageWorkComponent implements OnInit {
   error = '';
   fa_trash = faTrash;
   fa_info = faInfoCircle;
+  fa_print = faPrint;
   fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
   months = [];
@@ -145,7 +145,6 @@ export class AdminManageWorkComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getWork().subscribe({
       next: (data: any) => {
-        console.log(data);
         this.work = data;
         if (data.length === 0) {
           this.error = 'Non ci sono interventi da visualizzare';

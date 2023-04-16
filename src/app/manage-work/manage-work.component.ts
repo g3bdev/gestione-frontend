@@ -3,7 +3,7 @@ import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
-import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
@@ -19,6 +19,7 @@ export class ManageWorkComponent {
   work = [];
   message = '';
   error = '';
+  fa_print = faPrint;
   fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_exclamation_circle = faExclamationCircle;
@@ -132,4 +133,6 @@ export class ManageWorkComponent {
       }
     });
   }
+
+  protected readonly faPrint = faPrint;
 }

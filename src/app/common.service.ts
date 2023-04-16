@@ -1,24 +1,33 @@
 import {Injectable} from '@angular/core';
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import {DataService} from "./data.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
 
-  constructor() {
+  constructor(private dataService: DataService) {
+  }
+
+  printWork(id: number) {
+    this.dataService.printWork(id).subscribe((response) => {
+      const file = new Blob([response], {type: 'application/pdf'});
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    });
   }
 
   printTable() {
     const doc = new jsPDF();
-    doc.setFont('helvetica');
+    doc.setFont('Helvetica');
     doc.setFontSize(22)
     doc.setTextColor(100)
     const pageSize = doc.internal.pageSize;
     const pageWidth = pageSize.getWidth();
     const pageHeight = pageSize.getHeight();
-    doc.text('ITW srl', pageWidth - 30, pageHeight - 10);
+    doc.text('Move Automation', pageWidth - 30, pageHeight - 10);
     doc.text('Interventi', 14, 10);
     let str = `Totale ore: `;
     autoTable(doc, {
