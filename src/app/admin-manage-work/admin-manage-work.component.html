@@ -8,7 +8,7 @@
           <form [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
             <div>
               <select (change)="select($event, 'operator_id', userForm)"
-                      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 <option disabled hidden selected value="">Operatore</option>
                 <option class="bg-gray-900" value="0">Tutti gli operatori</option>
                 <option *ngFor="let operator of operators;" [value]="operator['id']" class="bg-gray-800">
@@ -17,8 +17,18 @@
               </select>
             </div>
             <div>
+              <select (change)="select($event, 'client_id', userForm)"
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                <option disabled hidden selected value="">Cliente</option>
+                <option class="bg-gray-900" value="0">Tutti i clienti</option>
+                <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
+                  {{client['name']}} {{client['city']}}
+                </option>
+              </select>
+            </div>
+            <div>
               <select (change)="select($event, 'site_id', userForm)"
-                      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 <option disabled hidden selected value="">Commessa</option>
                 <option class="bg-gray-900" value="0">Tutte le commesse</option>
                 <option *ngFor="let site of sites;" [value]="site['Site']['id']" class="bg-gray-800">
@@ -30,7 +40,7 @@
           <form *ngIf="filter == 'month'" [formGroup]="monthFilterForm">
             <div>
               <select (change)="select($event, 'month', monthFilterForm)"
-                      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 <option disabled hidden selected value="">Mese</option>
                 <option class="bg-gray-900" value="0">Sempre</option>
                 <option *ngFor="let month of months;" [value]="month" class="bg-gray-800">
@@ -47,11 +57,11 @@
             <div class="grid-cols-2">
               <label class="leading-7 text-sm text-gray-400 float-left" for="start_date">Data inizio</label>
               <input (change)="select($event, 'start_date', intervalFilterForm)"
-                     class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                     class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                      id="start_date" placeholder="Data inizio" type="date">
               <label class="leading-7 text-sm text-gray-400 float-left" for="end_date">Data fine</label>
               <input (change)="select($event, 'end_date', intervalFilterForm)"
-                     class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                     class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                      id="end_date" label="Data fine" placeholder="Data fine" type="date">
             </div>
             <small>
@@ -113,16 +123,22 @@
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
             <a (click)="common.printWork(item['Work']['id'])">
-              <fa-icon [icon]="fa_print" [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              <fa-icon [icon]="fa_print"
+                       [matTooltipPosition]="position"
+                       [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       matTooltip="Stampa"></fa-icon>
             </a>
             <a (click)="editWork(item['Work']['id'])">
-              <fa-icon [icon]="fa_info" [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              <fa-icon [icon]="fa_info"
+                       [matTooltipPosition]="position"
+                       [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       matTooltip="Info"></fa-icon>
             </a>
             <a (click)="deleteWork(item['Work']['id'])">
-              <fa-icon [icon]="fa_trash" [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              <fa-icon [icon]="fa_trash"
+                       [matTooltipPosition]="position"
+                       [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       matTooltip="Elimina"></fa-icon>
             </a>
           </td>
         </ng-container>

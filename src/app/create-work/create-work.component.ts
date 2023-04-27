@@ -11,15 +11,19 @@ import {Router} from "@angular/router";
 export class CreateWorkComponent implements OnInit {
 
   clients = [];
+  machines = [];
   sites = [];
   intervention_types = [];
   intervention_locations = [];
   message = '';
+  show_sites = false;
   newWorkForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
     intervention_duration: ['', [Validators.pattern(/^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), Validators.required]],
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
+    client_id: ['', Validators.required],
+    machine_id: ['', Validators.required],
     site_id: ['', Validators.required],
     supervisor: [''],
     description: [''],
@@ -38,9 +42,22 @@ export class CreateWorkComponent implements OnInit {
   select(event: Event, value: string) {
     this.newWorkForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
-    })
+    });
+    if (value === 'client_id') {
+      this.dataService.getSitesByClient(+this.newWorkForm.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.sites = data;
+        }
+      });
+    }
+    if (value === 'machine_site') {
+      this.show_sites = false;
+    }
   }
 
+  showSites() {
+    this.show_sites = true;
+  }
 
   submitForm() {
     this.dataService.createWork(this.newWorkForm.value).subscribe({
@@ -57,6 +74,12 @@ export class CreateWorkComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dataService.getClients().subscribe((data: any) => {
+      this.clients = data;
+    });
+    this.dataService.getMachines().subscribe((data: any) => {
+      this.machines = data;
+    });
     this.dataService.getSites().subscribe((data: any) => {
       this.sites = data;
     });

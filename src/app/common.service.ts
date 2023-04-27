@@ -27,7 +27,7 @@ export class CommonService {
     const pageSize = doc.internal.pageSize;
     const pageWidth = pageSize.getWidth();
     const pageHeight = pageSize.getHeight();
-    doc.text('Move Automation', pageWidth - 30, pageHeight - 10);
+    doc.text('move', pageWidth - 30, pageHeight - 10);
     doc.text('Interventi', 14, 10);
     let str = `Totale ore: `;
     autoTable(doc, {

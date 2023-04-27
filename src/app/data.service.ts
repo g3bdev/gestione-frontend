@@ -99,9 +99,14 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/roles`);
   }
 
+  getMachines() {
+    return this.httpClient.get(`${environment.apiUrl}/machines`);
+  }
+
   getMonths(user_id: string, site_id: string) {
     return this.httpClient.get(`${environment.apiUrl}/months/?operator_id=${user_id}&site_id=${site_id}`);
   }
+
 
   getUserSites(user_id: string) {
     return this.httpClient.get(`${environment.apiUrl}/sites?user_id=${user_id}`, {
@@ -206,6 +211,12 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/work/${work_id}/report`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`),
       responseType: 'blob'
+    });
+  }
+
+  getSitesByClient(client_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/sites?client_id=${client_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 }

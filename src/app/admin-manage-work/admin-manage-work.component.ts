@@ -8,6 +8,7 @@ import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
+import {TooltipPosition} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-admin-manage-work',
@@ -20,6 +21,7 @@ import {CommonService} from "../common.service";
 export class AdminManageWorkComponent implements OnInit {
   displayed_columns: string[] = ['operator', 'date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
   operators = [];
+  clients = [];
   sites = [];
   work = [];
   message = '';
@@ -29,9 +31,10 @@ export class AdminManageWorkComponent implements OnInit {
   fa_print = faPrint;
   fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
+  position: TooltipPosition = 'above';
   months = [];
   userForm = this.formBuilder.group({
-    operator_id: ['0', Validators.required], site_id: ['0', Validators.required],
+    operator_id: ['0', Validators.required], site_id: ['0', Validators.required], client_id: ['0', Validators.required]
   });
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
@@ -55,6 +58,13 @@ export class AdminManageWorkComponent implements OnInit {
         this.months = data;
       }
     });
+    if (value === 'client_id') {
+      this.dataService.getSitesByClient(+this.userForm.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.sites = data;
+        }
+      });
+    }
     if (form === this.userForm && value === 'operator_id') {
       this.userForm.patchValue({
         site_id: '0'
@@ -149,6 +159,11 @@ export class AdminManageWorkComponent implements OnInit {
         if (data.length === 0) {
           this.error = 'Non ci sono interventi da visualizzare';
         }
+      }
+    });
+    this.dataService.getClients().subscribe({
+      next: (data: any) => {
+        this.clients = data;
       }
     });
     this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.site_id!).subscribe({

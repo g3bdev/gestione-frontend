@@ -2,7 +2,7 @@
   <app-header></app-header>
   <div class="mx-auto flex px-5 py-8 flex-col items-center">
     <div class="items-start text-left items-center text-center">
-      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci clienti e commesse</h1>
+      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci clienti, commesse e macchine</h1>
       <div class="flex items-center justify-center mb-8">
         <div class="text-sm text-gray-900 font-light py-4 whitespace-nowrap flex space-x-4">
           <a (click)="setCategory('clients')">
@@ -13,6 +13,11 @@
           <a (click)="setCategory('sites')">
             <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
               Commesse
+            </button>
+          </a>
+          <a (click)="setCategory('machines')">
+            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+              Macchine
             </button>
           </a>
         </div>
@@ -33,8 +38,8 @@
           </ng-container>
 
           <ng-container matColumnDef="address">
-            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Indirizzo</th>
-            <td *matCellDef="let item" class="hidden md:table-cell"
+            <th *matHeaderCellDef mat-header-cell>Indirizzo</th>
+            <td *matCellDef="let item"
                 mat-cell> {{item['address']}} </td>
           </ng-container>
 
@@ -57,7 +62,7 @@
           <ng-container matColumnDef="actions">
             <th *matHeaderCellDef mat-header-cell></th>
             <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-              <a (click)="deleteClient(item['id'])">
+              <a (click)="delete(item['id'], 'clients')">
                 <fa-icon [icon]="fa_trash" [size]="fa_size"
                          class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
               </a>
@@ -81,15 +86,15 @@
           </ng-container>
 
           <ng-container matColumnDef="description">
-            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Descrizione</th>
-            <td *matCellDef="let item" class="hidden md:table-cell"
+            <th *matHeaderCellDef mat-header-cell>Descrizione</th>
+            <td *matCellDef="let item"
                 mat-cell> {{item['Site']['description']}} </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
             <th *matHeaderCellDef mat-header-cell></th>
             <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-              <a (click)="deleteSite(item['id'])">
+              <a (click)="delete(item['id'], 'sites')">
                 <fa-icon [icon]="fa_trash" [size]="fa_size"
                          class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
               </a>
@@ -97,6 +102,56 @@
           </ng-container>
           <tr *matHeaderRowDef="site_columns" mat-header-row></tr>
           <tr *matRowDef="let row; columns: site_columns;" mat-row></tr>
+        </table>
+
+        <table *ngIf="category === 'machines'" [dataSource]="machines" class="mat-elevation-z16 bg-gray-800 border-b"
+               mat-table>
+          <ng-container matColumnDef="client">
+            <th *matHeaderCellDef mat-header-cell>Cliente</th>
+            <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th *matHeaderCellDef mat-header-cell>Nome</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['Machine']['name']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cost_center">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Centro di costo</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> C{{item['Machine']['cost_center']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="brand">
+            <th *matHeaderCellDef mat-header-cell>Brand</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['Machine']['brand']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="model">
+            <th *matHeaderCellDef mat-header-cell>Modello</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['Machine']['model']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="production_year">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Anno produzione</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> {{item['Machine']['production_year']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+              <a (click)="delete(item['Machine']['id'], 'machines')">
+                <fa-icon [icon]="fa_trash" [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              </a>
+            </td>
+          </ng-container>
+          <tr *matHeaderRowDef="machine_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: machine_columns;" mat-row></tr>
         </table>
       </div>
     </div>

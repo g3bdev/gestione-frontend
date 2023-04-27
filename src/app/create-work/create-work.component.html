@@ -7,6 +7,30 @@
         <p class="mb-8 leading-relaxed">Aggiungi un nuovo intervento al database aziendale</p>
 
         <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="site_id">Cliente</label>
+          <select (change)="select($event, 'client_id')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="client_id">
+            <option disabled hidden selected value="">Seleziona il cliente</option>
+            <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
+              {{client['name']}} {{client['city']}}
+            </option>
+          </select>
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="site_id">Macchina</label>
+          <select (change)="select($event, 'machine')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="machine">
+            <option disabled hidden selected value="">Seleziona la macchina</option>
+            <option *ngFor="let machine of machines;" [value]="machine['Machine']['id']" class="bg-gray-800">
+              {{machine['Machine']['brand']}} {{machine['Machine']['name']}}
+            </option>
+          </select>
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="site_id">Commessa</label>
           <select (change)="select($event, 'site_id')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"

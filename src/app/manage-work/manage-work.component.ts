@@ -7,6 +7,7 @@ import {faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
+import {TooltipPosition} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-manage-work',
@@ -15,6 +16,7 @@ import {CommonService} from "../common.service";
 })
 export class ManageWorkComponent {
   displayed_columns: string[] = ['date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
+  clients = [];
   sites = [];
   work = [];
   message = '';
@@ -24,8 +26,10 @@ export class ManageWorkComponent {
   fa_info = faInfoCircle;
   fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
+  position: TooltipPosition = 'above';
   months = [];
   userForm = this.formBuilder.group({
+    client_id: ['0', Validators.required],
     site_id: ['0', Validators.required],
   });
   monthFilterForm = this.formBuilder.group({
@@ -45,6 +49,13 @@ export class ManageWorkComponent {
     form.patchValue({
       [value]: selectedValue
     });
+    if (value === 'client_id') {
+      this.dataService.getSitesByClient(+this.userForm.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.sites = data;
+        }
+      });
+    }
     this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
       next: (data: any) => {
         this.months = data;
@@ -127,12 +138,15 @@ export class ManageWorkComponent {
         this.months = data;
       }
     });
+    this.dataService.getClients().subscribe({
+      next: (data: any) => {
+        this.clients = data;
+      }
+    });
     this.dataService.getMySites().subscribe({
       next: (data: any) => {
         this.sites = data;
       }
     });
   }
-
-  protected readonly faPrint = faPrint;
 }

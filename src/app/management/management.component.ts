@@ -13,12 +13,14 @@ import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 export class ManagementComponent implements OnInit {
   client_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
   site_columns: string[] = ['name', 'code', 'description', 'actions'];
+  machine_columns: string[] = ['name', 'client', 'cost_center', 'brand', 'model', 'production_year', 'actions'];
   fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
   clients = [];
   sites = [];
+  machines = [];
   message = '';
   category = '';
 
@@ -29,37 +31,34 @@ export class ManagementComponent implements OnInit {
     this.category = category;
   }
 
-  deleteClient(id: number) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-      data: {
-        title: 'Conferma eliminazione',
-        message: 'Sei sicuro di voler eliminare questo cliente?'
+  delete(id: number, category: string) {
+    let data;
+    if (category === 'clients') {
+      data = {
+        data: {
+          title: 'Conferma eliminazione',
+          message: 'Sei sicuro di voler eliminare questo cliente?'
+        }
       }
-    });
+    } else if (category === 'sites') {
+      data = {
+        data: {
+          title: 'Conferma eliminazione',
+          message: 'Sei sicuro di voler eliminare questa commessa?'
+        }
+      }
+    } else if (category === 'machines') {
+      data = {
+        data: {
+          title: 'Conferma eliminazione',
+          message: 'Sei sicuro di voler eliminare questa macchina?'
+        }
+      }
+    }
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.dataService.deleteClient(id).subscribe({
-          next: (data: any) => {
-            this.message = data;
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          }
-        });
-      }
-    });
-  }
-
-  deleteSite(id: number) {
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-      data: {
-        title: 'Conferma eliminazione',
-        message: 'Sei sicuro di voler eliminare questa commessa?'
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.dataService.deleteSite(id).subscribe({
           next: (data: any) => {
             this.message = data;
             setTimeout(() => {
@@ -77,6 +76,9 @@ export class ManagementComponent implements OnInit {
     });
     this.dataService.getSites().subscribe((data: any) => {
       this.sites = data;
+    });
+    this.dataService.getMachines().subscribe((data: any) => {
+      this.machines = data;
     });
   }
 }
