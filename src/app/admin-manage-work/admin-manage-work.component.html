@@ -27,12 +27,12 @@
               </select>
             </div>
             <div>
-              <select (change)="select($event, 'site_id', userForm)"
+              <select (change)="select($event, 'commission_id', userForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 <option disabled hidden selected value="">Commessa</option>
                 <option class="bg-gray-900" value="0">Tutte le commesse</option>
-                <option *ngFor="let site of sites;" [value]="site['Site']['id']" class="bg-gray-800">
-                  {{site['Site']['code']}} - {{site['Site']['description']}}
+                  <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']" class="bg-gray-800">
+                  {{commission['Commission']['code']}} - {{commission['Commission']['description']}}
                 </option>
               </select>
             </div>
@@ -78,7 +78,7 @@
     </div>
 
     <div class="flex justify-center">
-      <table *ngIf="!error; else e" [dataSource]="work" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
+      <table *ngIf="!error; else e" [dataSource]="report" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
              mat-table>
         <ng-container matColumnDef="operator">
           <th *matHeaderCellDef mat-header-cell>Operatore</th>
@@ -88,25 +88,25 @@
         <ng-container matColumnDef="date">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Data</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Work']['date'] | date:'dd/MM/yyyy'}} </td>
+              mat-cell> {{item['Report']['date'] | date:'dd/MM/yyyy'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="duration">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Durata</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Work']['intervention_duration'] | slice:0:5}} </td>
+              mat-cell> {{item['Report']['intervention_duration'] | slice:0:5}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Tipo</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Work']['intervention_type']}} </td>
+              mat-cell> {{item['Report']['intervention_type']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="location">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Location</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Work']['intervention_location']}} </td>
+              mat-cell> {{item['Report']['intervention_location']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="client">
@@ -114,27 +114,22 @@
           <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['client_name']}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="site">
-          <th *matHeaderCellDef mat-header-cell>Commessa</th>
-          <td *matCellDef="let item" mat-cell> {{item['site_description']}} </td>
-        </ng-container>
-
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-            <a (click)="common.printWork(item['Work']['id'])">
+            <a (click)="common.printReport(item['Report']['id'])">
               <fa-icon [icon]="fa_print"
                        [matTooltipPosition]="position"
                        [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
                        matTooltip="Stampa"></fa-icon>
             </a>
-            <a (click)="editWork(item['Work']['id'])">
+            <a (click)="editReport(item['Report']['id'])">
               <fa-icon [icon]="fa_info"
                        [matTooltipPosition]="position"
                        [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
                        matTooltip="Info"></fa-icon>
             </a>
-            <a (click)="deleteWork(item['Work']['id'])">
+            <a (click)="deleteReport(item['Report']['id'])">
               <fa-icon [icon]="fa_trash"
                        [matTooltipPosition]="position"
                        [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"

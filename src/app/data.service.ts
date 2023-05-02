@@ -13,8 +13,8 @@ export class DataService {
   }
 
 
-  getMyWork() {
-    return this.httpClient.get(`${environment.apiUrl}/me/work`, {
+  getMyReports() {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -25,50 +25,63 @@ export class DataService {
     });
   }
 
-  getWork() {
-    return this.httpClient.get(`${environment.apiUrl}/work`, {
+  getReports() {
+    return this.httpClient.get(`${environment.apiUrl}/reports`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getWorkById(id: number) {
-    return this.httpClient.get(`${environment.apiUrl}/work/${id}`, {
+  getReportById(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/report/${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getUserMonthlyWork(site_id: string, month: string, user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/work/monthly/?month=${month}&operator_id=${user_id}&site_id=${site_id}`, {
+  getPlantByClient(client_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/plant?client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getUserIntervalWork(site_id: string, start_date: string, end_date: string, user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/work/interval/?start_date=${start_date}&end_date=${end_date}&operator_id=${user_id}&site_id=${site_id}`, {
+
+  getMachineByPlant(plant_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/machine?plant_id=${plant_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getMyMonthlyWork(site_id: string, month: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/work/monthly?month=${month}&site_id=${site_id}`, {
+  getUserMonthlyReports(commission_id: string, month: string, user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/?month=${month}&operator_id=${user_id}&commission_id=${commission_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getMyIntervalWork(site_id: string, start_date: string, end_date: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/work/interval?start_date=${start_date}&end_date=${end_date}&site_id=${site_id}`, {
+  getUserIntervalReports(commission_id: string, start_date: string, end_date: string, user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/interval/?start_date=${start_date}&end_date=${end_date}&operator_id=${user_id}&commission_id=${commission_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getMySites() {
-    return this.httpClient.get(`${environment.apiUrl}/me/sites`, {
+  getMyMonthlyReports(commission_id: string, month: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports/monthly?month=${month}&commission_id=${commission_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getMyMonths(site_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/months/?site_id=${site_id}`, {
+  getMyIntervalReports(commission_id: string, start_date: string, end_date: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports/interval?start_date=${start_date}&end_date=${end_date}&commission_id=${commission_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMyCommissions() {
+    return this.httpClient.get(`${environment.apiUrl}/me/commissions`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMyMonths(commission_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/months/?commission_id=${commission_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -87,8 +100,8 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/clients`);
   }
 
-  getSites() {
-    return this.httpClient.get(`${environment.apiUrl}/sites`);
+  getCommissions() {
+    return this.httpClient.get(`${environment.apiUrl}/commissions`);
   }
 
   getInterventionTypes() {
@@ -103,23 +116,23 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/machines`);
   }
 
-  getMonths(user_id: string, site_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/months/?operator_id=${user_id}&site_id=${site_id}`);
+  getMonths(user_id: string, commission_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/months/?operator_id=${user_id}&commission_id=${commission_id}`);
   }
 
 
-  getUserSites(user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/sites?user_id=${user_id}`, {
+  getUserCommissions(user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/commissions?user_id=${user_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  createWork(work: Partial<{
+  createReport(report: Partial<{
     date: string | null;
     intervention_duration: string | null;
     intervention_type: string | null;
     intervention_location: string | null;
-    site_id: string | null;
+    commission_id: string | null;
     supervisor: string | null;
     description: string | null;
     notes: string | null;
@@ -127,7 +140,7 @@ export class DataService {
     cost: string | null;
     operator_id: string | null;
   }>) {
-    return this.httpClient.post(`${environment.apiUrl}/work/create`, work, {
+    return this.httpClient.post(`${environment.apiUrl}/report/create`, report, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -158,33 +171,35 @@ export class DataService {
     });
   }
 
-  createSite(site: Partial<{ site_code: string | null; site_description: string | null; client_id: string | null; }>) {
-    return this.httpClient.post(`${environment.apiUrl}/sites/create`, site, {
+  createCommission(commission: Partial<{
+    commission_code: string | null; commission_description: string | null; client_id: string | null;
+  }>) {
+    return this.httpClient.post(`${environment.apiUrl}/commissions/create`, commission, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  editWork(work: Partial<{
+  editReport(report: Partial<{
     date: string | null;
     intervention_duration: string | null;
     intervention_type: string | null;
     intervention_location: string | null;
     client_id: string | null;
-    site_id: string | null;
+    commission_id: string | null;
     supervisor: string | null;
     description: string | null;
     notes: string | null;
     trip_kms: string | null;
     cost: string | null;
     operator_id: string | null;
-  }>, work_id: number, user_id: number) {
-    return this.httpClient.put(`${environment.apiUrl}/work/update?work_id=${work_id}&user_id=${user_id}`, work, {
+  }>, report_id: number, user_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/report/update?report_id=${report_id}&user_id=${user_id}`, report, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  deleteWork(id: number) {
-    return this.httpClient.delete(`${environment.apiUrl}/work/delete?work_id=${id}`, {
+  deleteReport(id: number) {
+    return this.httpClient.delete(`${environment.apiUrl}/report/delete?report_id=${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -201,21 +216,20 @@ export class DataService {
     });
   }
 
-  deleteSite(id: number) {
-    return this.httpClient.delete(`${environment.apiUrl}/sites/delete?site_id=${id}`, {
+  deleteCommission(id: number) {
+    return this.httpClient.delete(`${environment.apiUrl}/commissions/delete?commission_id=${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  printWork(work_id: number) {
-    return this.httpClient.get(`${environment.apiUrl}/work/${work_id}/report`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`),
-      responseType: 'blob'
+  printReport(report_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/report/${report_id}/pdf`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
     });
   }
 
-  getSitesByClient(client_id: number) {
-    return this.httpClient.get(`${environment.apiUrl}/sites?client_id=${client_id}`, {
+  getCommissionsByClient(client_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/commissions?client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

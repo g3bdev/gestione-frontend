@@ -49,7 +49,7 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getSites().subscribe((data: any) => {
+    this.dataService.getCommissions().subscribe((data: any) => {
       this.sites = data;
     });
     this.dataService.getInterventionTypes().subscribe((data: any) => {
@@ -86,7 +86,7 @@ export class EditComponent implements OnInit {
   }
 
   onConfirm() {
-    this.dataService.editWork(this.form.value, this.data.message['Work']['id'], +this.form.get('operator_id')!.value!).subscribe({
+    this.dataService.editReport(this.form.value, this.data.message['Work']['id'], +this.form.get('operator_id')!.value!).subscribe({
       next: () => {
         this.openSnackBar();
         setTimeout(() => {

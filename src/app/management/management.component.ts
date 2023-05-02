@@ -19,7 +19,7 @@ export class ManagementComponent implements OnInit {
   fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
   clients = [];
-  sites = [];
+  commissions = [];
   machines = [];
   message = '';
   category = '';
@@ -40,7 +40,7 @@ export class ManagementComponent implements OnInit {
           message: 'Sei sicuro di voler eliminare questo cliente?'
         }
       }
-    } else if (category === 'sites') {
+    } else if (category === 'commissions') {
       data = {
         data: {
           title: 'Conferma eliminazione',
@@ -74,8 +74,8 @@ export class ManagementComponent implements OnInit {
     this.dataService.getClients().subscribe((data: any) => {
       this.clients = data;
     });
-    this.dataService.getSites().subscribe((data: any) => {
-      this.sites = data;
+    this.dataService.getCommissions().subscribe((data: any) => {
+      this.commissions = data;
     });
     this.dataService.getMachines().subscribe((data: any) => {
       this.machines = data;

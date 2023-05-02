@@ -17,7 +17,7 @@ import {TooltipPosition} from "@angular/material/tooltip";
 export class ManageWorkComponent {
   displayed_columns: string[] = ['date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
   clients = [];
-  sites = [];
+  commissions = [];
   work = [];
   message = '';
   error = '';
@@ -50,9 +50,9 @@ export class ManageWorkComponent {
       [value]: selectedValue
     });
     if (value === 'client_id') {
-      this.dataService.getSitesByClient(+this.userForm.value.client_id!).subscribe({
+      this.dataService.getCommissionsByClient(+this.userForm.value.client_id!).subscribe({
         next: (data: any) => {
-          this.sites = data;
+          this.commissions = data;
         }
       });
     }
@@ -62,20 +62,20 @@ export class ManageWorkComponent {
       }
     });
     if (form == this.userForm && value === 'site_id') {
-      this.dataService.getMyMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
+      this.dataService.getMyMonthlyReports(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
         next: (data: any) => {
           this.work = data;
         }
       });
     } else if (form === this.monthFilterForm && value === 'month') {
-      this.dataService.getMyMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
+      this.dataService.getMyMonthlyReports(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
         next: (data: any) => {
           this.checkWork(data);
           this.work = data;
         }
       });
     } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
-      this.dataService.getMyIntervalWork(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
+      this.dataService.getMyIntervalReports(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
         next: (data: any) => {
           this.checkWork(data);
           this.work = data;
@@ -100,7 +100,7 @@ export class ManageWorkComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.deleteWork(id).subscribe({
+        this.dataService.deleteReport(id).subscribe({
           next: (data: any) => {
             this.message = data;
             setTimeout(() => {
@@ -113,7 +113,7 @@ export class ManageWorkComponent {
   }
 
   editWork(id: number) {
-    this.dataService.getWorkById(id).subscribe({
+    this.dataService.getReportById(id).subscribe({
       next: (data: any) => {
         this.dialog.open(EditComponent, {
           data: {
@@ -125,7 +125,7 @@ export class ManageWorkComponent {
   }
 
   ngOnInit(): void {
-    this.dataService.getMyWork().subscribe({
+    this.dataService.getMyReports().subscribe({
       next: (data: any) => {
         this.work = data;
         if (data.length === 0) {
@@ -143,9 +143,9 @@ export class ManageWorkComponent {
         this.clients = data;
       }
     });
-    this.dataService.getMySites().subscribe({
+    this.dataService.getMyCommissions().subscribe({
       next: (data: any) => {
-        this.sites = data;
+        this.commissions = data;
       }
     });
   }

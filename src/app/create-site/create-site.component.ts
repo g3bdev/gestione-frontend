@@ -29,7 +29,7 @@ export class CreateSiteComponent implements OnInit {
   }
 
   submitForm() {
-    this.dataService.createSite(this.newSiteForm.value).subscribe({
+    this.dataService.createCommission(this.newSiteForm.value).subscribe({
       next: () => {
         this.message = 'Commessa aggiunta con successo!';
         setTimeout(() => {

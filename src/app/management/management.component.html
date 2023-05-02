@@ -10,7 +10,7 @@
               Clienti
             </button>
           </a>
-          <a (click)="setCategory('sites')">
+          <a (click)="setCategory('commissions')">
             <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
               Commesse
             </button>
@@ -72,7 +72,7 @@
           <tr *matRowDef="let row; columns: client_columns;" mat-row></tr>
         </table>
 
-        <table *ngIf="category === 'sites'" [dataSource]="sites" class="mat-elevation-z16 bg-gray-800 border-b"
+        <table *ngIf="category === 'commissions'" [dataSource]="commissions" class="mat-elevation-z16 bg-gray-800 border-b"
                mat-table>
           <ng-container matColumnDef="name">
             <th *matHeaderCellDef mat-header-cell>Cliente</th>
@@ -94,7 +94,7 @@
           <ng-container matColumnDef="actions">
             <th *matHeaderCellDef mat-header-cell></th>
             <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-              <a (click)="delete(item['id'], 'sites')">
+              <a (click)="delete(item['id'], 'commissions')">
                 <fa-icon [icon]="fa_trash" [size]="fa_size"
                          class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
               </a>

@@ -19,11 +19,11 @@ import {TooltipPosition} from "@angular/material/tooltip";
   })), state('expanded', style({height: '*'})), transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),]),]
 })
 export class AdminManageWorkComponent implements OnInit {
-  displayed_columns: string[] = ['operator', 'date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
+  displayed_columns: string[] = ['operator', 'date', 'duration', 'type', 'location', 'actions'];
   operators = [];
   clients = [];
-  sites = [];
-  work = [];
+  commissions = [];
+  report = [];
   message = '';
   error = '';
   fa_trash = faTrash;
@@ -34,7 +34,7 @@ export class AdminManageWorkComponent implements OnInit {
   position: TooltipPosition = 'above';
   months = [];
   userForm = this.formBuilder.group({
-    operator_id: ['0', Validators.required], site_id: ['0', Validators.required], client_id: ['0', Validators.required]
+    operator_id: ['0', Validators.required], commission_id: ['0', Validators.required], client_id: ['0', Validators.required]
   });
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
@@ -53,31 +53,31 @@ export class AdminManageWorkComponent implements OnInit {
     form.patchValue({
       [value]: selectedValue
     });
-    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.site_id!).subscribe({
+    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.commission_id!).subscribe({
       next: (data: any) => {
         this.months = data;
       }
     });
     if (value === 'client_id') {
-      this.dataService.getSitesByClient(+this.userForm.value.client_id!).subscribe({
+      this.dataService.getCommissionsByClient(+this.userForm.value.client_id!).subscribe({
         next: (data: any) => {
-          this.sites = data;
+          this.commissions = data;
         }
       });
     }
     if (form === this.userForm && value === 'operator_id') {
       this.userForm.patchValue({
-        site_id: '0'
+        commission_id: '0'
       });
       this.monthFilterForm.patchValue({
         month: '0'
       });
-      this.dataService.getUserSites(this.userForm.value.operator_id!).subscribe({
+      this.dataService.getUserCommissions(this.userForm.value.operator_id!).subscribe({
         next: (data: any) => {
-          this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
+          this.dataService.getUserMonthlyReports(this.userForm.value.commission_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
             next: (data: any) => {
-              this.checkWork(data);
-              this.work = data;
+              this.checkReport(data);
+              this.report = data;
               if (data.length > 0) {
                 this.operator = data[0].last_name + " " + data[0].first_name;
               } else {
@@ -85,34 +85,34 @@ export class AdminManageWorkComponent implements OnInit {
               }
             }
           });
-          this.sites = data;
+          this.commissions = data;
         }
       });
-    } else if (form == this.userForm && value === 'site_id') {
-      this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
+    } else if (form == this.userForm && value === 'commission_id') {
+      this.dataService.getUserMonthlyReports(this.userForm.value.commission_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
         next: (data: any) => {
-          this.checkWork(data);
-          this.work = data;
+          this.checkReport(data);
+          this.report = data;
         }
       });
     } else if (form === this.monthFilterForm && value === 'month') {
-      this.dataService.getUserMonthlyWork(this.userForm.value.site_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
+      this.dataService.getUserMonthlyReports(this.userForm.value.commission_id!, this.monthFilterForm.value.month!, this.userForm.value.operator_id!).subscribe({
         next: (data: any) => {
-          this.checkWork(data);
-          this.work = data;
+          this.checkReport(data);
+          this.report = data;
         }
       });
     } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
-      this.dataService.getUserIntervalWork(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.userForm.value.operator_id!).subscribe({
+      this.dataService.getUserIntervalReports(this.userForm.value.commission_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.userForm.value.operator_id!).subscribe({
         next: (data: any) => {
-          this.checkWork(data);
-          this.work = data;
+          this.checkReport(data);
+          this.report = data;
         }
       });
     }
   }
 
-  checkWork(data: any) {
+  checkReport(data: any) {
     if (data.length === 0) {
       this.error = 'Non ci sono interventi da visualizzare';
     } else {
@@ -120,7 +120,7 @@ export class AdminManageWorkComponent implements OnInit {
     }
   }
 
-  deleteWork(id: number) {
+  deleteReport(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       data: {
         title: 'Conferma eliminazione', message: 'Sei sicuro di voler eliminare questo intervento?'
@@ -128,7 +128,7 @@ export class AdminManageWorkComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.deleteWork(id).subscribe({
+        this.dataService.deleteReport(id).subscribe({
           next: (data: any) => {
             this.message = data;
             setTimeout(() => {
@@ -140,8 +140,8 @@ export class AdminManageWorkComponent implements OnInit {
     });
   }
 
-  editWork(id: number) {
-    this.dataService.getWorkById(id).subscribe({
+  editReport(id: number) {
+    this.dataService.getReportById(id).subscribe({
       next: (data: any) => {
         this.dialog.open(EditComponent, {
           data: {
@@ -153,9 +153,10 @@ export class AdminManageWorkComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getWork().subscribe({
+    this.dataService.getReports().subscribe({
       next: (data: any) => {
-        this.work = data;
+        console.log(data)
+        this.report = data;
         if (data.length === 0) {
           this.error = 'Non ci sono interventi da visualizzare';
         }
@@ -166,7 +167,7 @@ export class AdminManageWorkComponent implements OnInit {
         this.clients = data;
       }
     });
-    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.site_id!).subscribe({
+    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.commission_id!).subscribe({
       next: (data: any) => {
         this.months = data;
       }
@@ -176,9 +177,9 @@ export class AdminManageWorkComponent implements OnInit {
         this.operators = data;
       }
     });
-    this.dataService.getSites().subscribe({
+    this.dataService.getCommissions().subscribe({
       next: (data: any) => {
-        this.sites = data;
+        this.commissions = data;
       }
     });
   }
