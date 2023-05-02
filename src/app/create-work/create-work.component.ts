@@ -54,9 +54,16 @@ export class CreateWorkComponent implements OnInit {
     if (value === 'client_id') {
       this.dataService.getPlantByClient(+this.newWorkForm.value.client_id!).subscribe({
         next: (data: any) => {
-          console.log(data)
           this.plants = data;
         }
+      });
+      this.dataService.getCommissionsByClient(+this.newWorkForm.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.commissions = data;
+        }
+      });
+      this.newWorkForm.patchValue({
+        plant_id: '0',
       });
     }
     if (value === 'plant_id') {
@@ -66,7 +73,6 @@ export class CreateWorkComponent implements OnInit {
         });
         this.dataService.getCommissionsByClient(+this.newWorkForm.value.client_id!).subscribe({
           next: (data: any) => {
-            console.log(data)
             this.commissions = data;
           }
         });
@@ -76,7 +82,6 @@ export class CreateWorkComponent implements OnInit {
         });
         this.dataService.getMachineByPlant(+this.newWorkForm.value.plant_id!).subscribe({
           next: (data: any) => {
-            console.log(data)
             this.machines = data;
           }
         });
@@ -106,10 +111,6 @@ export class CreateWorkComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getClients().subscribe((data: any) => {
       this.clients = data;
-    });
-    this.dataService.getCommissions().subscribe((data: any) => {
-      console.log(data)
-      this.commissions = data;
     });
     this.dataService.getInterventionTypes().subscribe((data: any) => {
       this.intervention_types = data;

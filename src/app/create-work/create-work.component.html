@@ -6,6 +6,8 @@
         <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo intervento</h1>
         <p class="mb-8 leading-relaxed">Aggiungi un nuovo intervento al database aziendale</p>
 
+        {{newWorkForm.value | json}}
+
         <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
           <select (change)="select($event, 'client_id')"
@@ -23,7 +25,7 @@
           <select (change)="select($event, 'plant_id')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   id="plant_id">
-            <option disabled hidden selected value="">Seleziona lo stabilimento</option>
+            <option disabled hidden selected value="a">Seleziona lo stabilimento</option>
             <option value="0">Commessa</option>
             <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
               {{plant['name']}} {{plant['city']}}
@@ -91,7 +93,7 @@
         </div>
 
         <div class="relative w-full lg:w-1/2">
-          <label class="leading-7 text-sm text-gray-400" for="intervention_duration">Durata (in formato hh:mm)</label>
+          <label class="leading-7 text-sm text-gray-400" for="intervention_duration">Durata (in ore)</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="intervention_duration" id="intervention_duration" maxlength="5"
@@ -107,11 +109,11 @@
         </div>
 
         <div class="relative w-full lg:w-1/2">
-          <label class="leading-7 text-sm text-gray-400" for="description">Descrizione (facoltativo)</label>
-          <input
-            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+          <label class="leading-7 text-sm text-gray-400" for="description">Descrizione</label>
+          <textarea
+            class="h-[142px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="description" id="description"
-            type="text">
+            type="text"></textarea>
         </div>
 
         <div class="relative w-full lg:w-1/2">
