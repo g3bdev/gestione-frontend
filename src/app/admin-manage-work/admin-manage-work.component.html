@@ -5,7 +5,7 @@
       <h1 class="title-font text-3xl m-4 font-medium text-white text-center">Gestisci gli interventi dell'azienda</h1>
       <div class="flex justify-center">
         <div class="sm:m-8 mb-4">
-          <form [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
+          <!--<form [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
             <div>
               <select (change)="select($event, 'operator_id', userForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -68,7 +68,7 @@
               oppure <a (click)="filter = 'month'" class="text-gray-400 hover:text-white cursor-pointer">inserisci un
               mese</a>
             </small>
-          </form>
+          </form>-->
           <button (click)="common.printTable()"
                   class="md:visible invisible rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
             Stampa

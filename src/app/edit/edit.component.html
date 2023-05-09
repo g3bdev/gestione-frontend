@@ -1,93 +1,153 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 <div mat-dialog-content>
+  {{data.message | json}}
   <form [formGroup]="form">
     <ng-container *ngIf="logged_role === 'admin'">
-      <label class="leading-7 text-sm text-gray-400" for="site_id">Operatore</label>
-      <select (change)="select($event, 'operator_id')"
-              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              id="operator_id">
-        <option disabled hidden selected
-                value="">{{data.message['last_name'] + ' ' + data.message['first_name']}}</option>
-        <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
-          {{user['last_name'] + ' ' + user['first_name']}}
-        </option>
-      </select>
+      <div class="relative w-full lg:w-1/2">
+        <label class="leading-7 text-sm text-gray-400" for="operator_id">Operatore</label>
+        <select (change)="select($event, 'operator_id')"
+                class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                id="operator_id">
+          <option disabled hidden selected
+                  value="">{{data.message['last_name'] + ' ' + data.message['first_name']}}</option>
+          <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
+            {{user['last_name'] + ' ' + user['first_name']}}
+          </option>
+        </select>
+      </div>
     </ng-container>
 
-    <label class="leading-7 text-sm text-gray-400" for="site_id">Commessa</label>
-    <select (change)="select($event, 'site_id')"
-            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            id="site_id">
-      <option disabled hidden selected
-              value="">{{data.message['site_code'] + ' - ' + data.message['site_description']}}</option>
-      <option *ngFor="let site of sites;" [value]="site['Site']['id']" class="bg-gray-800">
-        {{site['Site']['code']}} - {{site['Site']['description']}}
-      </option>
-    </select>
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
+      <select (change)="select($event, 'client_id')"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="client_id">
+        <option disabled hidden selected value="">Seleziona il cliente</option>
+        <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
+          {{client['name']}} {{client['city']}}
+        </option>
+      </select>
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="date">Data</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="date" id="date"
-      type="date">
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="plant_id">Stabilimento</label>
+      <select (change)="select($event, 'plant_id')"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="plant_id">
+        <option disabled hidden selected value="a">Seleziona lo stabilimento</option>
+        <option value="0">Commessa</option>
+        <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
+          {{plant['name']}} {{plant['city']}}
+        </option>
+      </select>
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="intervention_location">Location</label>
-    <select (change)="select($event, 'intervention_location')"
-            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            id="intervention_location">
-      <option disabled hidden selected value="">{{data.message['Work']['intervention_location']}}</option>
-      <option *ngFor="let intervention_location of intervention_locations;"
-              [value]="intervention_location['name']" class="bg-gray-800">
-        {{intervention_location['name']}}
-      </option>
-    </select>
+    <div *ngIf="isMachine" class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="work_id">Macchina</label>
+      <select (change)="select($event, 'work_id')" [disabled]="isMachinesEmpty"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="work_id">
+        <option disabled hidden selected value="">Seleziona la macchina</option>
+        <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
+          {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
+        </option>
+      </select>
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="intervention_type">Tipo</label>
-    <select (change)="select($event, 'intervention_type')"
-            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            id="intervention_type">
-      <option disabled hidden selected value="">{{data.message['Work']['intervention_type']}}</option>
-      <option *ngFor="let intervention_type of intervention_types" [value]="intervention_type['name']"
-              class="bg-gray-800">
-        {{intervention_type['name']}}
-      </option>
-    </select>
+    <div *ngIf="!isMachine" class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="commission_id">Commessa</label>
+      <select (change)="select($event, 'work_id')" [disabled]="isCommissionsEmpty"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="commission_id">
+        <option disabled hidden selected value="">Seleziona la commessa</option>
+        <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']"
+                class="bg-gray-800">
+          {{commission['Commission']['code']}} - {{commission['Commission']['description']}}
+        </option>
+      </select>
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="intervention_duration">Durata (in formato hh:mm)</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="intervention_duration" id="intervention_duration" maxlength="5"
-      type="text">
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="date">Data</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="date" id="date"
+        type="date">
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="supervisor">Supervisore</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="supervisor" id="supervisor"
-      type="text">
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="intervention_location">Location</label>
+      <select (change)="select($event, 'intervention_location')"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="intervention_location">
+        <option disabled hidden selected value="">{{data.message['Report']['intervention_location']}}</option>
+        <option *ngFor="let intervention_location of intervention_locations;"
+                [value]="intervention_location['name']" class="bg-gray-800">
+          {{intervention_location['name']}}
+        </option>
+      </select>
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="description">Descrizione (facoltativo)</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="description" id="description"
-      type="text">
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="intervention_type">Tipo</label>
+      <select (change)="select($event, 'intervention_type')"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="intervention_type">
+        <option disabled hidden selected value="">{{data.message['Report']['intervention_type']}}</option>
+        <option *ngFor="let intervention_type of intervention_types" [value]="intervention_type['name']"
+                class="bg-gray-800">
+          {{intervention_type['name']}}
+        </option>
+      </select>
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="notes">Note viaggio (facoltativo)</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="notes" id="notes"
-      type="text">
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="intervention_duration">Durata (in ore)</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="intervention_duration" id="intervention_duration" maxlength="5"
+        type="text">
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="trip_kms">Kilometri viaggio (facoltativo)</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="trip_kms" id="trip_kms"
-      type="text">
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="supervisor">Supervisore</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="supervisor" id="supervisor"
+        type="text">
+    </div>
 
-    <label class="leading-7 text-sm text-gray-400" for="cost">Costo viaggio (facoltativo)</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="cost" id="cost"
-      type="text">
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="description">Descrizione</label>
+      <textarea
+        class="h-[142px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="description" id="description"
+        type="text"></textarea>
+    </div>
+
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="notes">Note viaggio (facoltativo)</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="notes" id="notes"
+        type="text">
+    </div>
+
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="trip_kms">Kilometri viaggio (facoltativo)</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="trip_kms" id="trip_kms"
+        type="text">
+    </div>
+
+    <div class="relative w-full lg:w-1/2">
+      <label class="leading-7 text-sm text-gray-400" for="cost">Costo viaggio (facoltativo)</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="cost" id="cost"
+        type="text">
+    </div>
   </form>
 </div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>

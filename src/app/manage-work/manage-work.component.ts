@@ -15,10 +15,11 @@ import {TooltipPosition} from "@angular/material/tooltip";
   styleUrls: ['./manage-work.component.css']
 })
 export class ManageWorkComponent {
-  displayed_columns: string[] = ['date', 'duration', 'type', 'location', 'client', 'site', 'actions'];
+  displayed_columns: string[] = ['operator', 'type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'actions'];
+  operators = [];
   clients = [];
-  commissions = [];
-  work = [];
+  reports = [];
+  logged_role = localStorage.getItem('role');
   message = '';
   error = '';
   fa_print = faPrint;
@@ -28,6 +29,10 @@ export class ManageWorkComponent {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
   months = [];
+  adminForm = this.formBuilder.group({
+    operator_id: ['0', Validators.required],
+    client_id: ['0', Validators.required]
+  });
   userForm = this.formBuilder.group({
     client_id: ['0', Validators.required],
     site_id: ['0', Validators.required],
@@ -44,47 +49,58 @@ export class ManageWorkComponent {
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
   }
 
+  get showAllMonths() {
+    return this.monthFilterForm.value.month === '0';
+  }
+
   select(event: Event, value: string, form: FormGroup) {
     const selectedValue = (event.target as HTMLInputElement).value;
     form.patchValue({
       [value]: selectedValue
     });
     if (value === 'client_id') {
-      this.dataService.getCommissionsByClient(+this.userForm.value.client_id!).subscribe({
+
+    }
+    if (this.logged_role === 'admin') {
+      this.dataService.getMonths(this.userForm.value.site_id!).subscribe({
         next: (data: any) => {
-          this.commissions = data;
+          this.months = data;
+        }
+      });
+    } else {
+      this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
+        next: (data: any) => {
+          this.months = data;
         }
       });
     }
-    this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
-      next: (data: any) => {
-        this.months = data;
-      }
-    });
-    if (form == this.userForm && value === 'site_id') {
-      this.dataService.getMyMonthlyReports(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
+    if (this.monthFilterForm.value.month === '0') {
+      this.dataService.getMyReports().subscribe({
         next: (data: any) => {
-          this.work = data;
+          this.reports = data;
+          if (data.length === 0) {
+            this.error = 'Non ci sono interventi da visualizzare';
+          }
         }
       });
-    } else if (form === this.monthFilterForm && value === 'month') {
+    } else if (this.monthFilterForm.value.month !== '0') {
       this.dataService.getMyMonthlyReports(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
         next: (data: any) => {
-          this.checkWork(data);
-          this.work = data;
+          this.checkReports(data);
+          this.reports = data;
         }
       });
     } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
       this.dataService.getMyIntervalReports(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
         next: (data: any) => {
-          this.checkWork(data);
-          this.work = data;
+          this.checkReports(data);
+          this.reports = data;
         }
       });
     }
   }
 
-  checkWork(data: any) {
+  checkReports(data: any) {
     if (data.length === 0) {
       this.error = 'Non ci sono interventi da visualizzare';
     } else {
@@ -92,7 +108,7 @@ export class ManageWorkComponent {
     }
   }
 
-  deleteWork(id: number) {
+  deleteReport(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       data: {
         title: 'Conferma eliminazione', message: 'Sei sicuro di voler eliminare questo intervento?'
@@ -112,9 +128,10 @@ export class ManageWorkComponent {
     });
   }
 
-  editWork(id: number) {
+  editReport(id: number) {
     this.dataService.getReportById(id).subscribe({
       next: (data: any) => {
+        console.log(data)
         this.dialog.open(EditComponent, {
           data: {
             title: 'Modifica intervento', message: data
@@ -125,27 +142,40 @@ export class ManageWorkComponent {
   }
 
   ngOnInit(): void {
-    this.dataService.getMyReports().subscribe({
-      next: (data: any) => {
-        this.work = data;
-        if (data.length === 0) {
-          this.error = 'Non ci sono interventi da visualizzare';
+    if (this.logged_role === 'admin') {
+      this.dataService.getMonths('').subscribe({
+        next: (data: any) => {
+          this.months = data;
         }
-      }
-    });
-    this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
-      next: (data: any) => {
-        this.months = data;
-      }
-    });
+      });
+      this.dataService.getReports().subscribe({
+        next: (data: any) => {
+          console.log(data)
+          this.reports = data;
+          if (data.length === 0) {
+            this.error = 'Non ci sono interventi da visualizzare';
+          }
+        }
+      });
+    } else {
+      this.dataService.getMyReports().subscribe({
+        next: (data: any) => {
+          console.log(data)
+          this.reports = data;
+          if (data.length === 0) {
+            this.error = 'Non ci sono interventi da visualizzare';
+          }
+        }
+      });
+      this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
+        next: (data: any) => {
+          this.months = data;
+        }
+      });
+    }
     this.dataService.getClients().subscribe({
       next: (data: any) => {
         this.clients = data;
-      }
-    });
-    this.dataService.getMyCommissions().subscribe({
-      next: (data: any) => {
-        this.commissions = data;
       }
     });
   }

@@ -2,10 +2,13 @@
   <app-header></app-header>
   <div class="mx-auto flex py-4 flex-col items-center">
     <div class="sm:flex sm:items-center sm:text-center">
-      <h1 class="title-font text-3xl m-4 font-medium text-white text-center">Gestisci i tuoi interventi</h1>
+      <h1 *ngIf="logged_role !== 'admin'" class="title-font text-3xl m-4 font-medium text-white text-center">Gestisci i
+        tuoi interventi</h1>
+      <h1 *ngIf="logged_role === 'admin'" class="title-font text-3xl m-4 font-medium text-white text-center">Gestisci
+        gli interventi dell'azienda</h1>
       <div class="flex justify-center">
         <div class="sm:m-8 mb-4">
-          <form [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
+          <!--<form *ngIf="logged_role !== 'admin'" [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
             <div>
               <select (change)="select($event, 'client_id', userForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -16,13 +19,25 @@
                 </option>
               </select>
             </div>
+          </form>
+          <form *ngIf="logged_role === 'admin'" [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
             <div>
-              <select (change)="select($event, 'commission_id', userForm)"
+              <select (change)="select($event, 'operator_id', userForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                <option disabled hidden selected value="">Commessa</option>
-                <option class="bg-gray-900" value="0">Tutte le commesse</option>
-                <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']" class="bg-gray-800">
-                  {{commission['Commission']['code']}} - {{commission['Commission']['description']}}
+                <option disabled hidden selected value="">Operatore</option>
+                <option class="bg-gray-900" value="0">Tutti gli operatori</option>
+                <option *ngFor="let operator of operators;" [value]="operator['id']" class="bg-gray-800">
+                  {{operator['last_name']}} {{operator['first_name']}}
+                </option>
+              </select>
+            </div>
+            <div>
+              <select (change)="select($event, 'client_id', userForm)"
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                <option disabled hidden selected value="">Cliente</option>
+                <option class="bg-gray-900" value="0">Tutti i clienti</option>
+                <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
+                  {{client['name']}} {{client['city']}}
                 </option>
               </select>
             </div>
@@ -62,15 +77,21 @@
           <button (click)="common.printTable()"
                   class="md:visible invisible rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
             Stampa
-          </button>
+          </button>-->
         </div>
       </div>
     </div>
 
     <div class="flex justify-center">
-      <table *ngIf="!error; else e" [dataSource]="work" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
+      <table *ngIf="!error; else e" [dataSource]="reports" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
              mat-table>
-        <ng-container matColumnDef="operator">
+
+        <ng-container matColumnDef="type">
+          <th *matHeaderCellDef mat-header-cell></th>
+          <td *matCellDef="let item" mat-cell> {{item['Report']['type'].substring(0, 1).toUpperCase()}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="operator" *ngIf="logged_role === 'admin'">
           <th *matHeaderCellDef mat-header-cell>Operatore</th>
           <td *matCellDef="let item" mat-cell> {{item['last_name']}} {{item['first_name']}} </td>
         </ng-container>
@@ -78,56 +99,61 @@
         <ng-container matColumnDef="date">
           <th *matHeaderCellDef mat-header-cell>Data</th>
           <td *matCellDef="let item"
-              mat-cell> {{item['Work']['date'] | date:'dd/MM/yyyy'}} </td>
+              mat-cell> {{item['Report']['date'] | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="client">
+          <th *matHeaderCellDef mat-header-cell>Cliente</th>
+          <td *matCellDef="let item"
+              mat-cell> {{item['client_name'] }} </td>
         </ng-container>
 
         <ng-container matColumnDef="duration">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Durata</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Work']['intervention_duration'] | slice:0:5}} </td>
+              mat-cell> {{item['Report']['intervention_duration'] | slice:0:5}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="type">
+        <ng-container matColumnDef="intervention_type">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Tipo</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Work']['intervention_type']}} </td>
+              mat-cell> {{item['Report']['intervention_type']}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="location">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Location</th>
+        <ng-container matColumnDef="machine">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Macchina</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Work']['intervention_location']}} </td>
+              mat-cell> {{item['machine_name']}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="client">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Cliente</th>
-          <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['client_name']}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="site">
-          <th *matHeaderCellDef mat-header-cell>Commessa</th>
-          <td *matCellDef="let item" mat-cell> {{item['site_description']}} </td>
+        <ng-container matColumnDef="commission">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Commessa</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['commission_code']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-            <a (click)="common.printReport(item['Work']['id'])">
+            <a (click)="common.printReport(item['Report']['id'])">
               <fa-icon [icon]="fa_print"
                        [matTooltipPosition]="position"
-                       [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
                        matTooltip="Stampa"></fa-icon>
             </a>
-            <a (click)="editWork(item['Work']['id'])">
+            <a (click)="editReport(item['Report']['id'])">
               <fa-icon [icon]="fa_info"
                        [matTooltipPosition]="position"
-                       [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
                        matTooltip="Info"></fa-icon>
             </a>
-            <a (click)="deleteWork(item['Work']['id'])">
+            <a (click)="deleteReport(item['Report']['id'])">
               <fa-icon [icon]="fa_trash"
                        [matTooltipPosition]="position"
-                       [size]="fa_size" class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
                        matTooltip="Elimina"></fa-icon>
             </a>
           </td>

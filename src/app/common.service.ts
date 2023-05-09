@@ -29,14 +29,10 @@ export class CommonService {
     const pageHeight = pageSize.getHeight();
     doc.text('move', pageWidth - 30, pageHeight - 10);
     doc.text('Interventi', 14, 10);
-    let str = `Totale ore: `;
     autoTable(doc, {
-      html: '#table', headStyles: {fillColor: [155, 89, 182]}, didDrawPage: function (data) {
+      html: '#table', headStyles: {fillColor: [155, 89, 182]}, didDrawPage: function () {
         doc.setTextColor(40)
         doc.setFontSize(10)
-        const pageSize = doc.internal.pageSize;
-        const pageHeight = pageSize.getHeight();
-        doc.text(str, data.settings.margin.left, pageHeight - 10)
       }, startY: 20,
     });
     window.open(doc.output('bloburl'), '_blank');

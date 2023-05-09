@@ -9,27 +9,32 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   templateUrl: './edit.component.html',
 })
 export class EditComponent implements OnInit {
-  work = [];
-  sites = [];
+  report = [];
+  commissions = [];
+  clients = [];
+  plants = [];
   intervention_types = [];
+  machines = [];
   intervention_locations = [];
   users = [];
   message = '';
   logged_role = localStorage.getItem('role');
 
   form = this.formBuilder.group({
+    operator_id: ['', Validators.required],
     date: ['', Validators.required],
-    intervention_duration: ['', [Validators.pattern(/^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), Validators.required]],
+    intervention_duration: ['', Validators.required],
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
     client_id: ['', Validators.required],
-    site_id: ['', Validators.required],
+    plant_id: ['', Validators.required],
+    work_id: ['', Validators.required],
+    type: [''],
     supervisor: [''],
     description: [''],
     notes: [''],
     trip_kms: [''],
-    cost: [''],
-    operator_id: ['']
+    cost: ['']
   });
   duration = 5;
 
@@ -45,12 +50,48 @@ export class EditComponent implements OnInit {
   select(event: Event, value: string) {
     this.form.patchValue({
       [value]: (event.target as HTMLInputElement).value
-    })
+    });
+    if (value === 'client_id') {
+      this.dataService.getPlantByClient(+this.form.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.plants = data;
+        }
+      });
+      this.dataService.getCommissionsByClient(+this.form.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.commissions = data;
+        }
+      });
+      this.form.patchValue({
+        plant_id: '0',
+      });
+    }
+    if (value === 'plant_id') {
+      if (this.form.value.plant_id === '0') {
+        this.form.patchValue({
+          type: 'commission',
+        });
+        this.dataService.getCommissionsByClient(+this.form.value.client_id!).subscribe({
+          next: (data: any) => {
+            this.commissions = data;
+          }
+        });
+      } else {
+        this.form.patchValue({
+          type: 'machine',
+        });
+        this.dataService.getMachineByPlant(+this.form.value.plant_id!).subscribe({
+          next: (data: any) => {
+            this.machines = data;
+          }
+        });
+      }
+    }
   }
 
   ngOnInit(): void {
-    this.dataService.getCommissions().subscribe((data: any) => {
-      this.sites = data;
+    this.dataService.getClients().subscribe((data: any) => {
+      this.clients = data;
     });
     this.dataService.getInterventionTypes().subscribe((data: any) => {
       this.intervention_types = data;
@@ -63,21 +104,36 @@ export class EditComponent implements OnInit {
         this.users = data;
       });
     }
+
     this.form.patchValue({
-      client_id: undefined,
-      date: this.data.message['Work']['date'],
-      intervention_duration: this.data.message['Work']['intervention_duration'],
-      intervention_type: this.data.message['Work']['intervention_type'],
-      supervisor: this.data.message['Work']['supervisor'],
-      intervention_location: this.data.message['Work']['intervention_location'],
-      site_id: this.data.message['Work']['site_id'],
-      description: this.data.message['Work']['description'],
-      notes: this.data.message['Work']['notes'],
-      trip_kms: this.data.message['Work']['trip_kms'],
-      cost: this.data.message['Work']['cost'],
-      operator_id: this.data.message['Work']['operator_id']
+      client_id: this.data.message['client_id'],
+      date: this.data.message['Report']['date'],
+      intervention_duration: this.data.message['Report']['intervention_duration'],
+      intervention_type: this.data.message['Report']['intervention_type'],
+      supervisor: this.data.message['Report']['supervisor'],
+      intervention_location: this.data.message['Report']['intervention_location'],
+      description: this.data.message['Report']['description'],
+      notes: this.data.message['Report']['notes'],
+      trip_kms: this.data.message['Report']['trip_kms'],
+      cost: this.data.message['Report']['cost'],
+      operator_id: this.data.message['Report']['operator_id'],
+      work_id: this.data.message['Report']['work_id'],
+      plant_id: this.data.message['Report']['plant_id']
     });
   }
+
+  get isMachinesEmpty() {
+    return this.machines.length === 0;
+  }
+
+  get isCommissionsEmpty() {
+    return this.commissions.length === 0;
+  }
+
+  get isMachine() {
+    return this.form.value.plant_id !== '0';
+  }
+
 
   openSnackBar() {
     this.snackBar.open('Intervento modificato con successo!', '', {
@@ -86,7 +142,7 @@ export class EditComponent implements OnInit {
   }
 
   onConfirm() {
-    this.dataService.editReport(this.form.value, this.data.message['Work']['id'], +this.form.get('operator_id')!.value!).subscribe({
+    this.dataService.editReport(this.form.value, this.data.message['Report']['id'], +this.form.get('operator_id')!.value!).subscribe({
       next: () => {
         this.openSnackBar();
         setTimeout(() => {

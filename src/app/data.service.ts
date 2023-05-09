@@ -116,8 +116,8 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/machines`);
   }
 
-  getMonths(user_id: string, commission_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/months/?operator_id=${user_id}&commission_id=${commission_id}`);
+  getMonths(user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/months/?operator_id=${user_id}`);
   }
 
 
@@ -180,18 +180,19 @@ export class DataService {
   }
 
   editReport(report: Partial<{
+    operator_id: string | null;
     date: string | null;
     intervention_duration: string | null;
     intervention_type: string | null;
     intervention_location: string | null;
     client_id: string | null;
-    commission_id: string | null;
+    plant_id: string | null;
+    work_id: string | null;
     supervisor: string | null;
     description: string | null;
     notes: string | null;
     trip_kms: string | null;
     cost: string | null;
-    operator_id: string | null;
   }>, report_id: number, user_id: number) {
     return this.httpClient.put(`${environment.apiUrl}/report/update?report_id=${report_id}&user_id=${user_id}`, report, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)

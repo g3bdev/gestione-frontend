@@ -53,7 +53,7 @@ export class AdminManageWorkComponent implements OnInit {
     form.patchValue({
       [value]: selectedValue
     });
-    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.commission_id!).subscribe({
+    this.dataService.getMonths(this.userForm.value.operator_id!).subscribe({
       next: (data: any) => {
         this.months = data;
       }
@@ -167,7 +167,7 @@ export class AdminManageWorkComponent implements OnInit {
         this.clients = data;
       }
     });
-    this.dataService.getMonths(this.userForm.value.operator_id!, this.userForm.value.commission_id!).subscribe({
+    this.dataService.getMonths(this.userForm.value.operator_id!).subscribe({
       next: (data: any) => {
         this.months = data;
       }
