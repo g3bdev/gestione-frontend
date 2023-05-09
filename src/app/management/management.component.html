@@ -72,7 +72,8 @@
           <tr *matRowDef="let row; columns: client_columns;" mat-row></tr>
         </table>
 
-        <table *ngIf="category === 'commissions'" [dataSource]="commissions" class="mat-elevation-z16 bg-gray-800 border-b"
+        <table *ngIf="category === 'commissions'" [dataSource]="commissions"
+               class="mat-elevation-z16 bg-gray-800 border-b"
                mat-table>
           <ng-container matColumnDef="name">
             <th *matHeaderCellDef mat-header-cell>Cliente</th>
@@ -82,13 +83,13 @@
           <ng-container matColumnDef="code">
             <th *matHeaderCellDef mat-header-cell>Codice</th>
             <td *matCellDef="let item"
-                mat-cell> {{item['Site']['code']}} </td>
+                mat-cell> {{item['Commission']['code']}} </td>
           </ng-container>
 
           <ng-container matColumnDef="description">
             <th *matHeaderCellDef mat-header-cell>Descrizione</th>
             <td *matCellDef="let item"
-                mat-cell> {{item['Site']['description']}} </td>
+                mat-cell> {{item['Commission']['description']}} </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
