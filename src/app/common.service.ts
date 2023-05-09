@@ -1,6 +1,4 @@
 import {Injectable} from '@angular/core';
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import {DataService} from "./data.service";
 
 @Injectable({
@@ -17,24 +15,5 @@ export class CommonService {
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
     });
-  }
-
-  printTable() {
-    const doc = new jsPDF();
-    doc.setFont('Helvetica');
-    doc.setFontSize(22)
-    doc.setTextColor(100)
-    const pageSize = doc.internal.pageSize;
-    const pageWidth = pageSize.getWidth();
-    const pageHeight = pageSize.getHeight();
-    doc.text('move', pageWidth - 30, pageHeight - 10);
-    doc.text('Interventi', 14, 10);
-    autoTable(doc, {
-      html: '#table', headStyles: {fillColor: [155, 89, 182]}, didDrawPage: function () {
-        doc.setTextColor(40)
-        doc.setFontSize(10)
-      }, startY: 20,
-    });
-    window.open(doc.output('bloburl'), '_blank');
   }
 }
