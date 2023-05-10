@@ -13,6 +13,7 @@ import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 export class ManagementComponent implements OnInit {
   client_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
   site_columns: string[] = ['name', 'code', 'description', 'actions'];
+  plant_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
   machine_columns: string[] = ['name', 'client', 'cost_center', 'brand', 'model', 'production_year', 'actions'];
   fa_trash = faTrash;
   fa_info = faInfoCircle;
@@ -20,6 +21,7 @@ export class ManagementComponent implements OnInit {
   fa_size: SizeProp = "xl";
   clients = [];
   commissions = [];
+  plants = [];
   machines = [];
   message = '';
   category = '';
@@ -40,6 +42,19 @@ export class ManagementComponent implements OnInit {
           message: 'Sei sicuro di voler eliminare questo cliente?'
         }
       }
+      const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.dataService.deleteClient(id).subscribe({
+            next: (data: any) => {
+              this.message = data;
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            }
+          });
+        }
+      });
     } else if (category === 'commissions') {
       data = {
         data: {
@@ -47,6 +62,19 @@ export class ManagementComponent implements OnInit {
           message: 'Sei sicuro di voler eliminare questa commessa?'
         }
       }
+      const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.dataService.deleteCommission(id).subscribe({
+            next: (data: any) => {
+              this.message = data;
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            }
+          });
+        }
+      });
     } else if (category === 'machines') {
       data = {
         data: {
@@ -54,20 +82,14 @@ export class ManagementComponent implements OnInit {
           message: 'Sei sicuro di voler eliminare questa macchina?'
         }
       }
-    }
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.dataService.deleteClient(id).subscribe({
-          next: (data: any) => {
-            this.message = data;
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          }
-        });
+    } else if (category === 'plants') {
+      data = {
+        data: {
+          title: 'Conferma eliminazione',
+          message: 'Sei sicuro di voler eliminare questo stabilimento?'
+        }
       }
-    });
+    }
   }
 
   ngOnInit(): void {
@@ -79,6 +101,9 @@ export class ManagementComponent implements OnInit {
     });
     this.dataService.getMachines().subscribe((data: any) => {
       this.machines = data;
+    });
+    this.dataService.getPlants().subscribe((data: any) => {
+      this.plants = data;
     });
   }
 }

@@ -9,24 +9,26 @@ import {ManageUsersComponent} from "./manage-users/manage-users.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {ManageWorkComponent} from "./manage-work/manage-work.component";
 import {AdminManageWorkComponent} from "./admin-manage-work/admin-manage-work.component";
-import {CreateSiteComponent} from "./create-site/create-site.component";
 import {CreateClientComponent} from "./create-client/create-client.component";
 import {ManagementComponent} from "./management/management.component";
+import {CreatePlantComponent} from "./create-plant/create-plant.component";
+import {CreateMachineComponent} from "./create-machine/create-machine.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'work', component: ManageWorkComponent},
+  {path: 'reports', component: ManageWorkComponent},
   {path: 'manage', component: ManagementComponent},
-  {path: 'admin/work', component: AdminManageWorkComponent},
+  {path: 'admin/reports', component: AdminManageWorkComponent},
   {path: 'admin/users', component: ManageUsersComponent},
   {path: 'add', redirectTo: '/dashboard', pathMatch: 'full'},
-  {path: 'add/work', component: CreateWorkComponent},
+  {path: 'add/report', component: CreateWorkComponent},
   {path: 'add/user', component: CreateUserComponent},
   {path: 'add/client', component: CreateClientComponent},
-  {path: 'add/site', component: CreateSiteComponent},
+  {path: 'add/plant', component: CreatePlantComponent},
+  {path: 'add/machine', component: CreateMachineComponent},
   {path: '**', component: NotFoundComponent}
 ];
 

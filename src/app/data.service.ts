@@ -112,6 +112,10 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/roles`);
   }
 
+  getPlants() {
+    return this.httpClient.get(`${environment.apiUrl}/plants`);
+  }
+
   getMachines() {
     return this.httpClient.get(`${environment.apiUrl}/machines`);
   }
@@ -175,6 +179,39 @@ export class DataService {
     commission_code: string | null; commission_description: string | null; client_id: string | null;
   }>) {
     return this.httpClient.post(`${environment.apiUrl}/commissions/create`, commission, {
+      headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  createPlant(plant: Partial<{
+    client_id: string | null;
+    name: string | null;
+    city: string | null;
+    province: string | null;
+    cap: string | null;
+    address: string | null;
+    email: string | null;
+    contact: string | null;
+    phone_number: string | null;
+  }>) {
+    return this.httpClient.post(`${environment.apiUrl}/plants/create`, plant, {
+      headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  createMachine(machine: Partial<{
+    plant_id: string | null;
+    name: string | null;
+    cost_center: string | null;
+    brand: string | null;
+    model: string | null;
+    production_year: string | null;
+    description: string | null;
+    robotic_island: string | null;
+    code: string | null;
+    serial_number: string | null;
+  }>) {
+    return this.httpClient.post(`${environment.apiUrl}/machines/create`, machine, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

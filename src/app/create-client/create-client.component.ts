@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
 import {Router} from "@angular/router";
@@ -8,12 +8,14 @@ import {Router} from "@angular/router";
   templateUrl: './create-client.component.html',
   styleUrls: ['./create-client.component.css']
 })
-export class CreateClientComponent implements OnInit {
+export class CreateClientComponent {
 
   message = '';
   newClientForm = this.formBuilder.group({
     name: ['', Validators.required],
     city: ['', Validators.required],
+    province: ['', Validators.required],
+    cap: ['', Validators.required],
     address: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     contact: ['', Validators.required],
@@ -42,9 +44,6 @@ export class CreateClientComponent implements OnInit {
         this.message = '';
       }
     });
-  }
-
-  ngOnInit() {
   }
 
 }

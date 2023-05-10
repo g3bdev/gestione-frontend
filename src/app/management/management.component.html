@@ -1,8 +1,8 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
   <div class="mx-auto flex px-5 py-8 flex-col items-center">
-    <div class="items-start text-left items-center text-center">
-      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci clienti, commesse e macchine</h1>
+    <div class="items-center text-center">
+      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci</h1>
       <div class="flex items-center justify-center mb-8">
         <div class="text-sm text-gray-900 font-light py-4 whitespace-nowrap flex space-x-4">
           <a (click)="setCategory('clients')">
@@ -13,6 +13,11 @@
           <a (click)="setCategory('commissions')">
             <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
               Commesse
+            </button>
+          </a>
+          <a (click)="setCategory('plants')">
+            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+              Stabilimenti
             </button>
           </a>
           <a (click)="setCategory('machines')">
@@ -70,6 +75,57 @@
           </ng-container>
           <tr *matHeaderRowDef="client_columns" mat-header-row></tr>
           <tr *matRowDef="let row; columns: client_columns;" mat-row></tr>
+        </table>
+
+        <table *ngIf="category === 'plants'" [dataSource]="plants"
+               class="mat-elevation-z16 bg-gray-800 border-b"
+               mat-table>
+          <ng-container matColumnDef="name">
+            <th *matHeaderCellDef mat-header-cell>Nome</th>
+            <td *matCellDef="let item" mat-cell> {{item['name']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="city">
+            <th *matHeaderCellDef mat-header-cell>Città</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['city']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="address">
+            <th *matHeaderCellDef mat-header-cell>Indirizzo</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['address']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th *matHeaderCellDef mat-header-cell>Email</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['email']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="contact">
+            <th *matHeaderCellDef mat-header-cell>Referente</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['contact']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="phone_number">
+            <th *matHeaderCellDef mat-header-cell>Numero di telefono</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['phone_number']}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+              <a (click)="delete(item['id'], 'plants')">
+                <fa-icon [icon]="fa_trash" [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              </a>
+            </td>
+          </ng-container>
+          <tr *matHeaderRowDef="plant_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: plant_columns;" mat-row></tr>
         </table>
 
         <table *ngIf="category === 'commissions'" [dataSource]="commissions"

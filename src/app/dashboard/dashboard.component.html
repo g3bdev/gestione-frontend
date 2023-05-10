@@ -8,17 +8,17 @@
 
           <a *ngIf="logged_role === 'admin'"
              class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-             routerLink="/work">
+             routerLink="/reports">
             Gestisci gli interventi dell'azienda
           </a>
           <a *ngIf="logged_role !== 'admin'"
              class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-             routerLink="/work">
+             routerLink="/reports">
             Gestisci i tuoi interventi
           </a>
           <a
             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-            routerLink="/add/work">
+            routerLink="/add/report">
             Aggiungi un nuovo intervento
           </a>
           <a *ngIf="logged_role === 'admin'"
@@ -28,8 +28,18 @@
           </a>
           <a *ngIf="logged_role === 'admin'"
              class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+             routerLink="/add/plant">
+            Aggiungi un nuovo stabilimento
+          </a>
+          <a *ngIf="logged_role === 'admin'"
+             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
              routerLink="/add/site">
             Aggiungi una nuova commessa
+          </a>
+          <a *ngIf="logged_role === 'admin'"
+             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+             routerLink="/add/machine">
+            Aggiungi una nuova macchina
           </a>
           <a *ngIf="logged_role === 'admin'"
              class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
@@ -44,7 +54,7 @@
           <a *ngIf="logged_role === 'admin'"
              class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
              routerLink="/manage">
-            Gestisci clienti, commesse e macchine
+            Gestisci clienti, commesse, macchine e altro
           </a>
         </div>
       </div>
