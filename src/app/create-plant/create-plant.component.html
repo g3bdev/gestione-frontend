@@ -1,0 +1,110 @@
+<section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
+  <app-header></app-header>
+  <form (ngSubmit)="submitForm()" [formGroup]="newPlantForm">
+    <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center">
+      <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
+        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo stabilimento</h1>
+        <p class="mb-8 leading-relaxed">Aggiungi un nuovo stabilimento al database aziendale</p>
+
+        <div class="relative mr-4 w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
+          <select (change)="select($event, 'client_id')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="client_id">
+            <option disabled hidden selected value="">Seleziona il cliente</option>
+            <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
+              {{client['name']}}
+            </option>
+          </select>
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="name">Nome</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="name" id="name"
+            type="text">
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="city">Città</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="city" id="city"
+            type="text">
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="province">Provincia</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="province" id="province"
+            type="text">
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="cap">CAP</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="cap" id="cap"
+            type="text">
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="address">Indirizzo</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="address" id="address"
+            type="text">
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="email">Email</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="email" id="email"
+            type="text">
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="contact">Referente</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="contact" id="contact"
+            type="text">
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="phone_number">Numero di telefono</label>
+          <input
+            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            formControlName="phone_number" id="phone_number"
+            type="text">
+        </div>
+
+        <button [disabled]="!newPlantForm.valid"
+                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+                type="submit">
+          Aggiungi
+        </button>
+
+        <div *ngIf="message"
+             class="text-white px-6 py-4 mt-5 border-0 rounded relative mb-4 bg-green-500 w-full lg:w-1/2">
+          <span class="inline-block align-middle mr-8">
+            {{message}}
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</section>
+
+<section *ngIf="error" class="text-gray-400 bg-gray-900 body-font font-sans">
+  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+    <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Qualcosa è andato storto.</h1>
+      <p class="mb-8 leading-relaxed">{{error.statusText}}</p>
+    </div>
+  </div>
+</section>
