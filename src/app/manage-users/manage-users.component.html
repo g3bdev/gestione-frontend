@@ -1,7 +1,7 @@
 <section *ngIf="logged_role == 'admin'; else error" class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
   <div class="flex px-5 py-8 flex-col items-center">
-    <div class="items-start text-left items-center text-center">
+    <div class="items-center text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci gli utenti</h1>
       <div class="flex items-center justify-center mb-8">
         <div>
@@ -12,7 +12,7 @@
               {{user['first_name']}} {{user['last_name']}}
             </option>
           </select>
-          <div *ngIf="clicked" class="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
+          <div *ngIf="clicked" class="w-auto lg:w-1/2 bg-white shadow-lg rounded-lg overflow-hidden my-4">
             <div class="flex items-center px-6 py-3 bg-purple-400">
               <div
                 class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">

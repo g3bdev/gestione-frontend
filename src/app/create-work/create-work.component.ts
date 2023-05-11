@@ -23,9 +23,9 @@ export class CreateWorkComponent implements OnInit {
     client_id: ['', Validators.required],
     plant_id: ['0', Validators.required],
     work_id: ['', Validators.required],
-    type: [''],
-    supervisor: [''],
-    description: [''],
+    type: ['', Validators.required],
+    supervisor: ['', Validators.required],
+    description: ['', Validators.required],
     notes: [''],
     trip_kms: [''],
     cost: ['']
@@ -98,7 +98,7 @@ export class CreateWorkComponent implements OnInit {
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
           setTimeout(() => {
-            this.router.navigate(['/work']).then();
+            this.router.navigate(['/reports']).then();
           }, 2000);
       }, error: () => {
         this.message = '';

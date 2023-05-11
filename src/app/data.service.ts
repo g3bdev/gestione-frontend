@@ -231,7 +231,7 @@ export class DataService {
     trip_kms: string | null;
     cost: string | null;
   }>, report_id: number, user_id: number) {
-    return this.httpClient.put(`${environment.apiUrl}/report/update?report_id=${report_id}&user_id=${user_id}`, report, {
+    return this.httpClient.put(`${environment.apiUrl}/report/edit?report_id=${report_id}`, report, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -254,8 +254,20 @@ export class DataService {
     });
   }
 
+  deletePlant(id: number) {
+    return this.httpClient.delete(`${environment.apiUrl}/plants/delete?plant_id=${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
   deleteCommission(id: number) {
     return this.httpClient.delete(`${environment.apiUrl}/commissions/delete?commission_id=${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  deleteMachine(id: number) {
+    return this.httpClient.delete(`${environment.apiUrl}/machines/delete?machine_id=${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

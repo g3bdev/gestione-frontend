@@ -82,6 +82,19 @@ export class ManagementComponent implements OnInit {
           message: 'Sei sicuro di voler eliminare questa macchina?'
         }
       }
+      const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.dataService.deleteMachine(id).subscribe({
+            next: (data: any) => {
+              this.message = data;
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            }
+          });
+        }
+      });
     } else if (category === 'plants') {
       data = {
         data: {
@@ -90,6 +103,19 @@ export class ManagementComponent implements OnInit {
         }
       }
     }
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.deletePlant(id).subscribe({
+          next: (data: any) => {
+            this.message = data;
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          }
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
