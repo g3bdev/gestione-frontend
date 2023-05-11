@@ -20,11 +20,10 @@
 
         <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="plant_id">Stabilimento</label>
-          <select (change)="select($event, 'plant_id')"
+          <select (change)="select($event, 'plant_id')" [disabled]="!isClientSelected"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   id="plant_id">
             <option disabled hidden selected value="a">Seleziona lo stabilimento</option>
-            <option value="0">Commessa</option>
             <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
               {{plant['name']}} {{plant['city']}}
             </option>

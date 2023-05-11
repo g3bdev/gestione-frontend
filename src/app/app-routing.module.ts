@@ -13,6 +13,7 @@ import {CreateClientComponent} from "./create-client/create-client.component";
 import {ManagementComponent} from "./management/management.component";
 import {CreatePlantComponent} from "./create-plant/create-plant.component";
 import {CreateMachineComponent} from "./create-machine/create-machine.component";
+import {CreateCommissionComponent} from "./create-commission/create-commission.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -21,12 +22,12 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'reports', component: ManageWorkComponent},
   {path: 'manage', component: ManagementComponent},
-  {path: 'admin/reports', component: AdminManageWorkComponent},
-  {path: 'admin/users', component: ManageUsersComponent},
+  {path: 'users', component: ManageUsersComponent},
   {path: 'add', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: 'add/report', component: CreateWorkComponent},
   {path: 'add/user', component: CreateUserComponent},
   {path: 'add/client', component: CreateClientComponent},
+  {path: 'add/commission', component: CreateCommissionComponent},
   {path: 'add/plant', component: CreatePlantComponent},
   {path: 'add/machine', component: CreateMachineComponent},
   {path: '**', component: NotFoundComponent}

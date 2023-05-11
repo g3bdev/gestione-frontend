@@ -29,16 +29,16 @@ import {EditComponent} from './edit/edit.component';
 import {MatInputModule} from "@angular/material/input";
 import {MatTableModule} from "@angular/material/table";
 import {CreateClientComponent} from './create-client/create-client.component';
-import {CreateSiteComponent} from './create-site/create-site.component';
+import {CreateCommissionComponent} from './create-commission/create-commission.component';
 import {ManagementComponent} from './management/management.component';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import { CreatePlantComponent } from './create-plant/create-plant.component';
-import { CreateMachineComponent } from './create-machine/create-machine.component';
+import {CreatePlantComponent} from './create-plant/create-plant.component';
+import {CreateMachineComponent} from './create-machine/create-machine.component';
 
 @NgModule({
-  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, CreateSiteComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent],
+  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule],
   providers: [],
   bootstrap: [AppComponent]

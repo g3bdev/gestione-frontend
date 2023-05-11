@@ -17,7 +17,7 @@ export class CreateWorkComponent implements OnInit {
   message = '';
   newWorkForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
-    intervention_duration: ['', [Validators.pattern(/^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), Validators.required]],
+    intervention_duration: ['', Validators.required],
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
     client_id: ['', Validators.required],
@@ -41,6 +41,10 @@ export class CreateWorkComponent implements OnInit {
 
   get isCommissionsEmpty() {
     return this.commissions.length === 0;
+  }
+
+  get isClientSelected() {
+    return this.newWorkForm.value.client_id !== '';
   }
 
   get isMachine() {
@@ -93,15 +97,9 @@ export class CreateWorkComponent implements OnInit {
     this.dataService.createReport(this.newWorkForm.value).subscribe({
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
-        if (localStorage.getItem('role') === 'admin') {
-          setTimeout(() => {
-            this.router.navigate(['/admin/work']).then();
-          }, 2000);
-        } else {
           setTimeout(() => {
             this.router.navigate(['/work']).then();
           }, 2000);
-        }
       }, error: () => {
         this.message = '';
       }

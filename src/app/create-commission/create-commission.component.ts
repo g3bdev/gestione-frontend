@@ -4,18 +4,17 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-create-site',
-  templateUrl: './create-site.component.html',
-  styleUrls: ['./create-site.component.css']
+  selector: 'app-create-commission',
+  templateUrl: './create-commission.component.html',
+  styleUrls: ['./create-commission.component.css']
 })
-export class CreateSiteComponent implements OnInit {
-
+export class CreateCommissionComponent implements OnInit {
   clients = [];
   message = '';
-  newSiteForm = this.formBuilder.group({
-    code: ['', Validators.required],
-    description: ['', Validators.required],
+  newCommissionForm = this.formBuilder.group({
     client_id: ['', Validators.required],
+    code: ['', Validators.required],
+    description: ['', Validators.required]
   });
   error: any;
 
@@ -23,13 +22,13 @@ export class CreateSiteComponent implements OnInit {
   }
 
   select(event: Event, value: string) {
-    this.newSiteForm.patchValue({
+    this.newCommissionForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
-    })
+    });
   }
 
   submitForm() {
-    this.dataService.createCommission(this.newSiteForm.value).subscribe({
+    this.dataService.createCommission(this.newCommissionForm.value).subscribe({
       next: () => {
         this.message = 'Commessa aggiunta con successo!';
         setTimeout(() => {
@@ -48,3 +47,4 @@ export class CreateSiteComponent implements OnInit {
     });
   }
 }
+
