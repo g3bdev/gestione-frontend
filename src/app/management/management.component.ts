@@ -14,7 +14,7 @@ export class ManagementComponent implements OnInit {
   client_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
   site_columns: string[] = ['name', 'code', 'description', 'actions'];
   plant_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
-  machine_columns: string[] = ['name', 'client', 'cost_center', 'brand', 'model', 'production_year', 'actions'];
+  machine_columns: string[] = ['name', 'client', 'cost_center', 'code', 'brand', 'model', 'production_year', 'actions'];
   fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_exclamation_circle = faExclamationCircle;
