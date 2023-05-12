@@ -165,7 +165,7 @@
                mat-table>
           <ng-container matColumnDef="client">
             <th *matHeaderCellDef mat-header-cell>Cliente</th>
-            <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} </td>
+            <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} {{item['Plant']['city']}} </td>
           </ng-container>
 
           <ng-container matColumnDef="name">
