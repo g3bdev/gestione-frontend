@@ -29,9 +29,9 @@ export class EditComponent implements OnInit {
     client_id: ['', Validators.required],
     plant_id: ['', Validators.required],
     work_id: ['', Validators.required],
-    type: [''],
-    supervisor: [''],
-    description: [''],
+    type: ['', Validators.required],
+    supervisor: ['', Validators.required],
+    description: ['', Validators.required],
     notes: [''],
     trip_kms: [''],
     cost: ['']

@@ -97,9 +97,9 @@ export class CreateWorkComponent implements OnInit {
     this.dataService.createReport(this.newWorkForm.value).subscribe({
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
-          setTimeout(() => {
-            this.router.navigate(['/reports']).then();
-          }, 2000);
+        setTimeout(() => {
+          this.router.navigate(['/reports']).then();
+        }, 2000);
       }, error: () => {
         this.message = '';
       }

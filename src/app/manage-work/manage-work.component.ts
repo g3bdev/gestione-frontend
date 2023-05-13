@@ -16,6 +16,7 @@ import {TooltipPosition} from "@angular/material/tooltip";
 })
 export class ManageWorkComponent {
   displayed_columns: string[] = ['operator', 'type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'actions'];
+  user_columns: string[] = ['type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'actions'];
   operators = [];
   clients = [];
   reports = [];

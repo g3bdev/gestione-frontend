@@ -158,8 +158,14 @@
             </a>
           </td>
         </ng-container>
-        <tr *matHeaderRowDef="displayed_columns" mat-header-row></tr>
-        <tr *matRowDef="let row; columns: displayed_columns;" mat-row></tr>
+        <div *ngIf="logged_role === 'admin'">
+          <tr *matHeaderRowDef="displayed_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: displayed_columns;" mat-row></tr>
+        </div>
+        <div *ngIf="logged_role !== 'admin'">
+          <tr *matHeaderRowDef="user_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: user_columns;" mat-row></tr>
+        </div>
       </table>
     </div>
     <ng-template #e>
