@@ -14,14 +14,14 @@ export class CreateMachineComponent {
   newMachineForm = this.formBuilder.group({
     plant_id: ['', Validators.required],
     name: ['', Validators.required],
-    cost_center: ['', Validators.required],
-    brand: ['', Validators.required],
-    model: ['', Validators.required],
-    production_year: ['', Validators.required],
-    description: ['', Validators.required],
-    robotic_island: ['', Validators.required],
-    code: ['', Validators.required],
-    serial_number: ['', Validators.required]
+    cost_center: [''],
+    brand: [''],
+    model: [''],
+    production_year: [''],
+    description: [''],
+    robotic_island: [''],
+    code: [''],
+    serial_number: ['']
   });
   error: any;
 

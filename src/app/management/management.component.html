@@ -1,31 +1,29 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="mx-auto flex px-5 py-8 flex-col items-center">
-    <div class="items-center text-center">
+  <div class="mx-auto px-5 py-8 flex-col">
+    <div class="text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci</h1>
-      <div class="flex items-center justify-center mb-8">
-        <div class="text-sm text-gray-900 font-light py-4 whitespace-nowrap flex space-x-4">
-          <a (click)="setCategory('clients')">
-            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-              Clienti
-            </button>
-          </a>
-          <a (click)="setCategory('commissions')">
-            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-              Commesse
-            </button>
-          </a>
-          <a (click)="setCategory('plants')">
-            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-              Stabilimenti
-            </button>
-          </a>
-          <a (click)="setCategory('machines')">
-            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-              Macchine
-            </button>
-          </a>
-        </div>
+      <div class="flex flex-col items-center justify-center mb-8 sm:flex-row sm:justify-center sm:space-x-4">
+        <a (click)="setCategory('clients')">
+          <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+            Clienti
+          </button>
+        </a>
+        <a (click)="setCategory('commissions')">
+          <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+            Commesse
+          </button>
+        </a>
+        <a (click)="setCategory('plants')">
+          <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+            Stabilimenti
+          </button>
+        </a>
+        <a (click)="setCategory('machines')">
+          <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+            Macchine
+          </button>
+        </a>
       </div>
 
       <div class="flex items-center justify-center mb-8">
@@ -43,8 +41,8 @@
           </ng-container>
 
           <ng-container matColumnDef="address">
-            <th *matHeaderCellDef mat-header-cell>Indirizzo</th>
-            <td *matCellDef="let item"
+            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Indirizzo</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
                 mat-cell> {{item['address']}} </td>
           </ng-container>
 
@@ -92,26 +90,26 @@
           </ng-container>
 
           <ng-container matColumnDef="address">
-            <th *matHeaderCellDef mat-header-cell>Indirizzo</th>
-            <td *matCellDef="let item"
+            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Indirizzo</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
                 mat-cell> {{item['address']}} </td>
           </ng-container>
 
           <ng-container matColumnDef="email">
-            <th *matHeaderCellDef mat-header-cell>Email</th>
-            <td *matCellDef="let item"
+            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Email</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
                 mat-cell> {{item['email']}} </td>
           </ng-container>
 
           <ng-container matColumnDef="contact">
-            <th *matHeaderCellDef mat-header-cell>Referente</th>
-            <td *matCellDef="let item"
+            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Referente</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
                 mat-cell> {{item['contact']}} </td>
           </ng-container>
 
           <ng-container matColumnDef="phone_number">
-            <th *matHeaderCellDef mat-header-cell>Numero di telefono</th>
-            <td *matCellDef="let item"
+            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Numero di telefono</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
                 mat-cell> {{item['phone_number']}} </td>
           </ng-container>
 
@@ -143,8 +141,8 @@
           </ng-container>
 
           <ng-container matColumnDef="description">
-            <th *matHeaderCellDef mat-header-cell>Descrizione</th>
-            <td *matCellDef="let item"
+            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Descrizione</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
                 mat-cell> {{item['Commission']['description']}} </td>
           </ng-container>
 
@@ -187,8 +185,8 @@
           </ng-container>
 
           <ng-container matColumnDef="brand">
-            <th *matHeaderCellDef mat-header-cell>Brand</th>
-            <td *matCellDef="let item"
+            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Brand</th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
                 mat-cell> {{item['Machine']['brand']}} </td>
           </ng-container>
 
