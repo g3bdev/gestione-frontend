@@ -25,6 +25,7 @@ export class ManagementComponent implements OnInit {
   machines = [];
   message = '';
   category = '';
+  response: any;
 
   constructor(private dataService: DataService, private dialog: MatDialog) {
   }
@@ -55,6 +56,8 @@ export class ManagementComponent implements OnInit {
           });
         }
       });
+
+
     } else if (category === 'commissions') {
       data = {
         data: {
@@ -67,6 +70,7 @@ export class ManagementComponent implements OnInit {
         if (result) {
           this.dataService.deleteCommission(id).subscribe({
             next: (data: any) => {
+              this.response = data;
               this.message = data;
               setTimeout(() => {
                 window.location.reload();
@@ -75,6 +79,8 @@ export class ManagementComponent implements OnInit {
           });
         }
       });
+
+
     } else if (category === 'machines') {
       data = {
         data: {
@@ -95,6 +101,8 @@ export class ManagementComponent implements OnInit {
           });
         }
       });
+
+
     } else if (category === 'plants') {
       data = {
         data: {
@@ -102,23 +110,25 @@ export class ManagementComponent implements OnInit {
           message: 'Sei sicuro di voler eliminare questo stabilimento?'
         }
       }
+      const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.dataService.deletePlant(id).subscribe({
+            next: (data: any) => {
+              this.message = data;
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            }
+          });
+        }
+      });
     }
-    const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.dataService.deletePlant(id).subscribe({
-          next: (data: any) => {
-            this.message = data;
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          }
-        });
-      }
-    });
   }
 
-  ngOnInit(): void {
+  ngOnInit()
+    :
+    void {
     this.dataService.getClients().subscribe((data: any) => {
       this.clients = data;
     });
