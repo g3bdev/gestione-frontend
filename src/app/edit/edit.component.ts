@@ -5,8 +5,7 @@ import {DataService} from "../data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-edit',
-  templateUrl: './edit.component.html',
+  selector: 'app-edit', templateUrl: './edit.component.html',
 })
 export class EditComponent implements OnInit {
   report = [];
@@ -38,13 +37,14 @@ export class EditComponent implements OnInit {
   });
   duration = 5;
 
-  constructor(
-    private dialogRef: MatDialogRef<EditComponent>,
-    private formBuilder: FormBuilder,
-    private dataService: DataService,
-    private snackBar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; message: any }
-  ) {
+  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: {
+    title: string;
+    message: any
+  }) {
+  }
+
+  get isMachine() {
+    return this.form.value.type === 'machine';
   }
 
   select(event: Event, value: string) {
@@ -63,29 +63,27 @@ export class EditComponent implements OnInit {
         }
       });
       this.form.patchValue({
-        plant_id: '0',
+        plant_id: '0'
       });
     }
-    if (value === 'plant_id') {
-      if (this.form.value.plant_id === '0') {
-        this.form.patchValue({
-          type: 'commission',
-        });
-        this.dataService.getCommissionsByClient(+this.form.value.client_id!).subscribe({
-          next: (data: any) => {
-            this.commissions = data;
-          }
-        });
-      } else {
-        this.form.patchValue({
-          type: 'machine',
-        });
-        this.dataService.getMachineByPlant(+this.form.value.plant_id!).subscribe({
-          next: (data: any) => {
-            this.machines = data;
-          }
-        });
-      }
+    if (value === 'plant_id' && this.form.value.plant_id === '0') {
+      this.form.patchValue({
+        type: 'commission'
+      });
+      this.dataService.getCommissionsByClient(+this.form.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.commissions = data;
+        }
+      });
+    } else if (value === 'plant_id' && this.form.value.plant_id !== '0') {
+      this.form.patchValue({
+        type: 'machine', work_id: ''
+      });
+      this.dataService.getMachineByPlant(+this.form.value.plant_id!).subscribe({
+        next: (data: any) => {
+          this.machines = data;
+        }
+      });
     }
   }
 
@@ -99,15 +97,33 @@ export class EditComponent implements OnInit {
     this.dataService.getLocations().subscribe((data: any) => {
       this.intervention_locations = data;
     });
+    this.dataService.getPlantByClient(this.data.message['client_id']).subscribe({
+      next: (data: any) => {
+        this.plants = data;
+      }
+    });
+    if (this.data.message['Report']['type'] === 'machine') {
+      this.dataService.getMachineByPlant(this.data.message['plant_id']).subscribe({
+        next: (data: any) => {
+          this.machines = data;
+        }
+      });
+    } else {
+      this.dataService.getCommissionsByClient(this.data.message['client_id']).subscribe({
+        next: (data: any) => {
+          this.commissions = data;
+        }
+      });
+    }
     if (this.logged_role === 'admin') {
       this.dataService.getUsers().subscribe((data: any) => {
         this.users = data;
       });
     }
-
     this.form.patchValue({
       client_id: this.data.message['client_id'],
       date: this.data.message['Report']['date'],
+      type: this.data.message['Report']['type'],
       intervention_duration: this.data.message['Report']['intervention_duration'],
       intervention_type: this.data.message['Report']['intervention_type'],
       supervisor: this.data.message['Report']['supervisor'],
@@ -118,38 +134,25 @@ export class EditComponent implements OnInit {
       cost: this.data.message['Report']['cost'],
       operator_id: this.data.message['Report']['operator_id'],
       work_id: this.data.message['Report']['work_id'],
-      plant_id: this.data.message['Report']['plant_id']
+      plant_id: this.data.message['plant_id']
     });
   }
 
-  get isMachinesEmpty() {
-    return this.machines.length === 0;
-  }
-
-  get isCommissionsEmpty() {
-    return this.commissions.length === 0;
-  }
-
-  get isMachine() {
-    return this.form.value.plant_id !== '0';
-  }
-
-
-  openSnackBar() {
-    this.snackBar.open('Intervento modificato con successo!', '', {
-      duration: this.duration * 1000,
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: this.duration * 1000
     });
   }
 
   onConfirm() {
-    this.dataService.editReport(this.form.value, this.data.message['Report']['id'], +this.form.get('operator_id')!.value!).subscribe({
+    this.dataService.editReport(this.form.value, this.data.message['Report']['id'], +this.form.value.operator_id!).subscribe({
       next: () => {
-        this.openSnackBar();
+        this.openSnackBar('Intervento modificato con successo!');
         setTimeout(() => {
           window.location.reload();
         }, 2000);
-      },
-      error: () => {
+      }, error: () => {
+        this.openSnackBar('C\'è stato un errore, riprova');
         this.message = '';
       }
     });

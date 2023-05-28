@@ -87,8 +87,9 @@
              mat-table>
 
         <ng-container matColumnDef="type">
-          <th *matHeaderCellDef mat-header-cell></th>
-          <td *matCellDef="let item" mat-cell> {{item['Report']['type'].substring(0, 1).toUpperCase()}} </td>
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell"></th>
+          <td *matCellDef="let item" mat-cell
+              class="hidden md:table-cell"> {{item['Report']['type'].substring(0, 1).toUpperCase()}} </td>
         </ng-container>
 
         <ng-container matColumnDef="operator" *ngIf="logged_role === 'admin'">
@@ -105,7 +106,7 @@
         <ng-container matColumnDef="client">
           <th *matHeaderCellDef mat-header-cell>Cliente</th>
           <td *matCellDef="let item"
-              mat-cell> {{item['client_name'] }} </td>
+              mat-cell> {{item['client_name']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="duration">

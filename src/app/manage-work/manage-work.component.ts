@@ -136,7 +136,7 @@ export class ManageWorkComponent {
         this.dialog.open(EditComponent, {
           data: {
             title: 'Modifica intervento', message: data
-          }
+          }, width: '50em'
         });
       }
     });

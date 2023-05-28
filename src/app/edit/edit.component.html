@@ -1,5 +1,6 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 <div mat-dialog-content>
+  {{form.value | json}}
   <form [formGroup]="form">
     <ng-container *ngIf="logged_role === 'admin'">
       <div class="relative w-full">
@@ -21,7 +22,7 @@
       <select (change)="select($event, 'client_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="client_id">
-        <option disabled hidden selected value="">Seleziona il cliente</option>
+        <option disabled hidden selected>{{data.message['client_name']}}</option>
         <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
           {{client['name']}} {{client['city']}}
         </option>
@@ -33,7 +34,8 @@
       <select (change)="select($event, 'plant_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="plant_id">
-        <option disabled hidden selected value="a">Seleziona lo stabilimento</option>
+        <option *ngIf="isMachine && data.message['plant_name']" disabled hidden
+                selected>{{data.message['plant_name']}}</option>
         <option value="0">Commessa</option>
         <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
           {{plant['name']}} {{plant['city']}}
@@ -43,10 +45,10 @@
 
     <div *ngIf="isMachine" class="relative w-full">
       <label class="leading-7 text-sm text-gray-400" for="work_id">Macchina</label>
-      <select (change)="select($event, 'work_id')" [disabled]="isMachinesEmpty"
+      <select (change)="select($event, 'work_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="work_id">
-        <option disabled hidden selected value="">Seleziona la macchina</option>
+        <option disabled hidden selected>{{data.message['machine_name']}}</option>
         <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
           {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
         </option>
@@ -55,10 +57,11 @@
 
     <div *ngIf="!isMachine" class="relative w-full">
       <label class="leading-7 text-sm text-gray-400" for="commission_id">Commessa</label>
-      <select (change)="select($event, 'work_id')" [disabled]="isCommissionsEmpty"
+      <select (change)="select($event, 'work_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="commission_id">
-        <option disabled hidden selected value="">Seleziona la commessa</option>
+        <option disabled hidden selected>{{data.message['commission_code']}}
+          - {{data.message['commission_description']}}</option>
         <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']"
                 class="bg-gray-800">
           {{commission['Commission']['code']}} - {{commission['Commission']['description']}}
@@ -68,10 +71,10 @@
 
     <div class="relative w-full">
       <label class="leading-7 text-sm text-gray-400" for="date">Data</label>
-      <input
-        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-        formControlName="date" id="date"
-        type="date">
+      <input [value]="data.message['Report']['intervention_date']"
+             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+             formControlName="date" id="date"
+             type="date">
     </div>
 
     <div class="relative w-full">

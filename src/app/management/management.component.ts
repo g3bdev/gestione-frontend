@@ -4,6 +4,7 @@ import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirm
 import {MatDialog} from "@angular/material/dialog";
 import {faExclamationCircle, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-management',
@@ -27,11 +28,17 @@ export class ManagementComponent implements OnInit {
   category = '';
   response: any;
 
-  constructor(private dataService: DataService, private dialog: MatDialog) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
 
   setCategory(category: string) {
     this.category = category;
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 5000
+    });
   }
 
   delete(id: number, category: string) {
@@ -48,10 +55,12 @@ export class ManagementComponent implements OnInit {
         if (result) {
           this.dataService.deleteClient(id).subscribe({
             next: (data: any) => {
-              this.message = data;
+              this.openSnackBar(data.detail);
               setTimeout(() => {
                 window.location.reload();
-              }, 1000);
+              }, 2000);
+            }, error: (data) => {
+              this.openSnackBar(data.error.detail);
             }
           });
         }
@@ -70,11 +79,12 @@ export class ManagementComponent implements OnInit {
         if (result) {
           this.dataService.deleteCommission(id).subscribe({
             next: (data: any) => {
-              this.response = data;
-              this.message = data;
+              this.openSnackBar(data.detail);
               setTimeout(() => {
                 window.location.reload();
-              }, 1000);
+              }, 2000);
+            }, error: (data) => {
+              this.openSnackBar(data.error.detail);
             }
           });
         }
@@ -93,10 +103,12 @@ export class ManagementComponent implements OnInit {
         if (result) {
           this.dataService.deleteMachine(id).subscribe({
             next: (data: any) => {
-              this.message = data;
+              this.openSnackBar(data.detail);
               setTimeout(() => {
                 window.location.reload();
-              }, 1000);
+              }, 2000);
+            }, error: (data) => {
+              this.openSnackBar(data.error.detail);
             }
           });
         }
@@ -116,9 +128,12 @@ export class ManagementComponent implements OnInit {
           this.dataService.deletePlant(id).subscribe({
             next: (data: any) => {
               this.message = data;
+              this.openSnackBar(this.message);
               setTimeout(() => {
                 window.location.reload();
-              }, 1000);
+              }, 2000);
+            }, error: (data) => {
+              this.openSnackBar(data.error.detail);
             }
           });
         }
@@ -126,9 +141,7 @@ export class ManagementComponent implements OnInit {
     }
   }
 
-  ngOnInit()
-    :
-    void {
+  ngOnInit(): void {
     this.dataService.getClients().subscribe((data: any) => {
       this.clients = data;
     });
