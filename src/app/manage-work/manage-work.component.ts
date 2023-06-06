@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
@@ -8,15 +8,15 @@ import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
 import {TooltipPosition} from "@angular/material/tooltip";
+import {MatTableExporterDirective} from "mat-table-exporter";
 
 @Component({
-  selector: 'app-manage-work',
-  templateUrl: './manage-work.component.html',
-  styleUrls: ['./manage-work.component.css']
+  selector: 'app-manage-work', templateUrl: './manage-work.component.html', styleUrls: ['./manage-work.component.css']
 })
 export class ManageWorkComponent {
-  displayed_columns: string[] = ['operator', 'type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'actions'];
-  user_columns: string[] = ['type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'actions'];
+  @ViewChild('exporter') exporter!: MatTableExporterDirective;
+  displayed_columns: string[] = ['operator', 'type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
+  user_columns: string[] = ['type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
   operators = [];
   clients = [];
   reports = [];
@@ -30,28 +30,25 @@ export class ManageWorkComponent {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
   months = [];
+  reports_filename = 'interventi';
+
   adminForm = this.formBuilder.group({
-    operator_id: ['0', Validators.required],
-    client_id: ['0', Validators.required]
+    operator_id: ['0', Validators.required], client_id: ['0', Validators.required]
   });
   userForm = this.formBuilder.group({
-    client_id: ['0', Validators.required],
-    site_id: ['0', Validators.required],
+    client_id: ['0', Validators.required]
   });
+
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
   });
   intervalFilterForm = this.formBuilder.group({
-    start_date: ['', Validators.required],
-    end_date: ['', Validators.required]
+    start_date: [''],
+    end_date: ['']
   });
   filter = 'month';
 
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
-  }
-
-  get showAllMonths() {
-    return this.monthFilterForm.value.month === '0';
   }
 
   select(event: Event, value: string, form: FormGroup) {
@@ -59,45 +56,52 @@ export class ManageWorkComponent {
     form.patchValue({
       [value]: selectedValue
     });
-    if (value === 'client_id') {
-
-    }
-    if (this.logged_role === 'admin') {
-      this.dataService.getMonths(this.userForm.value.site_id!).subscribe({
-        next: (data: any) => {
-          this.months = data;
-        }
-      });
-    } else {
-      this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
-        next: (data: any) => {
-          this.months = data;
-        }
-      });
-    }
-    if (this.monthFilterForm.value.month === '0') {
-      this.dataService.getMyReports().subscribe({
-        next: (data: any) => {
-          this.reports = data;
-          if (data.length === 0) {
-            this.error = 'Non ci sono interventi da visualizzare';
+    if (this.filter === 'month') {
+      if (this.logged_role === 'admin') {
+        this.dataService.getMonths(this.adminForm.value.operator_id!).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            this.months = data;
           }
-        }
-      });
-    } else if (this.monthFilterForm.value.month !== '0') {
-      this.dataService.getMyMonthlyReports(this.userForm.value.site_id!, this.monthFilterForm.value.month!).subscribe({
-        next: (data: any) => {
-          this.checkReports(data);
-          this.reports = data;
-        }
-      });
-    } else if (form === this.intervalFilterForm && value === 'start_date' || form === this.intervalFilterForm && value === 'end_date') {
-      this.dataService.getMyIntervalReports(this.userForm.value.site_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
-        next: (data: any) => {
-          this.checkReports(data);
-          this.reports = data;
-        }
-      });
+        });
+        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
+          next: (data: any) => {
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
+      } else {
+        this.dataService.getMyMonths(this.userForm.value.client_id!).subscribe({
+          next: (data: any) => {
+            this.months = data;
+          }
+        });
+        this.dataService.getMyMonthlyReports(this.userForm.value.client_id!, this.monthFilterForm.value.month!).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
+      }
+      this.reports_filename = 'interventi_' + this.monthFilterForm.value.month?.replace('/', '-');
+    } else if (this.filter === 'interval') {
+      if (this.logged_role === 'admin') {
+        this.dataService.getIntervalReports(this.adminForm.value.client_id!, this.adminForm.value.operator_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
+          next: (data: any) => {
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
+      } else {
+        this.dataService.getMyIntervalReports(this.userForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
+          next: (data: any) => {
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
+      }
+      this.reports_filename = 'interventi_' + this.intervalFilterForm.value.start_date + '_' + this.intervalFilterForm.value.end_date;
     }
   }
 
@@ -108,6 +112,15 @@ export class ManageWorkComponent {
       this.error = '';
     }
   }
+
+  getLastColumn(): number {
+    if (this.logged_role === 'admin') {
+      return this.displayed_columns.length - 1;
+    } else {
+      return this.user_columns.length - 1;
+    }
+  }
+
 
   deleteReport(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
@@ -144,7 +157,7 @@ export class ManageWorkComponent {
 
   ngOnInit(): void {
     if (this.logged_role === 'admin') {
-      this.dataService.getMonths('').subscribe({
+      this.dataService.getMonths('0').subscribe({
         next: (data: any) => {
           this.months = data;
         }
@@ -153,9 +166,7 @@ export class ManageWorkComponent {
         next: (data: any) => {
           console.log(data)
           this.reports = data;
-          if (data.length === 0) {
-            this.error = 'Non ci sono interventi da visualizzare';
-          }
+          this.checkReports(data);
         }
       });
     } else {
@@ -163,12 +174,10 @@ export class ManageWorkComponent {
         next: (data: any) => {
           console.log(data)
           this.reports = data;
-          if (data.length === 0) {
-            this.error = 'Non ci sono interventi da visualizzare';
-          }
+          this.checkReports(data);
         }
       });
-      this.dataService.getMyMonths(this.userForm.value.site_id!).subscribe({
+      this.dataService.getMyMonths('0').subscribe({
         next: (data: any) => {
           this.months = data;
         }
@@ -179,5 +188,12 @@ export class ManageWorkComponent {
         this.clients = data;
       }
     });
+    if (this.logged_role === 'admin') {
+      this.dataService.getUsers().subscribe({
+        next: (data: any) => {
+          this.operators = data;
+        }
+      });
+    }
   }
 }

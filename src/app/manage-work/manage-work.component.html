@@ -8,7 +8,9 @@
         gli interventi dell'azienda</h1>
       <div class="flex justify-center">
         <div class="sm:m-8 mb-4">
-          <!--<form *ngIf="logged_role !== 'admin'" [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
+
+          <form *ngIf="logged_role !== 'admin'" [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
+            Filtra per:
             <div>
               <select (change)="select($event, 'client_id', userForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
@@ -20,9 +22,12 @@
               </select>
             </div>
           </form>
-          <form *ngIf="logged_role === 'admin'" [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
+
+
+          <form *ngIf="logged_role === 'admin'" [formGroup]="adminForm" class="grid grid-cols-1 gap-4 pb-4">
+            Filtra per:
             <div>
-              <select (change)="select($event, 'operator_id', userForm)"
+              <select (change)="select($event, 'operator_id', adminForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 <option disabled hidden selected value="">Operatore</option>
                 <option class="bg-gray-900" value="0">Tutti gli operatori</option>
@@ -32,7 +37,7 @@
               </select>
             </div>
             <div>
-              <select (change)="select($event, 'client_id', userForm)"
+              <select (change)="select($event, 'client_id', adminForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 <option disabled hidden selected value="">Cliente</option>
                 <option class="bg-gray-900" value="0">Tutti i clienti</option>
@@ -42,6 +47,7 @@
               </select>
             </div>
           </form>
+
           <form *ngIf="filter == 'month'" [formGroup]="monthFilterForm">
             <div>
               <select (change)="select($event, 'month', monthFilterForm)"
@@ -59,33 +65,48 @@
             </small>
           </form>
           <form *ngIf="filter == 'interval'" [formGroup]="intervalFilterForm">
-            <div class="sm:grid-cols-2 grid-cols-1 gap-4 pb-4">
+            <div>
               <label class="leading-7 text-sm text-gray-400 float-left" for="start_date">Data inizio</label>
-              <input (change)="select($event, 'start_date', intervalFilterForm)"
-                     class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                     id="start_date" placeholder="Data inizio" type="date">
+              <div>
+                <input (change)="select($event, 'start_date', intervalFilterForm)"
+                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                       id="start_date" placeholder="Data inizio" type="date"></div>
               <label class="leading-7 text-sm text-gray-400 float-left" for="end_date">Data fine</label>
-              <input (change)="select($event, 'end_date', intervalFilterForm)"
-                     class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                     id="end_date" label="Data fine" placeholder="Data fine" type="date">
+              <div>
+                <input (change)="select($event, 'end_date', intervalFilterForm)"
+                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                       id="end_date" label="Data fine" placeholder="Data fine" type="date"></div>
             </div>
             <small>
-              oppure <a (click)="filter = 'month'" class="text-gray-400 hover:text-white cursor-pointer">inserisci un
+              oppure <a (click)="filter = 'month'" class="text-gray-400 hover:text-white cursor-pointer">seleziona un
               mese</a>
             </small>
           </form>
-          <button (click)="common.printTable()"
-                  class="md:visible invisible rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
-            Stampa
-          </button>-->
+          <button [disabled]="reports.length === 0"
+                  (click)="exporter.exportTable('csv', {fileName: reports_filename})"
+                  class="relative inline-flex items-center justify-center px-6 py-3 mt-6 overflow-hidden font-bold text-white rounded-md shadow-2xl group disabled:text-white disabled:opacity-50 disabled:cursor-not-allowed">
+            <span
+              class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
+            <span
+              class="absolute top-0 left-0 w-full bg-gradient-to-b from-white to-transparent opacity-5 h-1/3"></span>
+            <span
+              class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent opacity-5"></span>
+            <span
+              class="absolute bottom-0 left-0 w-4 h-full bg-gradient-to-r from-white to-transparent opacity-5"></span>
+            <span
+              class="absolute bottom-0 right-0 w-4 h-full bg-gradient-to-l from-white to-transparent opacity-5"></span>
+            <span class="absolute inset-0 w-full h-full border border-white rounded-md opacity-10"></span>
+            <span
+              class="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
+            <span class="relative">Esporta</span>
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="flex justify-center">
-      <table *ngIf="!error; else e" [dataSource]="reports" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
-             mat-table>
-
+    <div class="flex justify-center" *ngIf="!error; else e">
+      <table [dataSource]="reports" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
+             mat-table matTableExporter #exporter="matTableExporter" [hiddenColumns]="[getLastColumn()]">
         <ng-container matColumnDef="type">
           <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell"></th>
           <td *matCellDef="let item" mat-cell
@@ -131,6 +152,18 @@
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Commessa</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
               mat-cell> {{item['commission_code']}} </td>
+        </ng-container>
+
+        <ng-container hidden matColumnDef="location">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Location</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Report']['intervention_location']}} </td>
+        </ng-container>
+
+        <ng-container hidden matColumnDef="supervisor">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Supervisore</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Report']['supervisor']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

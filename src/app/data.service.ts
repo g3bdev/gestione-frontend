@@ -50,38 +50,26 @@ export class DataService {
     });
   }
 
-  getUserMonthlyReports(commission_id: string, month: string, user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/?month=${month}&operator_id=${user_id}&commission_id=${commission_id}`, {
+  getMonthlyReports(client_id: string, month: string, user_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/?month=${month}&user_id=${user_id}&client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getUserIntervalReports(commission_id: string, start_date: string, end_date: string, user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/reports/interval/?start_date=${start_date}&end_date=${end_date}&operator_id=${user_id}&commission_id=${commission_id}`, {
+  getMyMonthlyReports(client_id: string, month: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports/monthly/?month=${month}&client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getMyMonthlyReports(commission_id: string, month: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/reports/monthly?month=${month}&commission_id=${commission_id}`, {
+  getIntervalReports(client_id: string, user_id: string, start_date: string, end_date: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/interval?start_date=${start_date}&end_date=${end_date}&user_id=${user_id}&client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
-  getMyIntervalReports(commission_id: string, start_date: string, end_date: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/reports/interval?start_date=${start_date}&end_date=${end_date}&commission_id=${commission_id}`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
-    });
-  }
-
-  getMyCommissions() {
-    return this.httpClient.get(`${environment.apiUrl}/me/commissions`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
-    });
-  }
-
-  getMyMonths(commission_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/months/?commission_id=${commission_id}`, {
+  getMyIntervalReports(client_id: string, start_date: string, end_date: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports/interval?start_date=${start_date}&end_date=${end_date}&client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -121,12 +109,11 @@ export class DataService {
   }
 
   getMonths(user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/months/?operator_id=${user_id}`);
+    return this.httpClient.get(`${environment.apiUrl}/months/?user_id=${user_id}`);
   }
 
-
-  getUserCommissions(user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/commissions?user_id=${user_id}`, {
+  getMyMonths(client_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/months?client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

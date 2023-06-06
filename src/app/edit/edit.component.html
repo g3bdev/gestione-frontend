@@ -151,6 +151,9 @@
     </div>
   </form>
 </div>
+<div class="text-gray-500 font-medium mt-4 ml-6 text-xs">
+  Intervento creato il {{data.message['Report']['date_created'] | date: 'dd/MM/yyyy'}}
+</div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>
   <button (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Annulla
   </button>

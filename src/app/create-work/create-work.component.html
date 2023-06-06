@@ -26,7 +26,7 @@
             <option disabled hidden selected value="a">Seleziona lo stabilimento</option>
             <option value="0">Commessa</option>
             <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
-              {{plant['name']}} {{plant['city']}}
+              {{plant['city']}}, {{plant['address']}}
             </option>
           </select>
         </div>

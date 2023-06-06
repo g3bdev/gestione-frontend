@@ -128,7 +128,7 @@ export class EditComponent implements OnInit {
       intervention_type: this.data.message['Report']['intervention_type'],
       supervisor: this.data.message['Report']['supervisor'],
       intervention_location: this.data.message['Report']['intervention_location'],
-      description: this.data.message['Report']['description'],
+      description: this.data.message['Report']['description'].trim(),
       notes: this.data.message['Report']['notes'],
       trip_kms: this.data.message['Report']['trip_kms'],
       cost: this.data.message['Report']['cost'],
