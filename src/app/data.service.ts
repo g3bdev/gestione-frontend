@@ -109,7 +109,7 @@ export class DataService {
   }
 
   getMonths(user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/months/?user_id=${user_id}`);
+    return this.httpClient.get(`${environment.apiUrl}/months?user_id=${user_id}`);
   }
 
   getMyMonths(client_id: string) {
