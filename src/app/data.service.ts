@@ -51,13 +51,13 @@ export class DataService {
   }
 
   getMonthlyReports(client_id: string, month: string, user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/?month=${month}&user_id=${user_id}&client_id=${client_id}`, {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly?month=${month}&user_id=${user_id}&client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 
   getMyMonthlyReports(client_id: string, month: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/reports/monthly/?month=${month}&client_id=${client_id}`, {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports/monthly?month=${month}&client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
