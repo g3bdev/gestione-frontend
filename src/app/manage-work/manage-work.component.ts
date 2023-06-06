@@ -15,7 +15,7 @@ import {MatTableExporterDirective} from "mat-table-exporter";
 })
 export class ManageWorkComponent {
   @ViewChild('exporter') exporter!: MatTableExporterDirective;
-  displayed_columns: string[] = ['operator', 'type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
+  displayed_columns: string[] = ['operator', 'type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'description', 'actions'];
   user_columns: string[] = ['type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
   operators = [];
   clients = [];
