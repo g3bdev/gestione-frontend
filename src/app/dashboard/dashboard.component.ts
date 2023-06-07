@@ -9,7 +9,6 @@ import {Router} from "@angular/router";
 export class DashboardComponent implements OnInit {
 
   name = '';
-  work = [];
   logged_role = localStorage.getItem('role');
 
 

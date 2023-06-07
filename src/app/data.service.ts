@@ -74,6 +74,18 @@ export class DataService {
     });
   }
 
+  getDailyHours(user_id: string, month: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/daily?user_id=${user_id}&month=${month}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMyDailyHours(month: string) {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports/daily?month=${month}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
   getUserById(id: number) {
     return this.httpClient.get(`${environment.apiUrl}/user/${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)

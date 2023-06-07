@@ -15,8 +15,8 @@ import {MatTableExporterDirective} from "mat-table-exporter";
 })
 export class ManageWorkComponent {
   @ViewChild('exporter') exporter!: MatTableExporterDirective;
-  displayed_columns: string[] = ['operator', 'type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'description', 'actions'];
-  user_columns: string[] = ['type', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
+  displayed_columns: string[] = ['operator', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'description', 'actions'];
+  user_columns: string[] = ['date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
   operators = [];
   clients = [];
   reports = [];
@@ -31,14 +31,12 @@ export class ManageWorkComponent {
   position: TooltipPosition = 'above';
   months = [];
   reports_filename = 'interventi';
-
   adminForm = this.formBuilder.group({
     operator_id: ['0', Validators.required], client_id: ['0', Validators.required]
   });
   userForm = this.formBuilder.group({
     client_id: ['0', Validators.required]
   });
-
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
   });
@@ -120,7 +118,6 @@ export class ManageWorkComponent {
       return this.user_columns.length - 1;
     }
   }
-
 
   deleteReport(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {

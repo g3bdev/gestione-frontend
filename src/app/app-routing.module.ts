@@ -8,12 +8,12 @@ import {CreateUserComponent} from "./create-user/create-user.component";
 import {ManageUsersComponent} from "./manage-users/manage-users.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {ManageWorkComponent} from "./manage-work/manage-work.component";
-import {AdminManageWorkComponent} from "./admin-manage-work/admin-manage-work.component";
 import {CreateClientComponent} from "./create-client/create-client.component";
 import {ManagementComponent} from "./management/management.component";
 import {CreatePlantComponent} from "./create-plant/create-plant.component";
 import {CreateMachineComponent} from "./create-machine/create-machine.component";
 import {CreateCommissionComponent} from "./create-commission/create-commission.component";
+import {DailyHoursComponent} from "./daily-hours/daily-hours.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -21,6 +21,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'reports', component: ManageWorkComponent},
+  {path: 'reports/daily', component: DailyHoursComponent},
   {path: 'manage', component: ManagementComponent},
   {path: 'users', component: ManageUsersComponent},
   {path: 'add', redirectTo: '/dashboard', pathMatch: 'full'},

@@ -1,0 +1,80 @@
+<section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
+  <app-header></app-header>
+  <div class="mx-auto flex py-4 flex-col items-center">
+    Visualizza le ore di lavoro giornaliere del mese
+    <form [formGroup]="hourForm" class="grid grid-cols-1 gap-4 pb-4 m-4">
+      <div>
+        <select (change)="select($event, 'operator_id')"
+                class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <option disabled hidden selected value="">Seleziona un operatore</option>
+          <option *ngFor="let operator of operators;" [value]="operator['id']" class="bg-gray-800">
+            {{operator['last_name']}} {{operator['first_name']}}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="hourForm.value.operator_id">
+        <select (change)="select($event, 'month')"
+                class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <option disabled hidden selected value="0">Seleziona un mese</option>
+          <option *ngFor="let month of months;" [value]="month" class="bg-gray-800">
+            {{month}}
+          </option>
+        </select>
+        <div *ngIf="hourForm.value.month" class="flex justify-center">
+          <button [disabled]="hours.length === 0"
+                  (click)="exporter.exportTable('csv', {fileName: hours_filename, delimiter: ';'})"
+                  class="relative inline-flex items-center justify-center px-6 py-3 mt-4 overflow-hidden font-bold text-white rounded-md shadow-2xl group disabled:text-white disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed">
+              <span
+                class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
+            <span
+              class="absolute top-0 left-0 w-full bg-gradient-to-b from-white to-transparent opacity-5 h-1/3"></span>
+            <span
+              class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent opacity-5"></span>
+            <span
+              class="absolute bottom-0 left-0 w-4 h-full bg-gradient-to-r from-white to-transparent opacity-5"></span>
+            <span
+              class="absolute bottom-0 right-0 w-4 h-full bg-gradient-to-l from-white to-transparent opacity-5"></span>
+            <span class="absolute inset-0 w-full h-full border border-white rounded-md opacity-10"></span>
+            <span
+              class="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
+            <span class="relative">Esporta</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-center" *ngIf="hours.length > 0">
+        <table [dataSource]="hours" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
+               mat-table matTableExporter #exporter="matTableExporter">
+
+          <ng-container matColumnDef="date">
+            <th *matHeaderCellDef mat-header-cell>Data</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['date']}} </td>
+            <td mat-footer-cell class="font-bold" *matFooterCellDef>Totale</td>
+          </ng-container>
+
+          <ng-container matColumnDef="hours">
+            <th *matHeaderCellDef mat-header-cell>Ore</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['hours']}} </td>
+            <td mat-footer-cell class="font-bold" *matFooterCellDef> {{getTotalHours()}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="interventions">
+            <th *matHeaderCellDef mat-header-cell>Interventi</th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['count']}} </td>
+            <td mat-footer-cell class="font-bold" *matFooterCellDef> {{getTotalInterventions()}} </td>
+          </ng-container>
+
+          <div>
+            <tr *matHeaderRowDef="displayed_columns" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: displayed_columns;" mat-row></tr>
+            <tr mat-footer-row *matFooterRowDef="displayed_columns"></tr>
+          </div>
+        </table>
+      </div>
+    </form>
+
+  </div>
+</section>
