@@ -33,6 +33,17 @@
                 </option>
               </select>
             </div>
+
+            <div>
+              <select (change)="select($event, 'plant_id', adminForm)"
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                <option disabled hidden selected value="">Stabilimento</option>
+                <option class="bg-gray-900" value="0">Tutti gli stabilimenti</option>
+                <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
+                  {{plant['name']}} {{plant['city']}}
+                </option>
+              </select>
+            </div>
           </form>
 
 
@@ -108,7 +119,7 @@
       </div>
     </div>
 
-    <a routerLink="/reports/daily"
+    <a routerLink="/reports/daily" *ngIf="logged_role === 'admin'"
        class="text-lg font-medium title-font text-gray-400 hover:text-white cursor-pointer my-4">Visualizza ore
       giornaliere</a>
 
@@ -164,8 +175,8 @@
         </ng-container>
 
         <ng-container matColumnDef="supervisor">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Supervisore</th>
-          <td *matCellDef="let item" class="hidden md:table-cell"
+          <th *matHeaderCellDef class="hidden" mat-header-cell>Supervisore</th>
+          <td *matCellDef="let item" class="hidden"
               mat-cell> {{item['Report']['supervisor']}} </td>
         </ng-container>
 

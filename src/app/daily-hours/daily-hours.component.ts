@@ -27,10 +27,15 @@ export class DailyHoursComponent implements OnInit {
   getMonths() {
     this.dataService.getMonths(this.hourForm.value.operator_id!).subscribe({
       next: (data: any) => {
-        console.log(data);
         this.months = data;
       }
     });
+  }
+
+  getWeekDay(date: string) {
+    let formattedDate = date.split('/').reverse().join('-');
+    let d = new Date(formattedDate);
+    return d.toLocaleString('it-IT', {weekday: 'long'});
   }
 
   select(event: Event, value: string) {
@@ -51,6 +56,7 @@ export class DailyHoursComponent implements OnInit {
       this.dataService.getDailyHours(this.hourForm.value.operator_id, this.hourForm.value.month).subscribe({
         next: (data: any) => {
           this.hours = data;
+          this.hours_filename = 'ore_' + this.hourForm.value.month?.replace('/', '-');
         }
       });
     }
@@ -64,10 +70,11 @@ export class DailyHoursComponent implements OnInit {
     return this.hours.map(t => t['count']).reduce((acc, value) => acc + value, 0);
   }
 
+  test = '';
+
   ngOnInit(): void {
     this.dataService.getUsers().subscribe({
       next: (data: any) => {
-        console.log(data);
         this.operators = data;
       }
     });

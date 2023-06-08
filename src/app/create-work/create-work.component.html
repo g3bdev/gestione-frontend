@@ -1,6 +1,6 @@
 <section class="text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <form (ngSubmit)="submitForm()" [formGroup]="newWorkForm">
+  <form (ngSubmit)="submitForm()" [formGroup]="reportForm">
     <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center">
       <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
         <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Inserisci un nuovo intervento</h1>
@@ -10,7 +10,8 @@
           <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
           <select (change)="select($event, 'client_id')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="client_id">
+                  id="client_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.client_id.errors}">
             <option disabled hidden selected value="">Seleziona il cliente</option>
             <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
               {{client['name']}} {{client['city']}}
@@ -22,9 +23,10 @@
           <label class="leading-7 text-sm text-gray-400" for="plant_id">Stabilimento</label>
           <select (change)="select($event, 'plant_id')" [disabled]="!isClientSelected"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="plant_id">
-            <option disabled hidden selected value="a">Seleziona lo stabilimento</option>
-            <option value="0">Commessa</option>
+                  id="plant_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.plant_id.errors || form.plant_id.value == '0'}">
+            <option disabled hidden selected value="">Seleziona lo stabilimento</option>
+            <option value="c">Commessa</option>
             <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
               {{plant['city']}}, {{plant['address']}}
             </option>
@@ -35,7 +37,8 @@
           <label class="leading-7 text-sm text-gray-400" for="work_id">Macchina</label>
           <select (change)="select($event, 'work_id')" [disabled]="isMachinesEmpty"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="work_id">
+                  id="work_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.work_id.errors || form.work_id.value == '0'}">
             <option disabled hidden selected value="">Seleziona la macchina</option>
             <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
               {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
@@ -47,7 +50,8 @@
           <label class="leading-7 text-sm text-gray-400" for="commission_id">Commessa</label>
           <select (change)="select($event, 'work_id')" [disabled]="isCommissionsEmpty"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="commission_id">
+                  id="commission_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.work_id.errors}">
             <option disabled hidden selected value="">Seleziona la commessa</option>
             <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']"
                     class="bg-gray-800">
@@ -61,14 +65,16 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="date" id="date"
-            type="date">
+            type="date"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.date.errors}">
         </div>
 
         <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="intervention_location">Location</label>
           <select (change)="select($event, 'intervention_location')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="intervention_location">
+                  id="intervention_location"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.intervention_location.errors}">
             <option disabled hidden selected value="">Seleziona la location</option>
             <option *ngFor="let intervention_location of intervention_locations;"
                     [value]="intervention_location['name']" class="bg-gray-800">
@@ -81,7 +87,8 @@
           <label class="leading-7 text-sm text-gray-400" for="intervention_type">Tipo</label>
           <select (change)="select($event, 'intervention_type')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="intervention_type">
+                  id="intervention_type"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.intervention_type.errors}">
             <option disabled hidden selected value="">Seleziona il tipo di intervento</option>
             <option *ngFor="let intervention_type of intervention_types" [value]="intervention_type['name']"
                     class="bg-gray-800">
@@ -95,7 +102,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="intervention_duration" id="intervention_duration"
-            type="text">
+            type="text" maxlength="4"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && !isDurationValid(reportForm.value.intervention_duration!)}">
+          <p class="text-red-500"
+             *ngIf="submitted && !isDurationValid(reportForm.value.intervention_duration!)">{{date_error}}</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -103,7 +113,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="supervisor" id="supervisor"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.supervisor.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.supervisor.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -111,7 +124,11 @@
           <textarea
             class="h-[142px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="description" id="description"
-            type="text"></textarea>
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.description.errors}">
+          </textarea>
+          <p class="text-red-500"
+             *ngIf="submitted && form.description.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -138,9 +155,9 @@
             type="text">
         </div>
 
-        <button [disabled]="!newWorkForm.valid"
-                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
-                type="submit">
+        <button
+          class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+          type="submit">
           Aggiungi
         </button>
 

@@ -15,13 +15,13 @@ export class CreateWorkComponent implements OnInit {
   intervention_types = [];
   intervention_locations = [];
   message = '';
-  newWorkForm = this.formBuilder.group({
+  reportForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
     intervention_duration: ['', Validators.required],
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
     client_id: ['', Validators.required],
-    plant_id: ['0', Validators.required],
+    plant_id: ['', Validators.required],
     work_id: ['', Validators.required],
     type: ['', Validators.required],
     supervisor: ['', Validators.required],
@@ -44,47 +44,48 @@ export class CreateWorkComponent implements OnInit {
   }
 
   get isClientSelected() {
-    return this.newWorkForm.value.client_id !== '';
+    return this.reportForm.value.client_id !== '';
   }
 
   get isMachine() {
-    return this.newWorkForm.value.plant_id !== '0';
+    return this.reportForm.value.plant_id !== 'c';
   }
 
   select(event: Event, value: string) {
-    this.newWorkForm.patchValue({
+    this.reportForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
     });
     if (value === 'client_id') {
-      this.dataService.getPlantByClient(+this.newWorkForm.value.client_id!).subscribe({
+      this.dataService.getPlantByClient(+this.reportForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
         }
       });
-      this.dataService.getCommissionsByClient(+this.newWorkForm.value.client_id!).subscribe({
+      this.dataService.getCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.commissions = data;
         }
       });
-      this.newWorkForm.patchValue({
-        plant_id: '0',
+      this.reportForm.patchValue({
+        plant_id: 'c',
+        work_id: ''
       });
     }
     if (value === 'plant_id') {
-      if (this.newWorkForm.value.plant_id === '0') {
-        this.newWorkForm.patchValue({
+      if (this.reportForm.value.plant_id === 'c') {
+        this.reportForm.patchValue({
           type: 'commission',
         });
-        this.dataService.getCommissionsByClient(+this.newWorkForm.value.client_id!).subscribe({
+        this.dataService.getCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
           next: (data: any) => {
             this.commissions = data;
           }
         });
       } else {
-        this.newWorkForm.patchValue({
+        this.reportForm.patchValue({
           type: 'machine',
         });
-        this.dataService.getMachineByPlant(+this.newWorkForm.value.plant_id!).subscribe({
+        this.dataService.getMachineByPlant(+this.reportForm.value.plant_id!).subscribe({
           next: (data: any) => {
             this.machines = data;
           }
@@ -93,8 +94,15 @@ export class CreateWorkComponent implements OnInit {
     }
   }
 
+  submitted: boolean = false;
+
   submitForm() {
-    this.dataService.createReport(this.newWorkForm.value).subscribe({
+    this.submitted = true;
+    if (this.reportForm.invalid) {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
+    this.dataService.createReport(this.reportForm.value).subscribe({
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
         setTimeout(() => {
@@ -104,6 +112,29 @@ export class CreateWorkComponent implements OnInit {
         this.message = '';
       }
     });
+  }
+
+  get form() {
+    return this.reportForm.controls;
+  }
+
+  date_error = '';
+
+  isDurationValid(value: string): boolean {
+    if (value === '') {
+      this.date_error = 'Questo campo è obbligatorio.';
+      return false;
+    }
+    if (parseFloat(value) > 16 || value.endsWith('.')) {
+      this.date_error = 'La durata non è valida.';
+      return false;
+    }
+    const regex = /^[0-9]*\.?[0-9]*$/;
+    if (!regex.test(value) || value.startsWith('.')) {
+      this.date_error = 'La durata può contenere solo numeri e un punto.';
+      return false;
+    }
+    return true;
   }
 
   ngOnInit(): void {

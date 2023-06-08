@@ -50,8 +50,8 @@ export class DataService {
     });
   }
 
-  getMonthlyReports(client_id: string, month: string, user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/reports/monthly?month=${month}&user_id=${user_id}&client_id=${client_id}`, {
+  getMonthlyReports(client_id: string, month: string, user_id: string, plant_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly?month=${month}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -76,12 +76,6 @@ export class DataService {
 
   getDailyHours(user_id: string, month: string) {
     return this.httpClient.get(`${environment.apiUrl}/reports/daily?user_id=${user_id}&month=${month}`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
-    });
-  }
-
-  getMyDailyHours(month: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/reports/daily?month=${month}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

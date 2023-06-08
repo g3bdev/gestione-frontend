@@ -19,6 +19,8 @@ export class ManageWorkComponent {
   user_columns: string[] = ['date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
   operators = [];
   clients = [];
+  plants = [];
+  commissions = [];
   reports = [];
   logged_role = localStorage.getItem('role');
   message = '';
@@ -32,10 +34,13 @@ export class ManageWorkComponent {
   months = [];
   reports_filename = 'interventi';
   adminForm = this.formBuilder.group({
-    operator_id: ['0', Validators.required], client_id: ['0', Validators.required]
+    operator_id: ['0', Validators.required],
+    client_id: ['0', Validators.required],
+    plant_id: ['0', Validators.required]
   });
   userForm = this.formBuilder.group({
-    client_id: ['0', Validators.required]
+    client_id: ['0', Validators.required],
+    plant_id: ['0', Validators.required]
   });
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
@@ -54,6 +59,21 @@ export class ManageWorkComponent {
     form.patchValue({
       [value]: selectedValue
     });
+
+    if (value === 'client_id' && this.logged_role === 'admin') {
+      this.dataService.getPlantByClient(+this.adminForm.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.plants = data;
+        }
+      });
+      this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe({
+        next: (data: any) => {
+          this.reports = data;
+          this.checkReports(data);
+        }
+      });
+    }
+
     if (this.filter === 'month') {
       if (this.logged_role === 'admin') {
         this.dataService.getMonths(this.adminForm.value.operator_id!).subscribe({
@@ -62,7 +82,7 @@ export class ManageWorkComponent {
             this.months = data;
           }
         });
-        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
+        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe({
           next: (data: any) => {
             this.reports = data;
             this.checkReports(data);
@@ -104,11 +124,7 @@ export class ManageWorkComponent {
   }
 
   checkReports(data: any) {
-    if (data.length === 0) {
-      this.error = 'Non ci sono interventi da visualizzare';
-    } else {
-      this.error = '';
-    }
+    data.length === 0 ? this.error = 'Non ci sono interventi da visualizzare' : this.error = '';
   }
 
   getLastColumn(): number {
