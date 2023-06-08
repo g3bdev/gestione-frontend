@@ -271,6 +271,12 @@ export class DataService {
     });
   }
 
+  printMonthlyReports(client_id: string, month: string, user_id: string, plant_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/pdf?month=${month}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
+    });
+  }
+
   getCommissionsByClient(client_id: number) {
     return this.httpClient.get(`${environment.apiUrl}/commissions?client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)

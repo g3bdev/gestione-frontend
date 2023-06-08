@@ -135,6 +135,14 @@ export class ManageWorkComponent {
     }
   }
 
+  printMonthlyReports() {
+    this.dataService.printMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe((response) => {
+      const file = new Blob([response], {type: 'application/pdf'});
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    });
+  }
+
   deleteReport(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       data: {
