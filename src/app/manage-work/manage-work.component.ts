@@ -20,6 +20,7 @@ export class ManageWorkComponent {
   operators = [];
   clients = [];
   plants = [];
+  machines = [];
   commissions = [];
   reports = [];
   logged_role = localStorage.getItem('role');
@@ -36,7 +37,8 @@ export class ManageWorkComponent {
   adminForm = this.formBuilder.group({
     operator_id: ['0', Validators.required],
     client_id: ['0', Validators.required],
-    plant_id: ['0', Validators.required]
+    plant_id: ['0', Validators.required],
+    work_id: ['0', Validators.required]
   });
   userForm = this.formBuilder.group({
     client_id: ['0', Validators.required],
@@ -51,6 +53,22 @@ export class ManageWorkComponent {
   });
   filter = 'month';
 
+  get isMachinesEmpty() {
+    return this.machines.length === 0;
+  }
+
+  get isCommissionsEmpty() {
+    return this.commissions.length === 0;
+  }
+
+  get isClientSelected() {
+    return this.adminForm.value.client_id !== '0';
+  }
+
+  get isMachine() {
+    return this.adminForm.value.plant_id !== 'c';
+  }
+
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
   }
 
@@ -59,19 +77,48 @@ export class ManageWorkComponent {
     form.patchValue({
       [value]: selectedValue
     });
+    if (this.logged_role === 'admin') {
+      if (value === 'client_id') {
+        this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
+          next: (data: any) => {
+            this.plants = data;
+          }
+        });
+        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
+          next: (data: any) => {
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
+      }
 
-    if (value === 'client_id' && this.logged_role === 'admin') {
-      this.dataService.getPlantByClient(+this.adminForm.value.client_id!).subscribe({
-        next: (data: any) => {
-          this.plants = data;
+      if (value === 'plant_id') {
+        if (this.adminForm.value.plant_id === 'c') {
+          this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
+            next: (data: any) => {
+              this.commissions = data;
+            }
+          });
+          this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
+            next: (data: any) => {
+              this.reports = data;
+              this.checkReports(data);
+            }
+          });
+        } else {
+          this.dataService.getMachineByPlant(+this.adminForm.value.plant_id!).subscribe({
+            next: (data: any) => {
+              this.machines = data;
+            }
+          });
+          this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
+            next: (data: any) => {
+              this.reports = data;
+              this.checkReports(data);
+            }
+          });
         }
-      });
-      this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe({
-        next: (data: any) => {
-          this.reports = data;
-          this.checkReports(data);
-        }
-      });
+      }
     }
 
     if (this.filter === 'month') {
@@ -80,12 +127,6 @@ export class ManageWorkComponent {
           next: (data: any) => {
             console.log(data);
             this.months = data;
-          }
-        });
-        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe({
-          next: (data: any) => {
-            this.reports = data;
-            this.checkReports(data);
           }
         });
       } else {

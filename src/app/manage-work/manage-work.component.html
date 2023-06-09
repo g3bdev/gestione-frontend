@@ -35,19 +35,44 @@
             </div>
 
             <div>
-              <select (change)="select($event, 'plant_id', adminForm)"
+              <select (change)="select($event, 'plant_id', adminForm)" [disabled]="!isClientSelected"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                 <option disabled hidden selected value="">Stabilimento</option>
                 <option class="bg-gray-900" value="0">Tutti gli stabilimenti</option>
+                <option value="c">Commesse</option>
                 <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
                   {{plant['name']}} {{plant['city']}}
+                </option>
+              </select>
+            </div>
+
+            <div *ngIf="isMachine">
+              <select (change)="select($event, 'work_id', adminForm)"
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                      id="work_id">
+                <option disabled hidden selected value="">Macchina</option>
+                <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
+                  {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
+                </option>
+              </select>
+            </div>
+
+            <div *ngIf="!isMachine">
+              <select (change)="select($event, 'work_id', adminForm)"
+                      class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                      id="commission_id">
+                <option disabled hidden selected value="">Commessa</option>
+                <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']"
+                        class="bg-gray-800">
+                  {{commission['Commission']['code']}} - {{commission['Commission']['description']}}
                 </option>
               </select>
             </div>
           </form>
 
 
-          <form *ngIf="logged_role !== 'admin'" [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4">
+
+          <form *ngIf="logged_role !== 'admin'" [formGroup]="userForm" class="grid grid-cols-1 gap-4 pb-4 hidden">
             Filtra per:
             <div>
               <select
@@ -60,6 +85,8 @@
               </select>
             </div>
           </form>
+
+
 
           <form *ngIf="filter == 'month'" [formGroup]="monthFilterForm">
             <div>
@@ -95,6 +122,7 @@
               mese</a>
             </small>
           </form>
+
           <div class="flex gap-3">
             <button [disabled]="reports.length === 0"
                     (click)="exporter.exportTable('csv', {fileName: reports_filename, delimiter: ';'})"
@@ -137,10 +165,6 @@
         </div>
       </div>
     </div>
-
-    <a routerLink="/reports/daily" *ngIf="logged_role === 'admin'"
-       class="text-lg font-medium title-font text-gray-400 hover:text-white cursor-pointer my-4">Visualizza ore
-      giornaliere</a>
 
     <div class="flex justify-center" *ngIf="!error; else e">
       <table [dataSource]="reports" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
