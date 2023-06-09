@@ -56,7 +56,7 @@ export class CreateWorkComponent implements OnInit {
       [value]: (event.target as HTMLInputElement).value
     });
     if (value === 'client_id') {
-      this.dataService.getPlantByClient(+this.reportForm.value.client_id!).subscribe({
+      this.dataService.getPlantsByClient(+this.reportForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
         }

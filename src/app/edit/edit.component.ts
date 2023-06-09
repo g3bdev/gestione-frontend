@@ -52,7 +52,7 @@ export class EditComponent implements OnInit {
       [value]: (event.target as HTMLInputElement).value
     });
     if (value === 'client_id') {
-      this.dataService.getPlantByClient(+this.form.value.client_id!).subscribe({
+      this.dataService.getPlantsByClient(+this.form.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
         }
@@ -97,7 +97,7 @@ export class EditComponent implements OnInit {
     this.dataService.getLocations().subscribe((data: any) => {
       this.intervention_locations = data;
     });
-    this.dataService.getPlantByClient(this.data.message['client_id']).subscribe({
+    this.dataService.getPlantsByClient(this.data.message['client_id']).subscribe({
       next: (data: any) => {
         this.plants = data;
       }
