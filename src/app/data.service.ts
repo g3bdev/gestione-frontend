@@ -37,7 +37,7 @@ export class DataService {
     });
   }
 
-  getPlantByClient(client_id: number) {
+  getPlantsByClient(client_id: number) {
     return this.httpClient.get(`${environment.apiUrl}/plant?client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
