@@ -86,6 +86,7 @@ export class ManageWorkComponent {
         });
         this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
           next: (data: any) => {
+            console.log(data);
             this.reports = data;
             this.checkReports(data);
           }
