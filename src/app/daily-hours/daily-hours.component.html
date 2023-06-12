@@ -15,7 +15,7 @@
       <div *ngIf="hourForm.value.operator_id">
         <select (change)="select($event, 'month')"
                 class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-          <option disabled hidden selected value="0">Seleziona un mese</option>
+          <option selected value="0">Seleziona un mese</option>
           <option *ngFor="let month of months;" [value]="month" class="bg-gray-800">
             {{month}}
           </option>

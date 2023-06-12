@@ -1,6 +1,6 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center">
+  <div class="container mx-auto flex px-5 py-14 md:flex-row flex-col items-center" *ngIf="name">
     <div class="lg:flex-grow flex flex-col md:items-start md:text-left items-center text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Ciao {{name}}</h1>
       <div class="flex justify-center">

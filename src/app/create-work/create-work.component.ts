@@ -31,6 +31,8 @@ export class CreateWorkComponent implements OnInit {
     cost: ['']
   });
   error: any;
+  submitted: boolean = false;
+  duration_error = '';
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
   }
@@ -94,7 +96,9 @@ export class CreateWorkComponent implements OnInit {
     }
   }
 
-  submitted: boolean = false;
+  get form() {
+    return this.reportForm.controls;
+  }
 
   submitForm() {
     this.submitted = true;
@@ -114,24 +118,18 @@ export class CreateWorkComponent implements OnInit {
     });
   }
 
-  get form() {
-    return this.reportForm.controls;
-  }
-
-  date_error = '';
-
   isDurationValid(value: string): boolean {
     if (value === '') {
-      this.date_error = 'Questo campo è obbligatorio.';
+      this.duration_error = 'Questo campo è obbligatorio.';
       return false;
     }
     if (parseFloat(value) > 16 || value.endsWith('.')) {
-      this.date_error = 'La durata non è valida.';
+      this.duration_error = 'La durata non è valida.';
       return false;
     }
     const regex = /^[0-9]*\.?[0-9]*$/;
     if (!regex.test(value) || value.startsWith('.')) {
-      this.date_error = 'La durata può contenere solo numeri e un punto.';
+      this.duration_error = 'La durata può contenere solo numeri e un punto.';
       return false;
     }
     return true;

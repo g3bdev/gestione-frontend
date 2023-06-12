@@ -56,8 +56,8 @@ export class DataService {
     });
   }
 
-  getMonthlyCommissionReports(client_id: string, month: string, user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/commissions?month=${month}&user_id=${user_id}&client_id=${client_id}`, {
+  getMonthlyCommissionReports(client_id: string, month: string, user_id: string, commission_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/commissions?month=${month}&user_id=${user_id}&client_id=${client_id}&work_id=${commission_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

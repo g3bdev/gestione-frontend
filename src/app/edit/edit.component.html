@@ -23,7 +23,7 @@
               id="client_id">
         <option disabled hidden selected>{{data.message['client_name']}}</option>
         <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
-          {{client['name']}}
+          {{client['name']}} {{client['city']}}
         </option>
       </select>
     </div>
@@ -47,7 +47,7 @@
       <select (change)="select($event, 'work_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="work_id">
-        <option disabled hidden selected>{{data.message['machine_code']}} - {{data.message['machine_name']}}</option>
+        <option disabled hidden selected>{{data.message['machine_name']}}</option>
         <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
           {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
         </option>
@@ -152,8 +152,7 @@
   </form>
 </div>
 <div class="text-gray-500 font-medium mt-4 ml-6 text-xs">
-  Intervento creato il {{data.message['Report']['date_created'] | date: 'dd/MM/yyyy'}}
-  alle {{data.message['Report']['date_created'] | date: 'HH:mm'}}
+  Intervento creato il {{data.message['Report']['date_created'] | date: 'dd/MM/yyyy'}} alle {{data.message['Report']['date_created'] | date: 'HH:mm'}}
 </div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>
   <button (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Annulla

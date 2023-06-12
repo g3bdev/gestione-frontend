@@ -9,9 +9,13 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {MatTableExporterDirective} from "mat-table-exporter";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
-  selector: 'app-manage-work', templateUrl: './manage-work.component.html', styleUrls: ['./manage-work.component.css']
+  selector: 'app-manage-work',
+  templateUrl: './manage-work.component.html',
+  styleUrls: ['./manage-work.component.css'],
+  animations: [trigger('fade', [transition('void => *', [style({opacity: 0}), animate(100, style({opacity: 1}))])])]
 })
 export class ManageWorkComponent {
   @ViewChild('exporter') exporter!: MatTableExporterDirective;
@@ -42,15 +46,13 @@ export class ManageWorkComponent {
     work_id: ['0', Validators.required]
   });
   userForm = this.formBuilder.group({
-    client_id: ['0', Validators.required],
-    plant_id: ['0', Validators.required]
+    client_id: ['0', Validators.required], plant_id: ['0', Validators.required]
   });
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
   });
   intervalFilterForm = this.formBuilder.group({
-    start_date: [''],
-    end_date: ['']
+    start_date: [''], end_date: ['']
   });
   filter = 'month';
 
@@ -73,35 +75,6 @@ export class ManageWorkComponent {
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
   }
 
-  filterReports() {
-    if (this.filter === 'month') {
-      if (this.adminForm.value.plant_id !== 'c') {
-        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
-          next: (data: any) => {
-            console.log(data);
-            this.reports = data;
-            this.checkReports(data);
-          }
-        });
-      } else if (this.adminForm.value.plant_id === 'c') {
-        this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
-          next: (data: any) => {
-            console.log(data);
-            this.reports = data;
-            this.checkReports(data);
-          }
-        });
-      }
-      this.reports_filename = 'interventi_' + this.monthFilterForm.value.month?.replace('/', '-');
-    } else if (this.filter === 'interval') {
-      if (this.adminForm.value.plant_id !== 'c') {
-        console.log('in costruzione');
-      } else if (this.adminForm.value.plant_id === 'c') {
-        console.log('in costruzione')
-      }
-    }
-  }
-
   select(event: Event, value: string, form: FormGroup) {
     const selectedValue = (event.target as HTMLInputElement).value;
     form.patchValue({
@@ -109,20 +82,19 @@ export class ManageWorkComponent {
     });
 
     if (this.logged_role === 'admin') {
+      if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
+        this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
+          next: (data: any) => {
+            this.plants = data;
+          }
+        });
+        this.machines = [];
+        this.commissions = [];
+        this.adminForm.patchValue({
+          plant_id: '0', work_id: '0'
+        });
+      }
       if (this.adminForm.value.plant_id !== 'c') {
-        if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
-          this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
-            next: (data: any) => {
-              this.plants = data;
-            }
-          });
-          this.machines = [];
-          this.commissions = [];
-          this.adminForm.patchValue({
-            plant_id: '0',
-            work_id: '0'
-          });
-        }
         if (value === 'plant_id') {
           this.dataService.getMachineByPlant(+this.adminForm.value.plant_id!).subscribe({
             next: (data: any) => {
@@ -132,7 +104,6 @@ export class ManageWorkComponent {
         }
         this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
           next: (data: any) => {
-            console.log(data);
             this.reports = data;
             this.checkReports(data);
           }
@@ -140,14 +111,15 @@ export class ManageWorkComponent {
       }
 
       if (this.adminForm.value.plant_id === 'c') {
-        this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
+        if (value !== 'work_id') {
+          this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
+            next: (data: any) => {
+              this.commissions = data;
+            }
+          });
+        }
+        this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe({
           next: (data: any) => {
-            this.commissions = data;
-          }
-        });
-        this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
-          next: (data: any) => {
-            console.log(data);
             this.reports = data;
             this.checkReports(data);
           }
@@ -159,7 +131,6 @@ export class ManageWorkComponent {
       if (this.logged_role === 'admin') {
         this.dataService.getMonths(this.adminForm.value.operator_id!).subscribe({
           next: (data: any) => {
-            console.log(data);
             this.months = data;
           }
         });
@@ -171,7 +142,6 @@ export class ManageWorkComponent {
         });
         this.dataService.getMyMonthlyReports(this.userForm.value.client_id!, this.monthFilterForm.value.month!).subscribe({
           next: (data: any) => {
-            console.log(data);
             this.reports = data;
             this.checkReports(data);
           }
@@ -241,7 +211,6 @@ export class ManageWorkComponent {
   editReport(id: number) {
     this.dataService.getReportById(id).subscribe({
       next: (data: any) => {
-        console.log(data)
         this.dialog.open(EditComponent, {
           data: {
             title: 'Modifica intervento', message: data
@@ -260,7 +229,6 @@ export class ManageWorkComponent {
       });
       this.dataService.getReports().subscribe({
         next: (data: any) => {
-          console.log(data)
           this.reports = data;
           this.checkReports(data);
         }
@@ -268,7 +236,6 @@ export class ManageWorkComponent {
     } else {
       this.dataService.getMyReports().subscribe({
         next: (data: any) => {
-          console.log(data)
           this.reports = data;
           this.checkReports(data);
         }
@@ -292,6 +259,4 @@ export class ManageWorkComponent {
       });
     }
   }
-
-  protected readonly RegExp = RegExp;
 }

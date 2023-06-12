@@ -51,6 +51,7 @@
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                       id="work_id">
                 <option disabled hidden selected value="">Macchina</option>
+                <option selected value="0">Tutte le macchine</option>
                 <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
                   {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
                 </option>
@@ -120,24 +121,6 @@
               mese</a>
             </small>
           </form>
-
-          <button (click)="filterReports()"
-                  class="relative inline-flex items-center justify-center px-6 py-3 mt-6 overflow-hidden font-bold text-white rounded-md shadow-2xl group disabled:text-white disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed">
-              <span
-                class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
-            <span
-              class="absolute top-0 left-0 w-full bg-gradient-to-b from-white to-transparent opacity-5 h-1/3"></span>
-            <span
-              class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent opacity-5"></span>
-            <span
-              class="absolute bottom-0 left-0 w-4 h-full bg-gradient-to-r from-white to-transparent opacity-5"></span>
-            <span
-              class="absolute bottom-0 right-0 w-4 h-full bg-gradient-to-l from-white to-transparent opacity-5"></span>
-            <span class="absolute inset-0 w-full h-full border border-white rounded-md opacity-10"></span>
-            <span
-              class="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
-            <span class="relative">Filtra</span>
-          </button>
 
           <div class="flex gap-3">
             <button [disabled]="reports.length === 0"
