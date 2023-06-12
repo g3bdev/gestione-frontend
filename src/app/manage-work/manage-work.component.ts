@@ -72,18 +72,63 @@ export class ManageWorkComponent {
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
   }
 
+  filterReports() {
+    if (this.filter === 'month') {
+      if (this.adminForm.value.plant_id !== 'c') {
+        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
+      } else if (this.adminForm.value.plant_id === 'c') {
+        this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
+      }
+      this.reports_filename = 'interventi_' + this.monthFilterForm.value.month?.replace('/', '-');
+    } else if (this.filter === 'interval') {
+      if (this.adminForm.value.plant_id !== 'c') {
+        console.log('in costruzione');
+      } else if (this.adminForm.value.plant_id === 'c') {
+        console.log('in costruzione')
+      }
+    }
+  }
+
   select(event: Event, value: string, form: FormGroup) {
     const selectedValue = (event.target as HTMLInputElement).value;
     form.patchValue({
       [value]: selectedValue
     });
+
     if (this.logged_role === 'admin') {
-      if (value === 'client_id') {
-        this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
-          next: (data: any) => {
-            this.plants = data;
-          }
-        });
+      if (this.adminForm.value.plant_id !== 'c') {
+        if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
+          this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
+            next: (data: any) => {
+              this.plants = data;
+            }
+          });
+          this.machines = [];
+          this.commissions = [];
+          this.adminForm.patchValue({
+            plant_id: '0',
+            work_id: '0'
+          });
+        }
+        if (value === 'plant_id') {
+          this.dataService.getMachineByPlant(+this.adminForm.value.plant_id!).subscribe({
+            next: (data: any) => {
+              this.machines = data;
+            }
+          });
+        }
         this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
           next: (data: any) => {
             console.log(data);
@@ -93,32 +138,19 @@ export class ManageWorkComponent {
         });
       }
 
-      if (value === 'plant_id') {
-        if (this.adminForm.value.plant_id === 'c') {
-          this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
-            next: (data: any) => {
-              this.commissions = data;
-            }
-          });
-          this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
-            next: (data: any) => {
-              this.reports = data;
-              this.checkReports(data);
-            }
-          });
-        } else {
-          this.dataService.getMachineByPlant(+this.adminForm.value.plant_id!).subscribe({
-            next: (data: any) => {
-              this.machines = data;
-            }
-          });
-          this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
-            next: (data: any) => {
-              this.reports = data;
-              this.checkReports(data);
-            }
-          });
-        }
+      if (this.adminForm.value.plant_id === 'c') {
+        this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
+          next: (data: any) => {
+            this.commissions = data;
+          }
+        });
+        this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            this.reports = data;
+            this.checkReports(data);
+          }
+        });
       }
     }
 
