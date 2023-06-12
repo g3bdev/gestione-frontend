@@ -29,7 +29,7 @@
                 <option disabled hidden selected value="">Cliente</option>
                 <option class="bg-gray-900" value="0">Tutti i clienti</option>
                 <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
-                  {{client['name']}} {{client['city']}}
+                  {{client['name']}}
                 </option>
               </select>
             </div>
@@ -41,7 +41,7 @@
                 <option class="bg-gray-900" value="0">Tutti gli stabilimenti</option>
                 <option value="c">Commesse</option>
                 <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
-                  {{plant['name']}} {{plant['city']}}
+                  {{plant['city']}}, {{plant['address']}}
                 </option>
               </select>
             </div>
@@ -121,8 +121,7 @@
             </small>
           </form>
 
-          <button [disabled]="reports.length === 0"
-                  (click)="filterReports()"
+          <button (click)="filterReports()"
                   class="relative inline-flex items-center justify-center px-6 py-3 mt-6 overflow-hidden font-bold text-white rounded-md shadow-2xl group disabled:text-white disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed">
               <span
                 class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
@@ -243,7 +242,7 @@
         <ng-container matColumnDef="description">
           <th *matHeaderCellDef class="hidden" mat-header-cell>Descrizione</th>
           <td *matCellDef="let item" class="hidden"
-              mat-cell> {{item['Report']['description']}} </td>
+              mat-cell> {{item['Report']['description'].replace(exp, ' ')}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

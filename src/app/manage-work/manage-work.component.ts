@@ -33,6 +33,7 @@ export class ManageWorkComponent {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
   months = [];
+  exp: RegExp = /\r\n|\n\r|\n|\r/g;
   reports_filename = 'interventi';
   adminForm = this.formBuilder.group({
     operator_id: ['0', Validators.required],
@@ -291,4 +292,6 @@ export class ManageWorkComponent {
       });
     }
   }
+
+  protected readonly RegExp = RegExp;
 }

@@ -23,7 +23,7 @@
               id="client_id">
         <option disabled hidden selected>{{data.message['client_name']}}</option>
         <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
-          {{client['name']}} {{client['city']}}
+          {{client['name']}}
         </option>
       </select>
     </div>
