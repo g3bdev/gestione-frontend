@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
 import {Router} from "@angular/router";
@@ -9,9 +9,11 @@ import {Router} from "@angular/router";
   styleUrls: ['./create-machine.component.css']
 })
 export class CreateMachineComponent {
+  clients = [];
   plants = [];
   message = '';
   newMachineForm = this.formBuilder.group({
+    client_id: ['', Validators.required],
     plant_id: ['', Validators.required],
     name: ['', Validators.required],
     cost_center: [''],
@@ -25,13 +27,28 @@ export class CreateMachineComponent {
   });
   error: any;
 
+  get isClientSelected() {
+    return this.newMachineForm.value.client_id !== '';
+  }
+
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
   }
 
   select(event: Event, value: string) {
     this.newMachineForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
-    })
+    });
+    if (value === 'client_id') {
+      this.newMachineForm.patchValue({
+        plant_id: ''
+      });
+      this.plants = [];
+      this.dataService.getPlantsByClient(+this.newMachineForm.value.client_id!).subscribe({
+        next: (data: any) => {
+          this.plants = data;
+        }
+      });
+    }
   }
 
   submitForm() {
@@ -49,6 +66,11 @@ export class CreateMachineComponent {
   }
 
   ngOnInit(): void {
+    this.dataService.getClients().subscribe({
+      next: (data: any) => {
+        this.clients = data;
+      }
+    });
     this.dataService.getPlants().subscribe({
       next: (data: any) => {
         this.plants = data;
