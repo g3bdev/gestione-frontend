@@ -189,6 +189,12 @@
               mat-cell> {{item['machine_name']}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="cost_center">
+          <th *matHeaderCellDef class="hidden" mat-header-cell>Centro di costo</th>
+          <td *matCellDef="let item" class="hidden"
+              mat-cell> {{item['cost_center']}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="commission">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Commessa</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
@@ -239,6 +245,7 @@
             </a>
           </td>
         </ng-container>
+
         <div *ngIf="logged_role === 'admin'">
           <tr *matHeaderRowDef="displayed_columns" mat-header-row></tr>
           <tr *matRowDef="let row; columns: displayed_columns;" mat-row></tr>

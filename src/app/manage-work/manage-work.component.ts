@@ -10,6 +10,7 @@ import {CommonService} from "../common.service";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {MatTableExporterDirective} from "mat-table-exporter";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-manage-work',
@@ -19,7 +20,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
 })
 export class ManageWorkComponent {
   @ViewChild('exporter') exporter!: MatTableExporterDirective;
-  displayed_columns: string[] = ['operator', 'date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'description', 'actions'];
+  displayed_columns: string[] = ['operator', 'date', 'client', 'duration', 'intervention_type', 'machine', 'cost_center', 'commission', 'location', 'supervisor', 'description', 'actions'];
   user_columns: string[] = ['date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
   operators = [];
   clients = [];
@@ -28,7 +29,6 @@ export class ManageWorkComponent {
   commissions = [];
   reports = [];
   logged_role = localStorage.getItem('role');
-  message = '';
   error = '';
   fa_print = faPrint;
   fa_trash = faTrash;
@@ -69,7 +69,7 @@ export class ManageWorkComponent {
     return this.adminForm.value.plant_id !== 'c';
   }
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private snackBar: MatSnackBar) {
   }
 
   select(event: Event, value: string, form: FormGroup) {
@@ -79,17 +79,30 @@ export class ManageWorkComponent {
     });
 
     if (this.logged_role === 'admin') {
-      if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
-        this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
-          next: (data: any) => {
-            this.plants = data;
-          }
-        });
-        this.machines = [];
-        this.commissions = [];
-        this.adminForm.patchValue({
-          plant_id: '0', work_id: '0'
-        });
+      if (this.adminForm.value.plant_id !== 'c') {
+        if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
+          this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
+            next: (data: any) => {
+              this.plants = data;
+            }
+          });
+          this.machines = [];
+          this.commissions = [];
+          this.adminForm.patchValue({
+            plant_id: '0', work_id: '0'
+          });
+        }
+      } else if (this.adminForm.value.plant_id === 'c') {
+        if (value === 'client_id') {
+          this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
+            next: (data: any) => {
+              this.commissions = data;
+            }
+          });
+          this.adminForm.patchValue({
+            work_id: '0'
+          });
+        }
       }
       if (this.adminForm.value.plant_id !== 'c') {
         if (value === 'plant_id') {
@@ -97,6 +110,9 @@ export class ManageWorkComponent {
             next: (data: any) => {
               this.machines = data;
             }
+          });
+          this.adminForm.patchValue({
+            work_id: '0'
           });
         }
         if (this.filter === 'month') {
@@ -174,6 +190,12 @@ export class ManageWorkComponent {
     });
   }
 
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 2000,
+    });
+  }
+
   deleteReport(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       data: {
@@ -184,10 +206,10 @@ export class ManageWorkComponent {
       if (result) {
         this.dataService.deleteReport(id).subscribe({
           next: (data: any) => {
-            this.message = data;
+            this.openSnackBar(data.detail);
             setTimeout(() => {
               window.location.reload();
-            }, 2000);
+            }, 1000);
           }
         });
       }
@@ -215,6 +237,7 @@ export class ManageWorkComponent {
       });
       this.dataService.getReports().subscribe({
         next: (data: any) => {
+          console.log(data);
           this.reports = data;
           this.checkReports(data);
         }
