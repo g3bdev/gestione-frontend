@@ -5,6 +5,7 @@ import {faAt, faBuilding, faEnvelope, faPhone, faUser} from '@fortawesome/free-s
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-manage-users',
@@ -29,9 +30,16 @@ export class ManageUsersComponent implements OnInit {
   fa_building = faBuilding;
   fa_user_size: SizeProp = "2xl";
   clicked = false;
+  error = false;
   message = '';
 
-  constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog) {
+  constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'ok!', {
+      duration: 3000
+    });
   }
 
   onChange(id: number) {
@@ -63,10 +71,14 @@ export class ManageUsersComponent implements OnInit {
       if (result) {
         this.dataService.deleteUser(id).subscribe({
           next: (data: any) => {
-            this.message = data;
+            this.message = data.detail;
             setTimeout(() => {
               window.location.reload();
             }, 1000);
+          },
+          error: (error) => {
+            this.error = true;
+            this.message = error.error.detail;
           }
         });
       }

@@ -33,6 +33,7 @@ export class CreateWorkComponent implements OnInit {
   error: any;
   submitted: boolean = false;
   duration_error = '';
+  today = new Date().toISOString().substring(0, 10);
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
   }
@@ -102,7 +103,7 @@ export class CreateWorkComponent implements OnInit {
 
   submitForm() {
     this.submitted = true;
-    if (this.reportForm.invalid) {
+    if (this.reportForm.invalid || !this.isDurationValid(this.reportForm.value.intervention_duration!)) {
       window.scrollTo({top: 0, behavior: 'smooth'});
       return;
     }

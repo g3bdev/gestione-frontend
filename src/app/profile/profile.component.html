@@ -2,7 +2,7 @@
   <app-header></app-header>
   <div class="mx-auto flex px-5 py-8 flex-col items-center">
     <h1 class="title-font text-3xl mb-4 font-medium text-white">Il tuo profilo</h1>
-    <div class="items-start text-left items-center text-center">
+    <div class="items-center text-center">
       <div class="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
         <div class="flex items-center px-6 py-3 bg-purple-400">
           <div
@@ -27,6 +27,10 @@
         </div>
       </div>
     </div>
+    <button routerLink="/profile/change-password"
+            class="rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
+      Cambia password
+    </button>
     <button (click)="logout()"
             class="rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
       Logout

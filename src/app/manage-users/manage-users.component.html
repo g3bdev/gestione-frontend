@@ -35,21 +35,27 @@
                 {{role}}</p>
             </div>
           </div>
-          <div class="flex flex-row justify-center justify-evenly">
+          <div class="flex flex-row justify-evenly gap-4">
 
-            <button *ngIf="clicked"
-                    class="flex-shrink-0 text-white bg-green-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-400 rounded text-lg mt-10 sm:mt-0">
+            <button *ngIf="clicked" (click)="openSnackBar('in arrivo!')"
+                    class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-6 hover:bg-indigo-600 active:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-400 rounded text-lg mt-10 sm:mt-0">
               <a>Modifica</a>
             </button>
 
             <button *ngIf="clicked"
-                    class="flex-shrink-0 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 rounded text-lg">
+                    class="flex-shrink-0 text-white bg-red-500 border-0 py-2 px-6 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 rounded text-lg">
               <a (click)="deleteUser(selectedID)">Elimina</a>
             </button>
           </div>
-          <div *ngIf="message"
+          <div *ngIf="message && error"
                class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mb-4 bg-red-500 w-full">
-          <span class="inline-block align-middle mr-8">
+          <span class="inline-block align-middle">
+            {{message}}
+          </span>
+          </div>
+          <div *ngIf="message && !error"
+               class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mb-4 bg-red-500 w-full">
+          <span class="inline-block align-middle">
             {{message}}
           </span>
           </div>

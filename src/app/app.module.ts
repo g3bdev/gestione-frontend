@@ -38,12 +38,12 @@ import {CreatePlantComponent} from './create-plant/create-plant.component';
 import {CreateMachineComponent} from './create-machine/create-machine.component';
 import {MatRadioModule} from "@angular/material/radio";
 import {MatTableExporterModule} from "mat-table-exporter";
-import { DailyHoursComponent } from './daily-hours/daily-hours.component';
+import {DailyHoursComponent} from './daily-hours/daily-hours.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent, DailyHoursComponent],
-    imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule],
+  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule],
   providers: [],
   bootstrap: [AppComponent]
 })

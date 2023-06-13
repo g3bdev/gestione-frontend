@@ -36,6 +36,7 @@ export class EditComponent implements OnInit {
     cost: ['']
   });
   duration = 5;
+  today = new Date().toISOString().substring(0, 10);
 
   error: any;
   submitted: boolean = false;

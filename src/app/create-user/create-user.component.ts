@@ -26,8 +26,13 @@ export class CreateUserComponent implements OnInit {
     phone_number: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     role: ['', Validators.required]
   });
+  submitted: boolean = false;
 
   constructor(private dataService: DataService, private formBuilder: FormBuilder, private router: Router, private authService: AuthService) {
+  }
+
+  get form() {
+    return this.newUserForm.controls;
   }
 
   select(event: Event, value: string) {
@@ -37,6 +42,11 @@ export class CreateUserComponent implements OnInit {
   }
 
   submitForm() {
+    this.submitted = true;
+    if (this.newUserForm.invalid) {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
     this.dataService.createUser(this.newUserForm.value).subscribe({
       next: (data) => {
         this.user = data;

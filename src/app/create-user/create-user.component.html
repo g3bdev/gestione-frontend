@@ -11,7 +11,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="first_name" id="first_name"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.first_name.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.first_name.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -19,7 +22,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="last_name" id="last_name"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.last_name.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.last_name.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -27,7 +33,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="email" id="email"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.email.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.email.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -35,7 +44,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="username" id="username"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.username.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.username.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -43,14 +55,18 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="phone_number" id="phone_number"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.phone_number.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.phone_number.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="intervention_type">Ruolo</label>
           <select (change)="select($event, 'role')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="intervention_type">
+                  id="intervention_type"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.role.errors}">
             <option disabled hidden selected value="">Seleziona il ruolo</option>
             <option *ngFor="let role of roles" [value]="role['name']"
                     class="bg-gray-800">
@@ -59,9 +75,9 @@
           </select>
         </div>
 
-        <button [disabled]="!newUserForm.valid"
-                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
-                type="submit">
+        <button
+          class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+          type="submit">
           Aggiungi
         </button>
 

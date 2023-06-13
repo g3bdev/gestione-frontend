@@ -14,12 +14,14 @@ import {CreatePlantComponent} from "./create-plant/create-plant.component";
 import {CreateMachineComponent} from "./create-machine/create-machine.component";
 import {CreateCommissionComponent} from "./create-commission/create-commission.component";
 import {DailyHoursComponent} from "./daily-hours/daily-hours.component";
+import {ChangePasswordComponent} from "./change-password/change-password.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},
+  {path: 'profile/change-password', component: ChangePasswordComponent},
   {path: 'reports', component: ManageWorkComponent},
   {path: 'reports/daily', component: DailyHoursComponent},
   {path: 'manage', component: ManagementComponent},
