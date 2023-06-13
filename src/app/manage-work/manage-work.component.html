@@ -174,7 +174,7 @@
         <ng-container matColumnDef="duration">
           <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Durata</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Report']['intervention_duration'] | slice:0:5}} </td>
+              mat-cell> {{item['Report']['intervention_duration'].replace('.', ',') | slice:0:5}} </td>
         </ng-container>
 
         <ng-container matColumnDef="intervention_type">
