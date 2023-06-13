@@ -19,14 +19,14 @@ export class EditComponent implements OnInit {
   message = '';
   logged_role = localStorage.getItem('role');
 
-  form = this.formBuilder.group({
+  editForm = this.formBuilder.group({
     operator_id: ['', Validators.required],
     date: ['', Validators.required],
     intervention_duration: ['', Validators.required],
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
     client_id: ['', Validators.required],
-    plant_id: ['', Validators.required],
+    plant_id: [''],
     work_id: ['', Validators.required],
     type: ['', Validators.required],
     supervisor: ['', Validators.required],
@@ -37,6 +37,10 @@ export class EditComponent implements OnInit {
   });
   duration = 5;
 
+  error: any;
+  submitted: boolean = false;
+  duration_error = '';
+
   constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: {
     title: string;
     message: any
@@ -44,47 +48,97 @@ export class EditComponent implements OnInit {
   }
 
   get isMachine() {
-    return this.form.value.type === 'machine';
+    return this.editForm.value.type === 'machine';
+  }
+
+  get form() {
+    return this.editForm.controls;
+  }
+
+  isDurationValid(value: string): boolean {
+    if (value === '') {
+      this.duration_error = 'Questo campo è obbligatorio.';
+      return false;
+    }
+    if (parseFloat(value) > 16 || value.endsWith('.')) {
+      this.duration_error = 'La durata non è valida.';
+      return false;
+    }
+    const regex = /^[0-9]*\.?[0-9]*$/;
+    if (!regex.test(value) || value.startsWith('.')) {
+      this.duration_error = 'La durata può contenere solo numeri e un punto.';
+      return false;
+    }
+    return true;
   }
 
   select(event: Event, value: string) {
-    this.form.patchValue({
+    this.editForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
     });
     if (value === 'client_id') {
-      this.dataService.getPlantsByClient(+this.form.value.client_id!).subscribe({
+      this.dataService.getPlantsByClient(+this.editForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
         }
       });
-      this.dataService.getCommissionsByClient(+this.form.value.client_id!).subscribe({
+      this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.commissions = data;
         }
       });
-      this.form.patchValue({
+      this.editForm.patchValue({
         plant_id: '0'
       });
     }
-    if (value === 'plant_id' && this.form.value.plant_id === '0') {
-      this.form.patchValue({
+    if (value === 'plant_id' && this.editForm.value.plant_id === '0') {
+      this.editForm.patchValue({
         type: 'commission'
       });
-      this.dataService.getCommissionsByClient(+this.form.value.client_id!).subscribe({
+      this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.commissions = data;
         }
       });
-    } else if (value === 'plant_id' && this.form.value.plant_id !== '0') {
-      this.form.patchValue({
+    } else if (value === 'plant_id' && this.editForm.value.plant_id !== '0') {
+      this.editForm.patchValue({
         type: 'machine', work_id: ''
       });
-      this.dataService.getMachineByPlant(+this.form.value.plant_id!).subscribe({
+      this.dataService.getMachineByPlant(+this.editForm.value.plant_id!).subscribe({
         next: (data: any) => {
           this.machines = data;
         }
       });
     }
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: this.duration * 1000
+    });
+  }
+
+  onConfirm() {
+    this.submitted = true;
+    if (this.editForm.invalid || !this.isDurationValid(this.editForm.value.intervention_duration!)) {
+      return;
+    }
+    this.dataService.editReport(this.editForm.value, this.data.message['Report']['id'], +this.editForm.value.operator_id!).subscribe({
+      next: () => {
+        this.openSnackBar('Intervento modificato con successo!');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }, error: () => {
+        this.openSnackBar('C\'è stato un errore, riprova');
+        this.message = '';
+      }
+    });
+    this.dialogRef.close(true);
+  }
+
+  onCancel() {
+    this.dialogRef.close(false);
   }
 
   ngOnInit(): void {
@@ -120,7 +174,7 @@ export class EditComponent implements OnInit {
         this.users = data;
       });
     }
-    this.form.patchValue({
+    this.editForm.patchValue({
       client_id: this.data.message['client_id'],
       date: this.data.message['Report']['date'],
       type: this.data.message['Report']['type'],
@@ -137,30 +191,4 @@ export class EditComponent implements OnInit {
       plant_id: this.data.message['plant_id']
     });
   }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: this.duration * 1000
-    });
-  }
-
-  onConfirm() {
-    this.dataService.editReport(this.form.value, this.data.message['Report']['id'], +this.form.value.operator_id!).subscribe({
-      next: () => {
-        this.openSnackBar('Intervento modificato con successo!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      }, error: () => {
-        this.openSnackBar('C\'è stato un errore, riprova');
-        this.message = '';
-      }
-    });
-    this.dialogRef.close(true);
-  }
-
-  onCancel() {
-    this.dialogRef.close(false);
-  }
 }
-

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 <div mat-dialog-content>
-  <form [formGroup]="form">
+  <form [formGroup]="editForm">
     <ng-container *ngIf="logged_role === 'admin'">
       <div class="relative w-full">
         <label class="leading-7 text-sm text-gray-400" for="operator_id">Operatore</label>
@@ -107,7 +107,10 @@
       <input
         class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
         formControlName="intervention_duration" id="intervention_duration"
-        type="text">
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && !isDurationValid(editForm.value.intervention_duration!)}">
+      <p class="text-red-500"
+         *ngIf="submitted && !isDurationValid(editForm.value.intervention_duration!)">{{duration_error}}</p>
     </div>
 
     <div class="relative w-full">
@@ -115,7 +118,10 @@
       <input
         class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
         formControlName="supervisor" id="supervisor"
-        type="text">
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.supervisor.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.supervisor.errors">Questo campo è obbligatorio.</p>
     </div>
 
     <div class="relative w-full">
@@ -123,7 +129,11 @@
       <textarea
         class="h-[142px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
         formControlName="description" id="description"
-        type="text"></textarea>
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.description.errors}">
+          </textarea>
+      <p class="text-red-500"
+         *ngIf="submitted && form.description.errors">Questo campo è obbligatorio.</p>
     </div>
 
     <div class="relative w-full">
@@ -152,7 +162,8 @@
   </form>
 </div>
 <div class="text-gray-500 font-medium mt-4 ml-6 text-xs">
-  Intervento creato il {{data.message['Report']['date_created'] | date: 'dd/MM/yyyy'}} alle {{data.message['Report']['date_created'] | date: 'HH:mm'}}
+  Intervento creato il {{data.message['Report']['date_created'] | date: 'dd/MM/yyyy'}}
+  alle {{data.message['Report']['date_created'] | date: 'HH:mm'}}
 </div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>
   <button (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Annulla

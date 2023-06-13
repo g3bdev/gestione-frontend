@@ -26,12 +26,17 @@ export class CreateMachineComponent {
     serial_number: ['']
   });
   error: any;
+  submitted: boolean = false;
 
   get isClientSelected() {
     return this.newMachineForm.value.client_id !== '';
   }
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
+  }
+
+  get form() {
+    return this.newMachineForm.controls;
   }
 
   select(event: Event, value: string) {
@@ -52,6 +57,11 @@ export class CreateMachineComponent {
   }
 
   submitForm() {
+    this.submitted = true;
+    if (this.newMachineForm.invalid) {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
     this.dataService.createMachine(this.newMachineForm.value).subscribe({
       next: () => {
         this.message = 'Macchina aggiunta con successo!';

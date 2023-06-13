@@ -22,8 +22,13 @@ export class CreateClientComponent {
     phone_number: ['', Validators.required]
   });
   error: any;
+  submitted: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
+  }
+
+  get form() {
+    return this.newClientForm.controls;
   }
 
   select(event: Event, value: string) {
@@ -33,6 +38,11 @@ export class CreateClientComponent {
   }
 
   submitForm() {
+    this.submitted = true;
+    if (this.newClientForm.invalid) {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
     this.dataService.createClient(this.newClientForm.value).subscribe({
       next: () => {
         this.message = 'Cliente aggiunto con successo!';

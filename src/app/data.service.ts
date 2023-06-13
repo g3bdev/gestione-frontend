@@ -68,8 +68,14 @@ export class DataService {
     });
   }
 
-  getIntervalReports(client_id: string, user_id: string, start_date: string, end_date: string) {
-    return this.httpClient.get(`${environment.apiUrl}/reports/interval?start_date=${start_date}&end_date=${end_date}&user_id=${user_id}&client_id=${client_id}`, {
+  getIntervalReports(client_id: string, user_id: string, start_date: string, end_date: string, plant_id: string, work_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/interval?start_date=${start_date}&end_date=${end_date}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}&work_id=${work_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getIntervalCommissionReports(client_id: string, user_id: string, start_date: string, end_date: string, plant_id: string, work_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/interval/commissions?start_date=${start_date}&end_date=${end_date}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}&work_id=${work_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

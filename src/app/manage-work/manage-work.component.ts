@@ -45,9 +45,6 @@ export class ManageWorkComponent {
     plant_id: ['0', Validators.required],
     work_id: ['0', Validators.required]
   });
-  userForm = this.formBuilder.group({
-    client_id: ['0', Validators.required], plant_id: ['0', Validators.required]
-  });
   monthFilterForm = this.formBuilder.group({
     month: ['0', Validators.required]
   });
@@ -102,12 +99,21 @@ export class ManageWorkComponent {
             }
           });
         }
-        this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
-          next: (data: any) => {
-            this.reports = data;
-            this.checkReports(data);
-          }
-        });
+        if (this.filter === 'month') {
+          this.dataService.getMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
+            next: (data: any) => {
+              this.reports = data;
+              this.checkReports(data);
+            }
+          });
+        } else if (this.filter === 'interval') {
+          this.dataService.getIntervalReports(this.adminForm.value.client_id!, this.adminForm.value.operator_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
+            next: (data: any) => {
+              this.reports = data;
+              this.checkReports(data);
+            }
+          });
+        }
       }
 
       if (this.adminForm.value.plant_id === 'c') {
@@ -118,52 +124,32 @@ export class ManageWorkComponent {
             }
           });
         }
-        this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe({
-          next: (data: any) => {
-            this.reports = data;
-            this.checkReports(data);
-          }
-        });
+        if (this.filter === 'month') {
+          this.dataService.getMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe({
+            next: (data: any) => {
+              this.reports = data;
+              this.checkReports(data);
+            }
+          });
+        } else if (this.filter === 'interval') {
+          this.dataService.getIntervalCommissionReports(this.adminForm.value.client_id!, this.adminForm.value.operator_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe({
+            next: (data: any) => {
+              this.reports = data;
+              this.checkReports(data);
+            }
+          });
+        }
       }
     }
 
     if (this.filter === 'month') {
-      if (this.logged_role === 'admin') {
-        this.dataService.getMonths(this.adminForm.value.operator_id!).subscribe({
-          next: (data: any) => {
-            this.months = data;
-          }
-        });
-      } else {
-        this.dataService.getMyMonths(this.userForm.value.client_id!).subscribe({
-          next: (data: any) => {
-            this.months = data;
-          }
-        });
-        this.dataService.getMyMonthlyReports(this.userForm.value.client_id!, this.monthFilterForm.value.month!).subscribe({
-          next: (data: any) => {
-            this.reports = data;
-            this.checkReports(data);
-          }
-        });
-      }
+      this.dataService.getMonths(this.adminForm.value.operator_id!).subscribe({
+        next: (data: any) => {
+          this.months = data;
+        }
+      });
       this.reports_filename = 'interventi_' + this.monthFilterForm.value.month?.replace('/', '-');
     } else if (this.filter === 'interval') {
-      if (this.logged_role === 'admin') {
-        this.dataService.getIntervalReports(this.adminForm.value.client_id!, this.adminForm.value.operator_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
-          next: (data: any) => {
-            this.reports = data;
-            this.checkReports(data);
-          }
-        });
-      } else {
-        this.dataService.getMyIntervalReports(this.userForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!).subscribe({
-          next: (data: any) => {
-            this.reports = data;
-            this.checkReports(data);
-          }
-        });
-      }
       this.reports_filename = 'interventi_' + this.intervalFilterForm.value.start_date + '_' + this.intervalFilterForm.value.end_date;
     }
   }

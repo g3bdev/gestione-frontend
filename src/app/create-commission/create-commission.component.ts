@@ -17,6 +17,7 @@ export class CreateCommissionComponent implements OnInit {
     description: ['', Validators.required]
   });
   error: any;
+  submitted: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
   }
@@ -27,7 +28,16 @@ export class CreateCommissionComponent implements OnInit {
     });
   }
 
+  get form() {
+    return this.newCommissionForm.controls;
+  }
+
   submitForm() {
+    this.submitted = true;
+    if (this.newCommissionForm.invalid) {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
     this.dataService.createCommission(this.newCommissionForm.value).subscribe({
       next: () => {
         this.message = 'Commessa aggiunta con successo!';

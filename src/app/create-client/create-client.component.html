@@ -11,7 +11,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="name" id="name"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.name.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.name.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -19,7 +22,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="city" id="city"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.city.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.city.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -27,7 +33,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="province" id="province"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.province.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.province.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -35,7 +44,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="cap" id="cap"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.cap.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.cap.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -43,7 +55,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="address" id="address"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.address.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.address.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -51,7 +66,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="email" id="email"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.email.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.email.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -59,7 +77,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="contact" id="contact"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.contact.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.contact.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -67,12 +88,15 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="phone_number" id="phone_number"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.phone_number.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.phone_number.errors">Questo campo è obbligatorio.</p>
         </div>
 
-        <button [disabled]="!newClientForm.valid"
-                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
-                type="submit">
+        <button
+          class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+          type="submit">
           Aggiungi
         </button>
 

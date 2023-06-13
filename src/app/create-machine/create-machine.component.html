@@ -10,7 +10,8 @@
           <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
           <select (change)="select($event, 'client_id')"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="client_id">
+                  id="client_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.client_id.errors}">
             <option disabled hidden selected value="">Seleziona il cliente</option>
             <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
               {{client['name']}}
@@ -22,7 +23,8 @@
           <label class="leading-7 text-sm text-gray-400" for="plant_id">Stabilimento</label>
           <select (change)="select($event, 'plant_id')" [disabled]="!isClientSelected"
                   class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="plant_id">
+                  id="plant_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.plant_id.errors}">
             <option selected value="">Seleziona lo stabilimento</option>
             <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
               {{plant['city']}}, {{plant['address']}}
@@ -35,7 +37,10 @@
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="name" id="name"
-            type="text">
+            type="text"
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.name.errors}">
+          <p class="text-red-500"
+             *ngIf="submitted && form.name.errors">Questo campo è obbligatorio.</p>
         </div>
 
         <div class="relative w-full lg:w-1/2">
@@ -103,9 +108,9 @@
             type="text"></textarea>
         </div>
 
-        <button [disabled]="!newMachineForm.valid"
-                class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
-                type="submit">
+        <button
+          class="inline-flex text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+          type="submit">
           Aggiungi
         </button>
 
