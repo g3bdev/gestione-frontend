@@ -1,0 +1,80 @@
+<section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
+  <app-header></app-header>
+  <div class="mx-auto px-5 py-8 flex-col">
+    <div class="text-center">
+      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci macchine</h1>
+
+      <table [dataSource]="machines" class="mat-elevation-z16 bg-gray-800 border-b"
+             mat-table>
+
+        <ng-container matColumnDef="client">
+          <th *matHeaderCellDef mat-header-cell>Cliente</th>
+          <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="plant">
+          <th *matHeaderCellDef mat-header-cell>Stabilimento</th>
+          <td *matCellDef="let item" mat-cell> {{item['Plant']['city']}}, {{item['Plant']['address']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell>Nome</th>
+          <td *matCellDef="let item"
+              mat-cell> {{item['Machine']['name']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="code">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Codice</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Machine']['code']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cost_center">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Centro di costo</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> C{{item['Machine']['cost_center']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="brand">
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Brand</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Machine']['brand']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="model">
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Modello</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Machine']['model']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="production_year">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Anno produzione</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Machine']['production_year']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell></th>
+          <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+            <a (click)="editMachine(item['Machine']['id'])">
+              <fa-icon [icon]="fa_info"
+                       [matTooltipPosition]="position"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       matTooltip="Info"></fa-icon>
+            </a>
+            <a (click)="deleteMachine(item['Machine']['id'])">
+              <fa-icon [icon]="fa_trash"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="machine_columns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: machine_columns;" mat-row></tr>
+
+      </table>
+    </div>
+  </div>
+</section>

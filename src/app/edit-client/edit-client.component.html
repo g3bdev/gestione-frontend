@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<div mat-dialog-content>
+  <form [formGroup]="editClientForm">
+
+      <label class="leading-7 text-sm text-gray-400" for="name">Nome</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="name" id="name"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.name.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.name.errors">Questo campo è obbligatorio.</p>
+
+      <label class="leading-7 text-sm text-gray-400" for="city">Città</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="city" id="city"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.city.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.city.errors">Questo campo è obbligatorio.</p>
+
+      <label class="leading-7 text-sm text-gray-400" for="province">Provincia</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="province" id="province"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.province.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.province.errors">Questo campo è obbligatorio.</p>
+
+      <label class="leading-7 text-sm text-gray-400" for="cap">CAP</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="cap" id="cap"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.cap.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.cap.errors">Questo campo è obbligatorio.</p>
+
+      <label class="leading-7 text-sm text-gray-400" for="address">Indirizzo</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="address" id="address"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.address.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.address.errors">Questo campo è obbligatorio.</p>
+
+      <label class="leading-7 text-sm text-gray-400" for="email">Email</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="email" id="email"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.email.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.email.errors">Questo campo è obbligatorio.</p>
+
+      <label class="leading-7 text-sm text-gray-400" for="contact">Referente</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="contact" id="contact"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.contact.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.contact.errors">Questo campo è obbligatorio.</p>
+
+      <label class="leading-7 text-sm text-gray-400" for="phone_number">Numero di telefono</label>
+      <input
+        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+        formControlName="phone_number" id="phone_number"
+        type="text"
+        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.phone_number.errors}">
+      <p class="text-red-500"
+         *ngIf="submitted && form.phone_number.errors">Questo campo è obbligatorio.</p>
+
+  </form>
+</div>
+<div align="end" class="flex space-x-4" mat-dialog-actions>
+  <button (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Annulla
+  </button>
+  <button (click)="onConfirm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Modifica
+  </button>
+</div>

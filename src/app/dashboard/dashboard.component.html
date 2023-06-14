@@ -5,7 +5,6 @@
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Ciao {{name}}</h1>
       <div class="flex justify-center">
         <div class="w-72 sm:w-96">
-
           <a *ngIf="logged_role === 'admin'"
              class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
              routerLink="/reports">
@@ -52,20 +51,15 @@
             Aggiungi un nuovo utente
           </a>
           <a *ngIf="logged_role === 'admin'"
-             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-             routerLink="/users">
-            Gestisci utenti
-          </a>
-          <a *ngIf="logged_role === 'admin'"
-             class="block border border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+             class="block border bg-gradient-to-r from-yellow-200/40 to-yellow-400/30 border-purple-200 mt-5 w-full cursor-pointer rounded-lg p-4 leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
              routerLink="/manage">
-            Gestisci clienti, commesse, macchine e altro
+            Gestione database
           </a>
         </div>
       </div>
-    <div class="text-gray-500 font-medium mt-12 text-xs">
-      made with <3 by <a class="text-purple-500" href="https://g3b.dev" target="_blank">gab</a>
-    </div>
+      <div class="text-gray-500 font-medium mt-12 text-xs">
+        made with <3 by <span class="text-purple-500">gab</span>
+      </div>
     </div>
   </div>
 </section>

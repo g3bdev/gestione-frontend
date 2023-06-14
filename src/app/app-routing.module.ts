@@ -15,6 +15,8 @@ import {CreateMachineComponent} from "./create-machine/create-machine.component"
 import {CreateCommissionComponent} from "./create-commission/create-commission.component";
 import {DailyHoursComponent} from "./daily-hours/daily-hours.component";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
+import {ManageMachinesComponent} from "./manage-machines/manage-machines.component";
+import {ManageClientsComponent} from "./manage-clients/manage-clients.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -25,6 +27,8 @@ const routes: Routes = [
   {path: 'reports', component: ManageWorkComponent},
   {path: 'reports/daily', component: DailyHoursComponent},
   {path: 'manage', component: ManagementComponent},
+  {path: 'manage/clients', component: ManageClientsComponent},
+  {path: 'manage/machines', component: ManageMachinesComponent},
   {path: 'users', component: ManageUsersComponent},
   {path: 'add', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: 'add/report', component: CreateWorkComponent},

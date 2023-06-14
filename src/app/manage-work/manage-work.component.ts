@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
@@ -18,7 +18,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./manage-work.component.css'],
   animations: [trigger('fade', [transition('void => *', [style({opacity: 0}), animate(100, style({opacity: 1}))])])]
 })
-export class ManageWorkComponent {
+export class ManageWorkComponent implements OnInit {
   @ViewChild('exporter') exporter!: MatTableExporterDirective;
   displayed_columns: string[] = ['operator', 'date', 'client', 'duration', 'intervention_type', 'machine', 'cost_center', 'commission', 'location', 'supervisor', 'description', 'actions'];
   user_columns: string[] = ['date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
@@ -196,6 +196,18 @@ export class ManageWorkComponent {
     });
   }
 
+  editReport(id: number) {
+    this.dataService.getReportById(id).subscribe({
+      next: (data: any) => {
+        this.dialog.open(EditComponent, {
+          data: {
+            title: 'Modifica intervento', message: data
+          }, width: '50em'
+        });
+      }
+    });
+  }
+
   deleteReport(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       data: {
@@ -211,18 +223,6 @@ export class ManageWorkComponent {
               window.location.reload();
             }, 1000);
           }
-        });
-      }
-    });
-  }
-
-  editReport(id: number) {
-    this.dataService.getReportById(id).subscribe({
-      next: (data: any) => {
-        this.dialog.open(EditComponent, {
-          data: {
-            title: 'Modifica intervento', message: data
-          }, width: '50em'
         });
       }
     });

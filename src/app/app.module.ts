@@ -40,10 +40,15 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatTableExporterModule} from "mat-table-exporter";
 import {DailyHoursComponent} from './daily-hours/daily-hours.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { EditMachineComponent } from './edit-machine/edit-machine.component';
+import { ManageMachinesComponent } from './manage-machines/manage-machines.component';
+import {MatSortModule} from "@angular/material/sort";
+import { EditClientComponent } from './edit-client/edit-client.component';
+import { ManageClientsComponent } from './manage-clients/manage-clients.component';
 
 @NgModule({
-  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent, DailyHoursComponent],
-  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule],
+  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent, DailyHoursComponent, EditMachineComponent, ManageMachinesComponent, EditClientComponent, ManageClientsComponent],
+  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule, MatSortModule],
   providers: [],
   bootstrap: [AppComponent]
 })

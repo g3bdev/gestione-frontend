@@ -241,6 +241,45 @@ export class DataService {
     });
   }
 
+  editMachine(machine: Partial<{
+    client_id: string | null;
+    plant_id: string | null;
+    name: string | null;
+    cost_center: string | null;
+    brand: string | null;
+    model: string | null;
+    production_year: string | null;
+    description: string | null;
+    robotic_island: string | null;
+    code: string | null;
+    serial_number: string | null;
+  }>, machine_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/machine/edit?machine_id=${machine_id}`, machine, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  editClient(client: Partial<{
+    name: string | null;
+    city: string | null;
+    province: string | null;
+    cap: string | null;
+    address: string | null;
+    email: string | null;
+    contact: string | null;
+    phone_number: string | null;
+  }>, client_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/client/edit?client_id=${client_id}`, client, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getMachineById(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/machine/${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
   deleteReport(id: number) {
     return this.httpClient.delete(`${environment.apiUrl}/report/delete?report_id=${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
