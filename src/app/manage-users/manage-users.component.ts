@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {AuthService} from "../auth.service";
-import {faAt, faBuilding, faEnvelope, faPhone, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faAt, faBuilding, faEnvelope, faPhone, faUser} from '@fortawesome/free-solid-svg-icons';
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -23,6 +23,7 @@ export class ManageUsersComponent implements OnInit {
   role = '';
   selectedID = 0;
   logged_role = localStorage.getItem('role');
+  fa_arrowLeft = faArrowLeft;
   fa_user = faUser;
   fa_envelope = faEnvelope;
   fa_at = faAt;
@@ -37,7 +38,7 @@ export class ManageUsersComponent implements OnInit {
   }
 
   openSnackBar(message: string) {
-    this.snackBar.open(message, 'ok!', {
+    this.snackBar.open(message, void 0, {
       duration: 3000
     });
   }
@@ -95,4 +96,6 @@ export class ManageUsersComponent implements OnInit {
       this.users = data;
     });
   }
+
+  protected readonly window = window;
 }

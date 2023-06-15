@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
-import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -15,7 +15,9 @@ import {TooltipPosition} from "@angular/material/tooltip";
 })
 export class ManagePlantsComponent implements OnInit {
   plants = [];
-  plant_columns: string[] = ['client', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];fa_trash = faTrash;
+  plant_columns: string[] = ['client', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
+  fa_arrowLeft = faArrowLeft;
+  fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
@@ -73,4 +75,6 @@ export class ManagePlantsComponent implements OnInit {
       }
     });
   }
+
+  protected readonly window = window;
 }

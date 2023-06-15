@@ -1,6 +1,16 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="mx-auto px-5 py-8 flex-col">
+  <div class="mx-auto px-5 py-4 flex-col">
+    <button
+      class="text-purple-500 border border-purple-500 hover:bg-purple-500 hover:text-white active:bg-purple-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+      type="button"
+      (click)="window.history.back()"
+    >
+      <fa-icon [icon]="fa_arrowLeft"></fa-icon>
+      Torna indietro
+    </button>
+  </div>
+  <div class="mx-auto px-5 py-2 flex-col">
     <div class="text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci macchine</h1>
 
@@ -9,11 +19,11 @@
 
         <ng-container matColumnDef="client">
           <th *matHeaderCellDef mat-header-cell>Cliente</th>
-          <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} </td>
+          <td *matCellDef="let item" mat-cell class="hidden md:table-cell"> {{item['Client']['name']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="plant">
-          <th *matHeaderCellDef mat-header-cell>Stabilimento</th>
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Stabilimento</th>
           <td *matCellDef="let item" mat-cell> {{item['Plant']['city']}}, {{item['Plant']['address']}} </td>
         </ng-container>
 

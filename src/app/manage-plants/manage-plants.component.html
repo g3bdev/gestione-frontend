@@ -1,6 +1,16 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="mx-auto px-5 py-8 flex-col">
+  <div class="mx-auto px-5 py-4 flex-col">
+    <button
+      class="text-purple-500 border border-purple-500 hover:bg-purple-500 hover:text-white active:bg-purple-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+      type="button"
+      (click)="window.history.back()"
+    >
+      <fa-icon [icon]="fa_arrowLeft"></fa-icon>
+      Torna indietro
+    </button>
+  </div>
+  <div class="mx-auto px-5 py-2 flex-col">
     <div class="text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci stabilimenti</h1>
 
@@ -19,25 +29,25 @@
         </ng-container>
 
         <ng-container matColumnDef="address">
-          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Indirizzo</th>
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Indirizzo</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
               mat-cell> {{item['Plant']['address']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Email</th>
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Email</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
               mat-cell> {{item['Plant']['email']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="contact">
-          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Referente</th>
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Referente</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
               mat-cell> {{item['Plant']['contact']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone_number">
-          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Numero di telefono</th>
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Numero di telefono</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
               mat-cell> {{item['Plant']['phone_number']}} </td>
         </ng-container>

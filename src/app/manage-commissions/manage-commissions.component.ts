@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {EditMachineComponent} from "../edit-machine/edit-machine.component";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditCommissionComponent} from "../edit-commission/edit-commission.component";
 
@@ -17,6 +16,7 @@ import {EditCommissionComponent} from "../edit-commission/edit-commission.compon
 export class ManageCommissionsComponent implements OnInit {
   commissions = [];
   commission_columns: string[] = ['code', 'client_id', 'description', 'actions'];
+  fa_arrowLeft = faArrowLeft;
   fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_size: SizeProp = "xl";
@@ -77,4 +77,5 @@ export class ManageCommissionsComponent implements OnInit {
     });
   }
 
+  protected readonly window = window;
 }

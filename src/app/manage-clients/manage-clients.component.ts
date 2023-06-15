@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -17,6 +17,7 @@ export class ManageClientsComponent implements OnInit {
   clients = [];
   client_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
   fa_trash = faTrash;
+  fa_arrowLeft = faArrowLeft;
   fa_info = faInfoCircle;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
@@ -75,4 +76,5 @@ export class ManageClientsComponent implements OnInit {
   }
 
 
+  protected readonly window = window;
 }

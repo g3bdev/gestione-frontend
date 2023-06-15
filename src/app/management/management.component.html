@@ -1,78 +1,37 @@
 <section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="mx-auto px-5 py-8 flex-col">
+  <div class="mx-auto px-5 py-4 flex-col">
+    <button
+      class="text-purple-500 border border-purple-500 hover:bg-purple-500 hover:text-white active:bg-purple-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+      type="button"
+      (click)="window.history.back()"
+    >
+      <fa-icon [icon]="fa_arrowLeft"></fa-icon>
+      Torna indietro
+    </button>
     <div class="text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestione database</h1>
-      <div class="flex flex-col items-center justify-center mb-8 sm:flex-row sm:justify-center sm:space-x-4">
+      <div class="flex flex-col items-center justify-center sm:flex-row sm:justify-center sm:space-x-4">
         <button routerLink="/manage/clients"
-                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0 sm:w-auto w-full">
           Clienti
         </button>
         <button routerLink="/manage/commissions"
-                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0 sm:w-auto w-full">
           Commesse
         </button>
         <button routerLink="/manage/plants"
-                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0 sm:w-auto w-full">
           Stabilimenti
         </button>
         <button routerLink="/manage/machines"
-                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0">
+                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0 sm:w-auto w-full">
           Macchine
         </button>
-      </div>
-
-      <div class="flex items-center justify-center mb-8">
-        <table *ngIf="category === 'plants'" [dataSource]="plants"
-               class="mat-elevation-z16 bg-gray-800 border-b"
-               mat-table>
-          <ng-container matColumnDef="name">
-            <th *matHeaderCellDef mat-header-cell>Nome</th>
-            <td *matCellDef="let item" mat-cell> {{item['name']}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="city">
-            <th *matHeaderCellDef mat-header-cell>Città</th>
-            <td *matCellDef="let item"
-                mat-cell> {{item['city']}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="address">
-            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Indirizzo</th>
-            <td *matCellDef="let item" class="hidden md:table-cell"
-                mat-cell> {{item['address']}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="email">
-            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Email</th>
-            <td *matCellDef="let item" class="hidden md:table-cell"
-                mat-cell> {{item['email']}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="contact">
-            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Referente</th>
-            <td *matCellDef="let item" class="hidden md:table-cell"
-                mat-cell> {{item['contact']}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="phone_number">
-            <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Numero di telefono</th>
-            <td *matCellDef="let item" class="hidden md:table-cell"
-                mat-cell> {{item['phone_number']}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="actions">
-            <th *matHeaderCellDef mat-header-cell></th>
-            <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-              <a (click)="delete(item['id'], 'plants')">
-                <fa-icon [icon]="fa_trash" [size]="fa_size"
-                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
-              </a>
-            </td>
-          </ng-container>
-          <tr *matHeaderRowDef="plant_columns" mat-header-row></tr>
-          <tr *matRowDef="let row; columns: plant_columns;" mat-row></tr>
-        </table>
+        <button routerLink="/manage/users"
+                class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 sm:mb-0 sm:w-auto w-full">
+          Utenti
+        </button>
       </div>
     </div>
   </div>

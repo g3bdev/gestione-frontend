@@ -1,8 +1,18 @@
 <section *ngIf="logged_role == 'admin'; else error" class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
-  <div class="flex px-5 py-8 flex-col items-center">
-    <div class="items-center text-center">
-      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci gli utenti</h1>
+  <div class="mx-auto px-5 py-4 flex-col">
+    <button
+      class="text-purple-500 border border-purple-500 hover:bg-purple-500 hover:text-white active:bg-purple-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+      type="button"
+      (click)="window.history.back()"
+    >
+      <fa-icon [icon]="fa_arrowLeft"></fa-icon>
+      Torna indietro
+    </button>
+  </div>
+  <div class="mx-auto px-5 py-2 flex-col">
+    <div class="text-center">
+      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci utenti</h1>
       <div class="flex items-center justify-center mb-8">
         <div>
           <select (ngModelChange)="onChange($event)" [ngModel]="selectedID"
@@ -37,7 +47,7 @@
           </div>
           <div class="flex flex-row justify-evenly gap-4">
 
-            <button *ngIf="clicked" (click)="openSnackBar('in arrivo!')"
+            <button *ngIf="clicked" (click)="openSnackBar('In arrivo')"
                     class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-6 hover:bg-indigo-600 active:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-400 rounded text-lg mt-10 sm:mt-0">
               <a>Modifica</a>
             </button>
