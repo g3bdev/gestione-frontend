@@ -2,61 +2,64 @@
   <app-header></app-header>
   <div class="mx-auto px-5 py-8 flex-col">
     <div class="text-center">
-      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci clienti</h1>
+      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci stabilimenti</h1>
 
-      <table [dataSource]="clients" class="mat-elevation-z16 bg-gray-800 border-b"
+      <table [dataSource]="plants"
+             class="mat-elevation-z16 bg-gray-800 border-b"
              mat-table>
-        <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell>Nome</th>
-          <td *matCellDef="let item" mat-cell> {{item['name']}} </td>
+        <ng-container matColumnDef="client">
+          <th *matHeaderCellDef mat-header-cell>Cliente</th>
+          <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="city">
-          <th *matHeaderCellDef mat-header-cell>Sede</th>
+          <th *matHeaderCellDef mat-header-cell>Città</th>
           <td *matCellDef="let item"
-              mat-cell> {{item['city']}} </td>
+              mat-cell> {{item['Plant']['city']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="address">
           <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Indirizzo</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['address']}} </td>
+              mat-cell> {{item['Plant']['address']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Email</th>
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Email</th>
           <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['email']}} </td>
+              mat-cell> {{item['Plant']['email']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="contact">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Referente</th>
-          <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['contact']}} </td>
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Referente</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Plant']['contact']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone_number">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Telefono</th>
-          <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['phone_number']}} </td>
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Numero di telefono</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Plant']['phone_number']}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-            <a (click)="editClient(item['id'])">
+            <a (click)="editPlant(item['Plant']['id'])">
               <fa-icon [icon]="fa_info"
                        [matTooltipPosition]="position"
                        [size]="fa_size"
                        class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
                        matTooltip="Info"></fa-icon>
             </a>
-            <a (click)="deleteClient(item['id'])">
+            <a (click)="deletePlant(item['Plant']['id'])">
               <fa-icon [icon]="fa_trash" [size]="fa_size"
                        class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
             </a>
           </td>
         </ng-container>
-        <tr *matHeaderRowDef="client_columns" mat-header-row></tr>
-        <tr *matRowDef="let row; columns: client_columns;" mat-row></tr>
+        <tr *matHeaderRowDef="plant_columns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: plant_columns;" mat-row></tr>
       </table>
     </div>
   </div>

@@ -1,58 +1,60 @@
 import {Component, OnInit} from '@angular/core';
 import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {SizeProp} from "@fortawesome/fontawesome-svg-core";
+import {TooltipPosition} from "@angular/material/tooltip";
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {SizeProp} from "@fortawesome/fontawesome-svg-core";
-import {TooltipPosition} from "@angular/material/tooltip";
-import {EditClientComponent} from "../edit-client/edit-client.component";
+import {EditMachineComponent} from "../edit-machine/edit-machine.component";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
+import {EditCommissionComponent} from "../edit-commission/edit-commission.component";
 
 @Component({
-  selector: 'app-manage-clients',
-  templateUrl: './manage-clients.component.html',
-  styleUrls: ['./manage-clients.component.css']
+  selector: 'app-manage-commissions',
+  templateUrl: './manage-commissions.component.html',
+  styleUrls: ['./manage-commissions.component.css']
 })
-export class ManageClientsComponent implements OnInit {
-  clients = [];
-  client_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
+export class ManageCommissionsComponent implements OnInit {
+  commissions = [];
+  commission_columns: string[] = ['code', 'client_id', 'description', 'actions'];
   fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
+
 
   constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
 
   openSnackBar(message: string) {
     this.snackBar.open(message, '', {
-      duration: 5000
+      duration: 2000,
     });
   }
 
-  editClient(id: number) {
-    this.dataService.getClientById(id).subscribe({
+  editCommission(id: number) {
+    this.dataService.getCommissionById(id).subscribe({
       next: (data: any) => {
-        this.dialog.open(EditClientComponent, {
+        this.dialog.open(EditCommissionComponent, {
           data: {
-            title: 'Modifica cliente', message: data
+            title: 'Modifica commessa', message: data
           }, width: '50em'
         });
       }
     });
   }
 
-  deleteClient(id: number) {
+  deleteCommission(id: number) {
     let data = {
       data: {
         title: 'Conferma eliminazione',
-        message: 'Sei sicuro di voler eliminare questo cliente?'
+        message: 'Sei sicuro di voler eliminare questa commessa?'
       }
     }
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.deleteClient(id).subscribe({
+        this.dataService.deleteCommission(id).subscribe({
           next: (data: any) => {
             this.openSnackBar(data.detail);
             setTimeout(() => {
@@ -66,13 +68,13 @@ export class ManageClientsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.dataService.getClients().subscribe({
+  ngOnInit() {
+    this.dataService.getCommissions().subscribe({
       next: (data: any) => {
-        this.clients = data;
+        console.log(data)
+        this.commissions = data;
       }
     });
   }
-
 
 }

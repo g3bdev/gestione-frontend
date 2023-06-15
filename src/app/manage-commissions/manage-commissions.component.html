@@ -1,0 +1,49 @@
+<section class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
+  <app-header></app-header>
+  <div class="mx-auto px-5 py-8 flex-col">
+    <div class="text-center">
+      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci commesse</h1>
+
+      <table [dataSource]="commissions"
+             class="mat-elevation-z16 bg-gray-800 border-b"
+             mat-table>
+        <ng-container matColumnDef="client_id">
+          <th *matHeaderCellDef mat-header-cell>Cliente</th>
+          <td *matCellDef="let item" mat-cell> {{item['Client']['name']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="code">
+          <th *matHeaderCellDef mat-header-cell>Codice</th>
+          <td *matCellDef="let item"
+              mat-cell> {{item['Commission']['code']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Descrizione</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Commission']['description']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell></th>
+          <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+            <a (click)="editCommission(item['Commission']['id'])">
+              <fa-icon [icon]="fa_info"
+                       [matTooltipPosition]="position"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       matTooltip="Info"></fa-icon>
+            </a>
+            <a (click)="deleteCommission(item['Commission']['id'])">
+              <fa-icon [icon]="fa_trash" [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+            </a>
+          </td>
+        </ng-container>
+        <tr *matHeaderRowDef="commission_columns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: commission_columns;" mat-row></tr>
+      </table>
+
+    </div>
+  </div>
+</section>

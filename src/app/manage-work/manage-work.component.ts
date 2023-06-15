@@ -3,7 +3,7 @@ import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
-import {faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationCircle, faInfoCircle, faPrint, faSpinner, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
@@ -52,6 +52,7 @@ export class ManageWorkComponent implements OnInit {
     start_date: [''], end_date: ['']
   });
   filter = 'month';
+  loading = false;
 
   get isMachinesEmpty() {
     return this.machines.length === 0;
@@ -183,7 +184,9 @@ export class ManageWorkComponent implements OnInit {
   }
 
   printMonthlyReports() {
+    this.loading = true;
     this.dataService.printMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe((response) => {
+      this.loading = false;
       const file = new Blob([response], {type: 'application/pdf'});
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);

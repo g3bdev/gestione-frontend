@@ -92,12 +92,6 @@ export class DataService {
     });
   }
 
-  getUserById(id: number) {
-    return this.httpClient.get(`${environment.apiUrl}/user/${id}`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
-    });
-  }
-
   getLocations() {
     return this.httpClient.get(`${environment.apiUrl}/locations`);
   }
@@ -181,7 +175,9 @@ export class DataService {
   }
 
   createCommission(commission: Partial<{
-    commission_code: string | null; commission_description: string | null; client_id: string | null;
+    commission_code: string | null;
+    commission_description: string | null;
+    client_id: string | null;
   }>) {
     return this.httpClient.post(`${environment.apiUrl}/commissions/create`, commission, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
@@ -270,6 +266,56 @@ export class DataService {
     phone_number: string | null;
   }>, client_id: number) {
     return this.httpClient.put(`${environment.apiUrl}/client/edit?client_id=${client_id}`, client, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  editPlant(plant: Partial<{
+    client_id: string | null;
+    name: string | null;
+    city: string | null;
+    province: string | null;
+    cap: string | null;
+    address: string | null;
+    email: string | null;
+    contact: string | null;
+    phone_number: string | null;
+  }>, plant_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/plant/edit?plant_id=${plant_id}`, plant, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  editCommission(commission: Partial<{
+    commission_code: string | null;
+    commission_description: string | null;
+    client_id: string | null;
+  }>, commission_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/commission/edit?commission_id=${commission_id}`, commission, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getUserById(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/user/${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getClientById(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/client/${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getPlantById(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/plant/${id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getCommissionById(id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/commission/${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

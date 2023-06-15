@@ -17,6 +17,8 @@ import {DailyHoursComponent} from "./daily-hours/daily-hours.component";
 import {ChangePasswordComponent} from "./change-password/change-password.component";
 import {ManageMachinesComponent} from "./manage-machines/manage-machines.component";
 import {ManageClientsComponent} from "./manage-clients/manage-clients.component";
+import {ManagePlantsComponent} from "./manage-plants/manage-plants.component";
+import {ManageCommissionsComponent} from "./manage-commissions/manage-commissions.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -28,6 +30,8 @@ const routes: Routes = [
   {path: 'reports/daily', component: DailyHoursComponent},
   {path: 'manage', component: ManagementComponent},
   {path: 'manage/clients', component: ManageClientsComponent},
+  {path: 'manage/plants', component: ManagePlantsComponent},
+  {path: 'manage/commissions', component: ManageCommissionsComponent},
   {path: 'manage/machines', component: ManageMachinesComponent},
   {path: 'users', component: ManageUsersComponent},
   {path: 'add', redirectTo: '/dashboard', pathMatch: 'full'},

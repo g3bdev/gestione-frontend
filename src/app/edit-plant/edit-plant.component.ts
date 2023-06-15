@@ -6,33 +6,33 @@ import {DataService} from "../data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-edit-client',
-  templateUrl: './edit-client.component.html',
-  styleUrls: ['./edit-client.component.css']
+  selector: 'app-edit-plant',
+  templateUrl: './edit-plant.component.html',
+  styleUrls: ['./edit-plant.component.css']
 })
-export class EditClientComponent {
+export class EditPlantComponent {
   clients = [];
-  plants = [];
   logged_role = localStorage.getItem('role');
   submitted: boolean = false;
 
-  editClientForm = this.formBuilder.group({
-    name: ['', Validators.required],
+  editPlantForm = this.formBuilder.group({
+    client_id: ['', Validators.required],
+    name: [''],
     city: ['', Validators.required],
-    address: ['', Validators.required],
-    email: ['', Validators.required],
-    contact: ['', Validators.required],
-    phone_number: ['', Validators.required],
     province: ['', Validators.required],
     cap: ['', Validators.required],
+    address: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    contact: ['', Validators.required],
+    phone_number: ['', Validators.required]
   });
 
-  get isFormTouched() {
-    return this.editClientForm.touched;
+  get isClientSelected() {
+    return this.editPlantForm.value.client_id !== '';
   }
 
   get form() {
-    return this.editClientForm.controls;
+    return this.editPlantForm.controls;
   }
 
   constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: {
@@ -47,14 +47,20 @@ export class EditClientComponent {
     });
   }
 
+  select(event: Event, value: string) {
+    this.editPlantForm.patchValue({
+      [value]: (event.target as HTMLInputElement).value
+    });
+  }
+
   onConfirm() {
     this.submitted = true;
-    if (this.editClientForm.invalid) {
+    if (this.editPlantForm.invalid) {
       return;
     }
-    this.dataService.editClient(this.editClientForm.value, this.data.message['id']).subscribe({
+    this.dataService.editPlant(this.editPlantForm.value, this.data.message['Plant']['id']).subscribe({
       next: () => {
-        this.openSnackBar('Cliente modificato con successo!');
+        this.openSnackBar('Stabilimento modificato con successo!');
         setTimeout(() => {
           window.location.reload();
         }, 2000);
@@ -73,22 +79,19 @@ export class EditClientComponent {
     this.dataService.getClients().subscribe({
       next: (data: any) => {
         this.clients = data;
-        this.dataService.getPlants().subscribe({
-          next: (data: any) => {
-            this.plants = data;
-          }
-        });
       }
     });
-    this.editClientForm.patchValue({
-      name: this.data.message['name'],
-      city: this.data.message['city'],
-      address: this.data.message['address'],
-      email: this.data.message['email'],
-      contact: this.data.message['contact'],
-      phone_number: this.data.message['phone_number'],
-      province: this.data.message['province'],
-      cap: this.data.message['cap'],
+
+    this.editPlantForm.patchValue({
+      client_id: this.data.message['Plant']['client_id'],
+      name: this.data.message['Plant']['name'],
+      city: this.data.message['Plant']['city'],
+      province: this.data.message['Plant']['province'],
+      cap: this.data.message['Plant']['cap'],
+      address: this.data.message['Plant']['address'],
+      email: this.data.message['Plant']['email'],
+      contact: this.data.message['Plant']['contact'],
+      phone_number: this.data.message['Plant']['phone_number'],
     });
   }
 }

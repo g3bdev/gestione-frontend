@@ -105,7 +105,6 @@ export class EditMachineComponent implements OnInit {
         });
       }
     });
-
     this.editMachineForm.patchValue({
       client_id: this.data.message['Client']['id'],
       plant_id: this.data.message['Machine']['plant_id'],

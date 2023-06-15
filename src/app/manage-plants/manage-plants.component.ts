@@ -1,22 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {DataService} from "../data.service";
+import {faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {SizeProp} from "@fortawesome/fontawesome-svg-core";
+import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {SizeProp} from "@fortawesome/fontawesome-svg-core";
+import {EditPlantComponent} from "../edit-plant/edit-plant.component";
 import {TooltipPosition} from "@angular/material/tooltip";
-import {EditClientComponent} from "../edit-client/edit-client.component";
-import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 
 @Component({
-  selector: 'app-manage-clients',
-  templateUrl: './manage-clients.component.html',
-  styleUrls: ['./manage-clients.component.css']
+  selector: 'app-manage-plants',
+  templateUrl: './manage-plants.component.html',
+  styleUrls: ['./manage-plants.component.css']
 })
-export class ManageClientsComponent implements OnInit {
-  clients = [];
-  client_columns: string[] = ['name', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];
-  fa_trash = faTrash;
+export class ManagePlantsComponent implements OnInit {
+  plants = [];
+  plant_columns: string[] = ['client', 'city', 'address', 'email', 'contact', 'phone_number', 'actions'];fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
@@ -30,29 +29,29 @@ export class ManageClientsComponent implements OnInit {
     });
   }
 
-  editClient(id: number) {
-    this.dataService.getClientById(id).subscribe({
+  editPlant(id: number) {
+    this.dataService.getPlantById(id).subscribe({
       next: (data: any) => {
-        this.dialog.open(EditClientComponent, {
+        this.dialog.open(EditPlantComponent, {
           data: {
-            title: 'Modifica cliente', message: data
+            title: 'Modifica stabilimento', message: data
           }, width: '50em'
         });
       }
     });
   }
 
-  deleteClient(id: number) {
+  deletePlant(id: number) {
     let data = {
       data: {
         title: 'Conferma eliminazione',
-        message: 'Sei sicuro di voler eliminare questo cliente?'
+        message: 'Sei sicuro di voler eliminare questo stabilimento?'
       }
     }
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.dataService.deleteClient(id).subscribe({
+        this.dataService.deletePlant(id).subscribe({
           next: (data: any) => {
             this.openSnackBar(data.detail);
             setTimeout(() => {
@@ -67,12 +66,11 @@ export class ManageClientsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getClients().subscribe({
+    this.dataService.getPlants().subscribe({
       next: (data: any) => {
-        this.clients = data;
+        console.log(data)
+        this.plants = data;
       }
     });
   }
-
-
 }

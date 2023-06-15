@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 <div mat-dialog-content>
-  <form [formGroup]="editMachineForm">
+  <form [formGroup]="editPlantForm">
+
     <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
     <select (change)="select($event, 'client_id')"
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -12,74 +13,74 @@
       </option>
     </select>
 
-    <label class="leading-7 text-sm text-gray-400" for="plant_id">Stabilimento</label>
-    <select (change)="select($event, 'plant_id')" [disabled]="!isClientSelected || !plants.length"
-            class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            id="plant_id"
-            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.plant_id.errors}">
-      <option disabled selected value="{{data.message['Plant']['id']}}">
-        {{data.message['Plant']['city']}}, {{data.message['Plant']['address']}}</option>
-      <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
-        {{plant['city']}}, {{plant['address']}}
-      </option>
-    </select>
-
-    <label class="leading-7 text-sm text-gray-400" for="name">Nome</label>
+    <label class="leading-7 text-sm text-gray-400" for="name">Nome (facoltativo)</label>
     <input
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
       formControlName="name" id="name"
+      type="text">
+
+    <label class="leading-7 text-sm text-gray-400" for="city">Città</label>
+    <input
+      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      formControlName="city" id="city"
       type="text"
-      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.name.errors}">
+      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.city.errors}">
     <p class="text-red-500"
-       *ngIf="submitted && form.name.errors">Questo campo è obbligatorio.</p>
+       *ngIf="submitted && form.city.errors">Questo campo è obbligatorio.</p>
 
-    <label class="leading-7 text-sm text-gray-400" for="cost_center">Centro di costo</label>
+    <label class="leading-7 text-sm text-gray-400" for="province">Provincia</label>
     <input
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="cost_center" id="cost_center"
-      type="text">
+      formControlName="province" id="province"
+      type="text"
+      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.province.errors}">
+    <p class="text-red-500"
+       *ngIf="submitted && form.province.errors">Questo campo è obbligatorio.</p>
 
-    <label class="leading-7 text-sm text-gray-400" for="brand">Brand</label>
+    <label class="leading-7 text-sm text-gray-400" for="cap">CAP</label>
     <input
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="brand" id="brand"
-      type="text">
+      formControlName="cap" id="cap"
+      type="text"
+      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.cap.errors}">
+    <p class="text-red-500"
+       *ngIf="submitted && form.cap.errors">Questo campo è obbligatorio.</p>
 
-    <label class="leading-7 text-sm text-gray-400" for="model">Modello</label>
+    <label class="leading-7 text-sm text-gray-400" for="address">Indirizzo</label>
     <input
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="model" id="model"
-      type="text">
+      formControlName="address" id="address"
+      type="text"
+      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.address.errors}">
+    <p class="text-red-500"
+       *ngIf="submitted && form.address.errors">Questo campo è obbligatorio.</p>
 
-    <label class="leading-7 text-sm text-gray-400" for="production_year">Anno di produzione</label>
+    <label class="leading-7 text-sm text-gray-400" for="email">Email</label>
     <input
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="production_year" id="production_year"
-      type="text">
+      formControlName="email" id="email"
+      type="text"
+      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.email.errors}">
+    <p class="text-red-500"
+       *ngIf="submitted && form.email.errors">Questo campo è obbligatorio.</p>
 
-    <label class="leading-7 text-sm text-gray-400" for="robotic_island">Isola</label>
+    <label class="leading-7 text-sm text-gray-400" for="contact">Referente</label>
     <input
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="robotic_island" id="robotic_island"
-      type="text">
+      formControlName="contact" id="contact"
+      type="text"
+      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.contact.errors}">
+    <p class="text-red-500"
+       *ngIf="submitted && form.contact.errors">Questo campo è obbligatorio.</p>
 
-    <label class="leading-7 text-sm text-gray-400" for="code">Codice</label>
+    <label class="leading-7 text-sm text-gray-400" for="phone_number">Numero di telefono</label>
     <input
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="code" id="code"
-      type="text">
-
-    <label class="leading-7 text-sm text-gray-400" for="serial_number">Numero seriale</label>
-    <input
-      class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="serial_number" id="serial_number"
-      type="text">
-
-    <label class="leading-7 text-sm text-gray-400" for="description">Descrizione</label>
-    <textarea
-      class="h-[142px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-      formControlName="description" id="description"
-      type="text"></textarea>
+      formControlName="phone_number" id="phone_number"
+      type="text"
+      [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.phone_number.errors}">
+    <p class="text-red-500"
+       *ngIf="submitted && form.phone_number.errors">Questo campo è obbligatorio.</p>
   </form>
 </div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>
