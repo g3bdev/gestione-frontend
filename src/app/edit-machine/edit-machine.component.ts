@@ -98,11 +98,6 @@ export class EditMachineComponent implements OnInit {
     this.dataService.getClients().subscribe({
       next: (data: any) => {
         this.clients = data;
-        this.dataService.getPlants().subscribe({
-          next: (data: any) => {
-            this.plants = data;
-          }
-        });
       }
     });
     this.editMachineForm.patchValue({
@@ -117,6 +112,12 @@ export class EditMachineComponent implements OnInit {
       robotic_island: this.data.message['Machine']['robotic_island'],
       code: this.data.message['Machine']['code'],
       serial_number: this.data.message['Machine']['serial_number']
+    });
+    this.dataService.getPlantsByClient(this.data.message['Client']['id']).subscribe({
+      next: (data: any) => {
+        console.log(data)
+        this.plants = data;
+      }
     });
   }
 }
