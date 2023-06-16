@@ -20,8 +20,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class ManageWorkComponent implements OnInit {
   @ViewChild('exporter') exporter!: MatTableExporterDirective;
-  displayed_columns: string[] = ['operator', 'date', 'client', 'duration', 'intervention_type', 'machine', 'cost_center', 'commission', 'location', 'supervisor', 'description', 'actions'];
-  user_columns: string[] = ['date', 'client', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
+  displayed_columns: string[] = ['operator', 'date', 'client', 'plant', 'duration', 'intervention_type', 'machine', 'cost_center', 'commission', 'location', 'supervisor', 'description', 'actions'];
+  user_columns: string[] = ['date', 'client', 'plant', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
   operators = [];
   clients = [];
   plants = [];
@@ -52,7 +52,7 @@ export class ManageWorkComponent implements OnInit {
     start_date: [''], end_date: ['']
   });
   filter = 'month';
-  loading = false;
+  loadingPdf = false;
 
   get isMachinesEmpty() {
     return this.machines.length === 0;
@@ -60,10 +60,6 @@ export class ManageWorkComponent implements OnInit {
 
   get isCommissionsEmpty() {
     return this.commissions.length === 0;
-  }
-
-  get isClientSelected() {
-    return this.adminForm.value.client_id !== '0';
   }
 
   get isMachine() {
@@ -106,6 +102,7 @@ export class ManageWorkComponent implements OnInit {
       }
       if (this.adminForm.value.plant_id !== 'c') {
         if (value === 'plant_id') {
+          console.log(this.adminForm.value.plant_id)
           this.dataService.getMachineByPlant(+this.adminForm.value.plant_id!).subscribe({
             next: (data: any) => {
               this.machines = data;
@@ -164,7 +161,7 @@ export class ManageWorkComponent implements OnInit {
           this.months = data;
         }
       });
-      this.reports_filename = 'interventi_' + this.monthFilterForm.value.month?.replace('/', '-');
+      this.reports_filename = 'interventi_' + '_' + this.monthFilterForm.value.month?.replace('/', '-');
     } else if (this.filter === 'interval') {
       this.reports_filename = 'interventi_' + this.intervalFilterForm.value.start_date + '_' + this.intervalFilterForm.value.end_date;
     }
@@ -183,13 +180,46 @@ export class ManageWorkComponent implements OnInit {
   }
 
   printMonthlyReports() {
-    this.loading = true;
-    this.dataService.printMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe((response) => {
-      this.loading = false;
-      const file = new Blob([response], {type: 'application/pdf'});
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
-    });
+    this.loadingPdf = true;
+    if (this.adminForm.value.plant_id === 'c') {
+      this.dataService.printMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe((response) => {
+        this.loadingPdf = false;
+        const file = new Blob([response], {type: 'application/pdf'});
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      });
+    } else {
+      this.dataService.printMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe((response) => {
+        this.loadingPdf = false;
+        const file = new Blob([response], {type: 'application/pdf'});
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      });
+    }
+  }
+
+  printCsvMonthlyReports() {
+    if (this.adminForm.value.plant_id === 'c') {
+      this.dataService.printCsvMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe((response) => {
+        let binaryData = [];
+        binaryData.push(response);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
+        downloadLink.setAttribute('download', 'interventi_' + this.monthFilterForm.value.month + '.csv');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      });
+    } else {
+      this.dataService.printCsvMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe((response) => {
+        let binaryData = [];
+        binaryData.push(response);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
+        downloadLink.setAttribute('download', 'interventi_' + this.monthFilterForm.value.month + '.csv');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      });
+    }
   }
 
   openSnackBar(message: string) {

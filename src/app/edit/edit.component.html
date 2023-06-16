@@ -34,10 +34,10 @@
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="plant_id">
         <option *ngIf="isMachine && data.message['plant_name']" disabled hidden
-                selected>{{data.message['plant_name']}} {{data.message['plant_city']}}</option>
+                selected>{{data.message['plant_city']}}, {{data.message['plant_address']}}</option>
         <option value="0">Commessa</option>
         <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
-          {{plant['name']}} {{plant['city']}}
+          {{plant['city']}}, {{plant['address']}}
         </option>
       </select>
     </div>

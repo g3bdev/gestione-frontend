@@ -62,12 +62,6 @@ export class DataService {
     });
   }
 
-  getMyMonthlyReports(client_id: string, month: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/reports/monthly?month=${month}`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
-    });
-  }
-
   getIntervalReports(client_id: string, user_id: string, start_date: string, end_date: string, plant_id: string, work_id: string) {
     return this.httpClient.get(`${environment.apiUrl}/reports/interval?start_date=${start_date}&end_date=${end_date}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}&work_id=${work_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
@@ -76,12 +70,6 @@ export class DataService {
 
   getIntervalCommissionReports(client_id: string, user_id: string, start_date: string, end_date: string, plant_id: string, work_id: string) {
     return this.httpClient.get(`${environment.apiUrl}/reports/interval/commissions?start_date=${start_date}&end_date=${end_date}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}&work_id=${work_id}`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
-    });
-  }
-
-  getMyIntervalReports(client_id: string, start_date: string, end_date: string) {
-    return this.httpClient.get(`${environment.apiUrl}/me/reports/interval?start_date=${start_date}&end_date=${end_date}&client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -370,6 +358,24 @@ export class DataService {
 
   printMonthlyReports(client_id: string, month: string, user_id: string, plant_id: string) {
     return this.httpClient.get(`${environment.apiUrl}/reports/monthly/pdf?month=${month}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
+    });
+  }
+
+  printMonthlyCommissionReports(client_id: string, month: string, user_id: string, work_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/pdf?month=${month}&user_id=${user_id}&client_id=${client_id}&work_id=${work_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
+    });
+  }
+
+  printCsvMonthlyReports(client_id: string, month: string, user_id: string, plant_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/csv?month=${month}&user_id=${user_id}&client_id=${client_id}&plant_id=${plant_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
+    });
+  }
+
+  printCsvMonthlyCommissionReports(client_id: string, month: string, user_id: string, work_id: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/monthly/commissions/csv?month=${month}&user_id=${user_id}&client_id=${client_id}&work_id=${work_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
     });
   }
