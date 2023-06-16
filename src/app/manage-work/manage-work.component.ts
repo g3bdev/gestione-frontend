@@ -3,7 +3,7 @@ import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
-import {faExclamationCircle, faInfoCircle, faPrint, faSpinner, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
@@ -78,7 +78,6 @@ export class ManageWorkComponent implements OnInit {
     form.patchValue({
       [value]: selectedValue
     });
-
     if (this.logged_role === 'admin') {
       if (this.adminForm.value.plant_id !== 'c') {
         if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
