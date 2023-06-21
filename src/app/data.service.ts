@@ -391,4 +391,13 @@ export class DataService {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
+
+  changePassword(old_password: string, new_password: string) {
+    return this.httpClient.put(`${environment.apiUrl}/change-password`, {
+      old_password,
+      new_password
+    }, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
 }

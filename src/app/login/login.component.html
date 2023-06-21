@@ -8,33 +8,39 @@
       <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <div class="mb-4 text-base text-neutral-600">
           <div class="relative mr-4 w-full">
-            <label class="leading-7 text-sm text-gray-400" for="username">username</label>
+            <label class="leading-7 text-sm text-gray-400" for="username"
+                   [ngClass]="{'text-red-500' : submitted && form.username.errors}">username</label>
             <input
               class="h-[42px] w-full rounded border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               formControlName="username" id="username"
-              type="text">
+              type="text"
+              [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.username.errors}">
           </div>
 
           <div class="relative mr-4 w-full">
-            <label class="leading-7 text-sm text-gray-400" for="password">password</label>
+            <label class="leading-7 text-sm text-gray-400" for="password"
+                   [ngClass]="{'text-red-500' : submitted && form.password.errors}">password</label>
             <input
               class="h-[42px] w-full rounded border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               formControlName="password" id="password"
-              type="password">
+              type="password"
+              [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.password.errors}">
           </div>
         </div>
 
-        <button [disabled]="loginForm.invalid"
-                class="flex-shrink-0 text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded mt-0"
-                type="submit">
+        <button [disabled]="attempts >= 3"
+          class="flex-shrink-0 text-white bg-purple-500 border-0 mt-5 py-2 px-6 focus:outline-none hover:bg-purple-600 active:bg-violet-700 focus:ring focus:ring-violet-400 rounded"
+          type="submit">
           login
         </button>
       </form>
-      <div *ngIf="errorMessage">
-        <div class="text-red-700 m-2 font-medium leading-tight text-center p-2">
-          <p>{{errorMessage}}</p>
-        </div>
+      <div class="text-red-700 mt-4 font-medium leading-tight text-center p-2" *ngIf="errorMessage">
+        <p>{{errorMessage}}</p>
       </div>
     </div>
+  </div>
+  <div class="flex justify-center text-gray-700 m-2 font-medium leading-tight text-center p-2" *ngIf="attempts >= 3">
+    <p>Non ricordi i dati di accesso? Contatta <a class="text-purple-500"
+                                                  href="mailto:mail@g3b.dev">l'amministratore</a>.</p>
   </div>
 </div>

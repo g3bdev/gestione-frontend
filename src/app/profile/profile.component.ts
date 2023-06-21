@@ -2,11 +2,21 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../auth.service";
 import {faAt, faBuilding, faEnvelope, faPhone, faUser} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  animations: [
+    trigger('grow', [
+      transition('void <=> *', []),
+      transition('* <=> *', [
+        style({height: '20px', opacity: 0}),
+        animate('.5s ease'),
+      ], {params: {startHeight: 0}})
+    ])
+  ]
 })
 export class ProfileComponent implements OnInit {
 
@@ -23,8 +33,12 @@ export class ProfileComponent implements OnInit {
   fa_phone = faPhone;
   fa_building = faBuilding;
   fa_user_size: SizeProp = "2xl";
+  editing: boolean = false;
 
   constructor(private authService: AuthService) {
+  }
+
+  edit() {
   }
 
   logout() {
@@ -43,6 +57,5 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-
 
 }
