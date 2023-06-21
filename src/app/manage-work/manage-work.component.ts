@@ -62,7 +62,7 @@ export class ManageWorkComponent implements OnInit {
   });
   filter = 'month';
   loadingPdf = false;
-  limit = 5;
+  limit = 25;
   scrolling = true;
 
   get isMachinesEmpty() {
@@ -91,7 +91,7 @@ export class ManageWorkComponent implements OnInit {
   }
 
   loadMore() {
-    this.limit += 5;
+    this.limit += 25;
     this.dataService.getReports(this.limit).subscribe({
       next: (data: any) => {
         this.reports = data;

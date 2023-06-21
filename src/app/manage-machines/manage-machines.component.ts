@@ -22,7 +22,8 @@ export class ManageMachinesComponent implements OnInit {
   fa_info = faInfoCircle;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
-  limit = 15;
+  limit = 25;
+  machine_list = [];
 
   constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
@@ -35,7 +36,7 @@ export class ManageMachinesComponent implements OnInit {
   }
 
   loadMore() {
-    this.limit += 15;
+    this.limit += 25;
     this.dataService.getMachines(this.limit).subscribe({
       next: (data: any) => {
         this.machines = data;

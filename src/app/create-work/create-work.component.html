@@ -76,8 +76,9 @@
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             formControlName="date" id="date"
             type="date"
+            [min]="oneMonthAgo"
             [max]="today"
-            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.date.errors || submitted && form.date.value! > today}">
+            [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.date.errors || submitted && form.date.value! > today || submitted && form.date.value! < oneMonthAgo}">
         </div>
 
         <div class="relative w-full lg:w-1/2">
