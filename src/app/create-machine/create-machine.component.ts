@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
 import {Router} from "@angular/router";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-create-machine',
@@ -12,6 +13,7 @@ export class CreateMachineComponent {
   clients = [];
   plants = [];
   message = '';
+  fa_arrowLeft = faArrowLeft;
   newMachineForm = this.formBuilder.group({
     client_id: ['', Validators.required],
     plant_id: ['', Validators.required],
@@ -87,4 +89,6 @@ export class CreateMachineComponent {
       }
     });
   }
+
+  protected readonly window = window;
 }

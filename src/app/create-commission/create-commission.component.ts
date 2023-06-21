@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-create-commission',
@@ -11,6 +12,7 @@ import {Router} from "@angular/router";
 export class CreateCommissionComponent implements OnInit {
   clients = [];
   message = '';
+  fa_arrowLeft = faArrowLeft;
   newCommissionForm = this.formBuilder.group({
     client_id: ['', Validators.required],
     code: ['', Validators.required],
@@ -56,5 +58,7 @@ export class CreateCommissionComponent implements OnInit {
       this.clients = data;
     });
   }
+
+    protected readonly window = window;
 }
 

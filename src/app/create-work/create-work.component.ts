@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {Router} from "@angular/router";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-create-work', templateUrl: './create-work.component.html', styleUrls: ['./create-work.component.css']
@@ -15,6 +15,7 @@ export class CreateWorkComponent implements OnInit {
   intervention_types = [];
   intervention_locations = [];
   message = '';
+  fa_arrowLeft = faArrowLeft;
   reportForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
     intervention_duration: ['', Validators.required],
@@ -34,8 +35,9 @@ export class CreateWorkComponent implements OnInit {
   submitted: boolean = false;
   duration_error = '';
   today = new Date().toISOString().substring(0, 10);
+  oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().substring(0, 10);
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private dataService: DataService) {
   }
 
   get isMachinesEmpty() {
@@ -111,7 +113,7 @@ export class CreateWorkComponent implements OnInit {
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
         setTimeout(() => {
-          this.router.navigate(['/reports']).then();
+          window.location.reload();
         }, 2000);
       }, error: () => {
         this.message = '';
@@ -147,4 +149,6 @@ export class CreateWorkComponent implements OnInit {
       this.intervention_locations = data;
     });
   }
+
+  protected readonly window = window;
 }

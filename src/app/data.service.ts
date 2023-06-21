@@ -25,7 +25,13 @@ export class DataService {
     });
   }
 
-  getReports() {
+  getReports(limit: number) {
+    return this.httpClient.get(`${environment.apiUrl}/reports?limit=${limit}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getReportsLength() {
     return this.httpClient.get(`${environment.apiUrl}/reports`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
@@ -104,8 +110,8 @@ export class DataService {
     return this.httpClient.get(`${environment.apiUrl}/plants`);
   }
 
-  getMachines() {
-    return this.httpClient.get(`${environment.apiUrl}/machines`);
+  getMachines(limit: number) {
+    return this.httpClient.get(`${environment.apiUrl}/machines?limit=${limit}`);
   }
 
   getMonths(user_id: string) {

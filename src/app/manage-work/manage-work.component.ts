@@ -1,9 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
-import {faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowDown,
+  faArrowLeft,
+  faExclamationCircle,
+  faInfoCircle,
+  faPrint,
+  faTrash
+} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
@@ -31,6 +38,8 @@ export class ManageWorkComponent implements OnInit {
   logged_role = localStorage.getItem('role');
   error = '';
   fa_print = faPrint;
+  fa_arrowLeft = faArrowLeft;
+  fa_arrowDown = faArrowDown;
   fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_exclamation_circle = faExclamationCircle;
@@ -53,6 +62,8 @@ export class ManageWorkComponent implements OnInit {
   });
   filter = 'month';
   loadingPdf = false;
+  limit = 5;
+  scrolling = true;
 
   get isMachinesEmpty() {
     return this.machines.length === 0;
@@ -69,7 +80,27 @@ export class ManageWorkComponent implements OnInit {
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private snackBar: MatSnackBar) {
   }
 
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    console.log(window.scrollY)
+    if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
+      if (this.scrolling) {
+        this.loadMore();
+      }
+    }
+  }
+
+  loadMore() {
+    this.limit += 5;
+    this.dataService.getReports(this.limit).subscribe({
+      next: (data: any) => {
+        this.reports = data;
+      }
+    });
+  }
+
   select(event: Event, value: string, form: FormGroup) {
+    this.scrolling = false;
     const selectedValue = (event.target as HTMLInputElement).value;
     form.patchValue({
       [value]: selectedValue
@@ -267,9 +298,8 @@ export class ManageWorkComponent implements OnInit {
           this.months = data;
         }
       });
-      this.dataService.getReports().subscribe({
+      this.dataService.getReports(this.limit).subscribe({
         next: (data: any) => {
-          console.log(data);
           this.reports = data;
           this.checkReports(data);
         }
@@ -300,4 +330,6 @@ export class ManageWorkComponent implements OnInit {
       });
     }
   }
+
+  protected readonly window = window;
 }

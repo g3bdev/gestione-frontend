@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
 import {Router} from "@angular/router";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-create-client',
@@ -9,7 +10,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./create-client.component.css']
 })
 export class CreateClientComponent {
-
+  fa_arrowLeft = faArrowLeft;
   message = '';
   newClientForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -56,4 +57,5 @@ export class CreateClientComponent {
     });
   }
 
+  protected readonly window = window;
 }

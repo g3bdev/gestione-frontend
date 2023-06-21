@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {DataService} from "../data.service";
 import {MatTableExporterDirective} from "mat-table-exporter";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-daily-hours',
@@ -12,6 +13,7 @@ export class DailyHoursComponent implements OnInit {
   @ViewChild('exporter') exporter!: MatTableExporterDirective;
   logged_role = localStorage.getItem('role');
   displayed_columns: string[] = ['date', 'hours', 'interventions'];
+  fa_arrowLeft = faArrowLeft;
   hourForm = this.formBuilder.group({
     operator_id: [''],
     month: ['']
@@ -81,4 +83,5 @@ export class DailyHoursComponent implements OnInit {
   }
 
   protected readonly length = length;
+  protected readonly window = window;
 }

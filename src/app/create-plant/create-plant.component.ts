@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-create-plant',
@@ -11,6 +12,7 @@ import {Router} from "@angular/router";
 export class CreatePlantComponent implements OnInit {
   clients = [];
   message = '';
+  fa_arrowLeft = faArrowLeft;
   newPlantForm = this.formBuilder.group({
     client_id: ['', Validators.required],
     name: [''],
@@ -64,4 +66,6 @@ export class CreatePlantComponent implements OnInit {
       }
     });
   }
+
+  protected readonly window = window;
 }

@@ -3,6 +3,7 @@ import {DataService} from "../data.service";
 import {Router} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../auth.service";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-create-user',
@@ -17,6 +18,7 @@ export class CreateUserComponent implements OnInit {
   error_message = '';
   password = '';
   roles = [];
+  fa_arrowLeft = faArrowLeft;
   logged_role = localStorage.getItem('role');
   newUserForm = this.formBuilder.group({
     first_name: ['', Validators.required],
@@ -74,4 +76,6 @@ export class CreateUserComponent implements OnInit {
       }
     });
   }
+
+  protected readonly window = window;
 }

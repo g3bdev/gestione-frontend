@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {EditMachineComponent} from "../edit-machine/edit-machine.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -22,9 +22,25 @@ export class ManageMachinesComponent implements OnInit {
   fa_info = faInfoCircle;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
-
+  limit = 15;
 
   constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
+      this.loadMore();
+    }
+  }
+
+  loadMore() {
+    this.limit += 15;
+    this.dataService.getMachines(this.limit).subscribe({
+      next: (data: any) => {
+        this.machines = data;
+      }
+    });
   }
 
   openSnackBar(message: string) {
@@ -70,7 +86,7 @@ export class ManageMachinesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataService.getMachines().subscribe({
+    this.dataService.getMachines(this.limit).subscribe({
       next: (data: any) => {
         this.machines = data;
       }
