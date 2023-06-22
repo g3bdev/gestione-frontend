@@ -112,6 +112,7 @@ export class CreateWorkComponent implements OnInit {
     this.dataService.createReport(this.reportForm.value).subscribe({
       next: () => {
         this.message = 'Intervento aggiunto con successo!';
+        window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
         setTimeout(() => {
           window.location.reload();
         }, 2000);

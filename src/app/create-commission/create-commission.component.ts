@@ -43,6 +43,7 @@ export class CreateCommissionComponent implements OnInit {
     this.dataService.createCommission(this.newCommissionForm.value).subscribe({
       next: () => {
         this.message = 'Commessa aggiunta con successo!';
+        window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
         setTimeout(() => {
           this.router.navigate(['/dashboard']).then();
         }, 2000);
@@ -59,6 +60,6 @@ export class CreateCommissionComponent implements OnInit {
     });
   }
 
-    protected readonly window = window;
+  protected readonly window = window;
 }
 

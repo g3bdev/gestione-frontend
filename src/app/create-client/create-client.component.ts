@@ -47,6 +47,7 @@ export class CreateClientComponent {
     this.dataService.createClient(this.newClientForm.value).subscribe({
       next: () => {
         this.message = 'Cliente aggiunto con successo!';
+        window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
         setTimeout(() => {
           this.router.navigate(['/dashboard']).then();
         }, 2000);

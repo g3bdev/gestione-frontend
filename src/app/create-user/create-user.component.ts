@@ -54,6 +54,7 @@ export class CreateUserComponent implements OnInit {
         this.user = data;
         this.password = this.user['temp_password'];
         this.message = 'Utente aggiunto con successo!';
+        window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
       },
       error: (e) => {
         this.message = '';

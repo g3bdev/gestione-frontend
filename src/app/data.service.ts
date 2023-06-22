@@ -400,4 +400,13 @@ export class DataService {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
+
+  editUser(user: Partial<{
+    email: string | null;
+    phone_number: string | null;
+  }>, user_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/user/edit?user_id=${user_id}`, user, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
 }

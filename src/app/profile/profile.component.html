@@ -11,34 +11,51 @@
           </div>
           <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name + ' ' + last_name}}</h1>
         </div>
-        <div class="py-4 px-6 sm:w-96 flex flex-col place-items-start">
-          <div class="py-2 text-lg text-gray-700">
-            <fa-icon [icon]="fa_envelope"></fa-icon>
-            <span class="h-6 pl-2" *ngIf="!editing">{{email}}</span>
-            <textarea *ngIf="editing" class="h-6 pl-2 border-none">{{email}}</textarea>
+        <form [formGroup]="editUserForm">
+          <div class="py-4 px-6 sm:w-96 flex flex-col place-items-start">
+            <div class="py-2 text-lg text-gray-700">
+              <fa-icon [icon]="fa_at"></fa-icon>
+              {{username}}
+            </div>
+            <div class="py-2 text-lg text-gray-700">
+              <fa-icon [icon]="fa_envelope"></fa-icon>
+              <input [readonly]="!editing" formControlName="email" maxlength="50"
+                     class="h-8 border-none ml-2"
+                     [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
+                     [value]="email">
+            </div>
+            <div class="py-2 text-lg text-gray-700">
+              <fa-icon [icon]="fa_phone"></fa-icon>
+              <input [readonly]="!editing" formControlName="phone_number" maxlength="50"
+                     class="h-8 ml-2"
+                     [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
+                     [value]="phone_number">
+            </div>
+            <div class="py-2 text-lg text-gray-700">
+              <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
+              {{role}}</div>
           </div>
-          <div class="py-2 text-lg text-gray-700">
-            <fa-icon [icon]="fa_at"></fa-icon>
-            {{username}}</div>
-          <div class="py-2 text-lg text-gray-700">
-            <fa-icon [icon]="fa_phone"></fa-icon>
-            {{phone_number}}</div>
-          <div class="py-2 text-lg text-gray-700">
-            <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
-            {{role}}</div>
-        </div>
+        </form>
       </div>
     </div>
-    <button (click)="edit()"
-            class="rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
+    <button *ngIf="!editing" (click)="write()"
+            class="rounded border-2 border-neutral-50 w-56 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
       Modifica profilo
     </button>
+    <button *ngIf="editing" (click)="cancel()"
+            class="rounded border-2 border-red-300 w-56 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-red-300 transition duration-150 ease-in-out hover:border-red-100 hover:bg-red-500 hover:bg-opacity-10 hover:text-red-100 focus:border-red-100 focus:text-red-100 focus:outline-none focus:ring-0 active:border-red-200 active:text-red-200 dark:hover:bg-red-100 dark:hover:bg-opacity-10">
+      Annulla
+    </button>
+    <button *ngIf="editing" (click)="edit()"
+            class="rounded border-2 border-green-300 w-56 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-green-300 transition duration-150 ease-in-out hover:border-green-100 hover:bg-green-500 hover:bg-opacity-10 hover:text-green-100 focus:border-green-100 focus:text-green-100 focus:outline-none focus:ring-0 active:border-green-200 active:text-green-200 dark:hover:bg-green-100 dark:hover:bg-opacity-10">
+      Salva
+    </button>
     <button routerLink="/profile/change-password"
-            class="rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
+            class="rounded border-2 border-neutral-50 w-56 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
       Cambia password
     </button>
     <button (click)="logout()"
-            class="rounded border-2 border-neutral-50 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
+            class="rounded border-2 border-neutral-50 w-56 px-7 pt-[10px] pb-[8px] mt-5 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10">
       Logout
     </button>
   </div>

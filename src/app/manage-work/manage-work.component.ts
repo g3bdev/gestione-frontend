@@ -3,14 +3,7 @@ import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
-import {
-  faArrowDown,
-  faArrowLeft,
-  faExclamationCircle,
-  faInfoCircle,
-  faPrint,
-  faTrash
-} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
@@ -39,7 +32,6 @@ export class ManageWorkComponent implements OnInit {
   error = '';
   fa_print = faPrint;
   fa_arrowLeft = faArrowLeft;
-  fa_arrowDown = faArrowDown;
   fa_trash = faTrash;
   fa_info = faInfoCircle;
   fa_exclamation_circle = faExclamationCircle;

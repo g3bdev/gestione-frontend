@@ -67,6 +67,7 @@ export class CreateMachineComponent {
     this.dataService.createMachine(this.newMachineForm.value).subscribe({
       next: () => {
         this.message = 'Macchina aggiunta con successo!';
+        window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
         setTimeout(() => {
           this.router.navigate(['/dashboard']).then();
         }, 2000);

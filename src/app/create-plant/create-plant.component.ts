@@ -49,6 +49,7 @@ export class CreatePlantComponent implements OnInit {
     this.dataService.createPlant(this.newPlantForm.value).subscribe({
       next: () => {
         this.message = 'Stabilimento aggiunto con successo!';
+        window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
         setTimeout(() => {
           this.router.navigate(['/dashboard']).then();
         }, 2000);

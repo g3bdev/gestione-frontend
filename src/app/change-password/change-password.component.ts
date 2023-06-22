@@ -38,6 +38,10 @@ export class ChangePasswordComponent {
       this.error = 'Le password non coincidono';
       return;
     }
+    if (!this.newPasswordForm.value.new_password?.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$")) {
+      this.error = 'La password deve contenere almeno 8 caratteri, una lettera maiuscola e un numero';
+      return;
+    }
     this.dataService.changePassword(this.newPasswordForm.value.old_password!, this.newPasswordForm.value.confirm_password!).subscribe({
       next: () => {
         this.error = '';
