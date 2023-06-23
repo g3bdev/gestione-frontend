@@ -2,8 +2,8 @@
   <app-header></app-header>
   <div class="mx-auto flex px-5 py-8 flex-col items-center">
     <h1 class="title-font text-3xl mb-4 font-medium text-white">Il tuo profilo</h1>
-    <div class="items-center text-center">
-      <div class="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
+    <div class="items-center text-center sm:w-auto w-screen">
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden sm:my-4 sm:text-lg text-base">
         <div class="flex items-center px-6 py-3 bg-purple-400">
           <div
             class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">
@@ -12,26 +12,27 @@
           <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name + ' ' + last_name}}</h1>
         </div>
         <form [formGroup]="editUserForm">
-          <div class="py-4 px-6 sm:w-96 flex flex-col place-items-start">
-            <div class="py-2 text-lg text-gray-700">
-              <fa-icon [icon]="fa_at"></fa-icon>
+          <div class="py-4 px-6 flex flex-col place-items-start">
+            <div class="py-2 text-gray-700">
+              <fa-icon [icon]="fa_at"></fa-icon>&nbsp;
               {{username}}
             </div>
-            <div class="py-2 text-lg text-gray-700">
+            <div class="py-2 text-gray-700">
               <fa-icon [icon]="fa_envelope"></fa-icon>
               <input [readonly]="!editing" formControlName="email" maxlength="50"
-                     class="h-8 border-none ml-2"
+                     class="h-8 w-80 ml-2"
                      [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
                      [value]="email">
             </div>
-            <div class="py-2 text-lg text-gray-700">
+            <div class="py-2 text-gray-700">
               <fa-icon [icon]="fa_phone"></fa-icon>
               <input [readonly]="!editing" formControlName="phone_number" maxlength="50"
-                     class="h-8 ml-2"
+                     class="h-8 w-80 ml-2"
                      [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
                      [value]="phone_number">
             </div>
-            <div class="py-2 text-lg text-gray-700">
+            <div class="py-2 text-gray-700"
+                 *ngIf="role === 'admin' || role === 'user' || role ==='accountant' || role === 'client'">
               <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
               {{role}}</div>
           </div>

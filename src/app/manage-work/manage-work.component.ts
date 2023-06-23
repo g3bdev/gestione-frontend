@@ -74,7 +74,6 @@ export class ManageWorkComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    console.log(window.scrollY)
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
       if (this.scrolling) {
         this.loadMore();
@@ -84,11 +83,19 @@ export class ManageWorkComponent implements OnInit {
 
   loadMore() {
     this.limit += 25;
-    this.dataService.getReports(this.limit).subscribe({
-      next: (data: any) => {
-        this.reports = data;
-      }
-    });
+    if (this.logged_role === 'admin') {
+      this.dataService.getReports(this.limit).subscribe({
+        next: (data: any) => {
+          this.reports = data;
+        }
+      });
+    } else {
+      this.dataService.getMyReports(this.limit).subscribe({
+        next: (data: any) => {
+          this.reports = data;
+        }
+      });
+    }
   }
 
   select(event: Event, value: string, form: FormGroup) {
@@ -125,7 +132,6 @@ export class ManageWorkComponent implements OnInit {
       }
       if (this.adminForm.value.plant_id !== 'c') {
         if (value === 'plant_id') {
-          console.log(this.adminForm.value.plant_id)
           this.dataService.getMachineByPlant(+this.adminForm.value.plant_id!).subscribe({
             next: (data: any) => {
               this.machines = data;
@@ -297,7 +303,7 @@ export class ManageWorkComponent implements OnInit {
         }
       });
     } else {
-      this.dataService.getMyReports().subscribe({
+      this.dataService.getMyReports(this.limit).subscribe({
         next: (data: any) => {
           this.reports = data;
           this.checkReports(data);

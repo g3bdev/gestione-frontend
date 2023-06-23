@@ -40,21 +40,22 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatTableExporterModule} from "mat-table-exporter";
 import {DailyHoursComponent} from './daily-hours/daily-hours.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import { EditMachineComponent } from './edit-machine/edit-machine.component';
-import { ManageMachinesComponent } from './manage-machines/manage-machines.component';
+import {EditMachineComponent} from './edit-machine/edit-machine.component';
+import {ManageMachinesComponent} from './manage-machines/manage-machines.component';
 import {MatSortModule} from "@angular/material/sort";
-import { EditClientComponent } from './edit-client/edit-client.component';
-import { ManageClientsComponent } from './manage-clients/manage-clients.component';
-import { ManagePlantsComponent } from './manage-plants/manage-plants.component';
-import { ManageCommissionsComponent } from './manage-commissions/manage-commissions.component';
-import { EditCommissionComponent } from './edit-commission/edit-commission.component';
-import { EditPlantComponent } from './edit-plant/edit-plant.component';
+import {EditClientComponent} from './edit-client/edit-client.component';
+import {ManageClientsComponent} from './manage-clients/manage-clients.component';
+import {ManagePlantsComponent} from './manage-plants/manage-plants.component';
+import {ManageCommissionsComponent} from './manage-commissions/manage-commissions.component';
+import {EditCommissionComponent} from './edit-commission/edit-commission.component';
+import {EditPlantComponent} from './edit-plant/edit-plant.component';
 import {MatDividerModule} from "@angular/material/divider";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { ConvertXmlComponent } from './convert-xml/convert-xml.component';
 
 @NgModule({
-  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent, DailyHoursComponent, EditMachineComponent, ManageMachinesComponent, EditClientComponent, ManageClientsComponent, ManagePlantsComponent, ManageCommissionsComponent, EditCommissionComponent, EditPlantComponent],
-    imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule, MatSortModule, MatDividerModule, MatAutocompleteModule],
+  declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent, DailyHoursComponent, EditMachineComponent, ManageMachinesComponent, EditClientComponent, ManageClientsComponent, ManagePlantsComponent, ManageCommissionsComponent, EditCommissionComponent, EditPlantComponent, ConvertXmlComponent],
+  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule, MatSortModule, MatDividerModule, MatAutocompleteModule],
   providers: [],
   bootstrap: [AppComponent]
 })

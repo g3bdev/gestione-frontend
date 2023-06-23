@@ -19,6 +19,7 @@ import {ManageMachinesComponent} from "./manage-machines/manage-machines.compone
 import {ManageClientsComponent} from "./manage-clients/manage-clients.component";
 import {ManagePlantsComponent} from "./manage-plants/manage-plants.component";
 import {ManageCommissionsComponent} from "./manage-commissions/manage-commissions.component";
+import {ConvertXmlComponent} from "./convert-xml/convert-xml.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -41,6 +42,7 @@ const routes: Routes = [
   {path: 'add/commission', component: CreateCommissionComponent},
   {path: 'add/plant', component: CreatePlantComponent},
   {path: 'add/machine', component: CreateMachineComponent},
+  {path: 'invoices', component: ConvertXmlComponent},
   {path: '**', component: NotFoundComponent}
 ];
 

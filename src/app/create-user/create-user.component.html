@@ -17,6 +17,35 @@
         <p class="mb-8 leading-relaxed">Aggiungi un nuovo utente al database aziendale</p>
 
         <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="role_id">Ruolo</label>
+          <select (change)="select($event, 'role_id')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="role_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.role_id.errors}">
+            <option disabled hidden selected value="">Seleziona il ruolo</option>
+            <option *ngFor="let role of roles" [value]="role['id']"
+                    class="bg-gray-800">
+              {{role['name']}}
+            </option>
+          </select>
+        </div>
+
+        <div class="relative w-full lg:w-1/2">
+          <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
+          <select [disabled]="is_operator" (change)="select($event, 'client_id')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="client_id"
+                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.client_id.errors}">
+            <option *ngIf="!is_operator" disabled hidden selected value="">Seleziona il cliente</option>
+            <option *ngIf="is_operator" [disabled]="is_operator" selected [value]="8">Move Automation</option>
+            <option *ngFor="let client of clients" [value]="client['id']"
+                    class="bg-gray-800">
+              {{client['name']}}
+            </option>
+          </select>
+        </div>
+        {{newUserForm.value | json}}
+        <div class="relative w-full lg:w-1/2">
           <label class="leading-7 text-sm text-gray-400" for="first_name">Nome</label>
           <input
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
@@ -71,19 +100,6 @@
              *ngIf="submitted && form.phone_number.errors">Questo campo è obbligatorio.</p>
         </div>
 
-        <div class="relative w-full lg:w-1/2">
-          <label class="leading-7 text-sm text-gray-400" for="intervention_type">Ruolo</label>
-          <select (change)="select($event, 'role')"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                  id="intervention_type"
-                  [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.role.errors}">
-            <option disabled hidden selected value="">Seleziona il ruolo</option>
-            <option *ngFor="let role of roles" [value]="role['name']"
-                    class="bg-gray-800">
-              {{role['name']}}
-            </option>
-          </select>
-        </div>
 
         <button
           class="inline-flex text-white bg-purple-500 border-0 my-5 py-2 px-6 hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"

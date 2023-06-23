@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
-import {Router} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
-import {AuthService} from "../auth.service";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -18,20 +16,24 @@ export class CreateUserComponent implements OnInit {
   error_message = '';
   password = '';
   roles = [];
+  clients = [];
   fa_arrowLeft = faArrowLeft;
   logged_role = localStorage.getItem('role');
   newUserForm = this.formBuilder.group({
+    role_id: ['', Validators.required],
+    client_id: ['', Validators.required],
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
     username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone_number: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-    role: ['', Validators.required]
   });
+  is_operator = false;
   submitted: boolean = false;
 
-  constructor(private dataService: DataService, private formBuilder: FormBuilder, private router: Router, private authService: AuthService) {
+  constructor(private dataService: DataService, private formBuilder: FormBuilder) {
   }
+
 
   get form() {
     return this.newUserForm.controls;
@@ -40,7 +42,17 @@ export class CreateUserComponent implements OnInit {
   select(event: Event, value: string) {
     this.newUserForm.patchValue({
       [value]: (event.target as HTMLInputElement).value
-    })
+    });
+    this.is_operator = value === 'role_id' && this.newUserForm.value.role_id === '2';
+    if (this.is_operator) {
+      this.newUserForm.patchValue({
+        client_id: '8' // move automation ID
+      });
+    } else if (this.newUserForm.value.client_id === '8') {
+      this.newUserForm.patchValue({
+        client_id: ''
+      });
+    }
   }
 
   submitForm() {
@@ -54,6 +66,7 @@ export class CreateUserComponent implements OnInit {
         this.user = data;
         this.password = this.user['temp_password'];
         this.message = 'Utente aggiunto con successo!';
+        this.error_message = '';
         window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
       },
       error: (e) => {
@@ -64,14 +77,15 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.getUserInfo().subscribe({
-      next: (data: any) => {
-        this.logged_role = data.role;
-      }
-    });
     this.dataService.getRoles().subscribe({
       next: (data: any) => {
+        console.log(data)
         this.roles = data;
+        this.dataService.getClients().subscribe({
+          next: (data: any) => {
+            this.clients = data;
+          }
+        });
       }, error: () => {
         this.isError = true;
       }

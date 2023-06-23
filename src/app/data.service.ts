@@ -13,8 +13,8 @@ export class DataService {
   }
 
 
-  getMyReports() {
-    return this.httpClient.get(`${environment.apiUrl}/me/reports`, {
+  getMyReports(limit: number) {
+    return this.httpClient.get(`${environment.apiUrl}/me/reports?limit=${limit}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
@@ -148,7 +148,7 @@ export class DataService {
     username: string | null;
     email: string | null;
     phone_number: string | null;
-    role: string | null;
+    role_id: string | null;
   }>) {
     return this.httpClient.post(`${environment.apiUrl}/users/create`, user, {
       headers: new HttpHeaders().set("Content-Type", "application/json").set("Authorization", `Bearer ${localStorage.getItem('token')}`)
@@ -407,6 +407,14 @@ export class DataService {
   }>, user_id: number) {
     return this.httpClient.put(`${environment.apiUrl}/user/edit?user_id=${user_id}`, user, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  uploadFile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post(`${environment.apiUrl}/upload-xml`, formData, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
     });
   }
 }
