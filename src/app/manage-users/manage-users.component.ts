@@ -87,11 +87,6 @@ export class ManageUsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.getUserInfo().subscribe({
-      next: (data: any) => {
-        this.logged_role = data.role;
-      }
-    });
     this.dataService.getUsers().subscribe((data: any) => {
       this.users = data;
     });

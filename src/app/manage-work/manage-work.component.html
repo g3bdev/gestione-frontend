@@ -16,7 +16,7 @@
         tuoi interventi</h1>
       <h1 *ngIf="logged_role === 'admin'" class="title-font text-3xl m-4 font-medium text-white text-center">Gestisci
         gli interventi dell'azienda</h1>
-      <div class="flex justify-center">
+      <div *ngIf="logged_role === 'admin'" class="flex justify-center">
         <div class="sm:m-8 mb-4">
 
           <form *ngIf="logged_role === 'admin'" [formGroup]="adminForm" class="grid grid-cols-1 gap-4 pb-4">
@@ -118,7 +118,8 @@
           </form>
 
           <div class="flex gap-3" *ngIf="logged_role === 'admin'">
-            <button (click)="printCsvMonthlyReports()"
+            <button (click)="printCsv()" [disabled]="reports.length == 0"
+                    [ngClass]="loadingPdf || reports.length == 0 ? 'cursor-not-allowed bg-opacity-50 bg-gray-800 pointer-events-none' : 'cursor-pointer'"
                     class="relative inline-flex items-center justify-center px-6 py-3 mt-6 w-44 overflow-hidden font-bold text-white rounded-md shadow-2xl group">
               <span
                 class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
@@ -136,9 +137,9 @@
               <span class="relative">Esporta CSV</span>
             </button>
 
-            <button type="button"
-                    (click)="printMonthlyReports()"
-                    [ngClass]="loadingPdf ? 'cursor-not-allowed bg-opacity-50 pointer-events-none' : 'cursor-pointer'"
+            <button type="button" [disabled]="reports.length == 0"
+                    (click)="printPdf()"
+                    [ngClass]="loadingPdf || reports.length == 0 ? 'cursor-not-allowed bg-opacity-50 bg-gray-800 pointer-events-none' : 'cursor-pointer'"
                     class="relative inline-flex items-center justify-center px-6 py-3 mt-6 w-44 overflow-hidden font-bold text-white rounded-md shadow-2xl group">
               <span
                 class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
@@ -168,13 +169,18 @@
               </span>
             </button>
           </div>
+          <div @fade *ngIf="adminForm.value.plant_id !== 'c' && logged_role === 'admin'" class="pt-3">
+            Verrano esportati solo gli interventi su <span class="text-purple-500">macchine</span>!
+          </div>
+          <div @fade *ngIf="adminForm.value.plant_id === 'c' && logged_role === 'admin'" class="pt-3">
+            Verrano esportate solo le <span class="text-purple-500">commesse</span>!
+          </div>
         </div>
       </div>
     </div>
 
     <div class="flex justify-center" *ngIf="!error; else e">
-      <table [dataSource]="reports" class="mat-elevation-z16 bg-gray-800 border-b" id="table"
-             mat-table matTableExporter #exporter="matTableExporter" [hiddenColumns]="[getLastColumn()]">
+      <table [dataSource]="reports" class="mat-elevation-z16 bg-gray-800 border-b" id="table" mat-table>
 
         <ng-container matColumnDef="operator" *ngIf="logged_role === 'admin'">
           <th *matHeaderCellDef mat-header-cell>Operatore</th>

@@ -21,7 +21,8 @@ export class DailyHoursComponent implements OnInit {
   months = [];
   operators = [];
   hours = [];
-  hours_filename = 'ore';
+  innerText = '';
+  hours_filename = '';
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService) {
   }
@@ -47,6 +48,7 @@ export class DailyHoursComponent implements OnInit {
     });
     this.getMonths();
     if (value === 'operator_id') {
+      this.innerText = (event.target as HTMLSelectElement).options[(event.target as HTMLSelectElement).options.selectedIndex].innerText;
       this.hourForm.patchValue({
         month: ''
       });
@@ -58,7 +60,7 @@ export class DailyHoursComponent implements OnInit {
       this.dataService.getDailyHours(this.hourForm.value.operator_id, this.hourForm.value.month).subscribe({
         next: (data: any) => {
           this.hours = data;
-          this.hours_filename = 'ore_' + this.hourForm.value.month?.replace('/', '-');
+          this.hours_filename = (this.innerText.trim().replace(' ', '-') + '_' + this.hourForm.value.month?.replace('/', '-')).toLowerCase();
         }
       });
     }
@@ -71,8 +73,6 @@ export class DailyHoursComponent implements OnInit {
   getTotalInterventions() {
     return this.hours.map(t => t['count']).reduce((acc, value) => acc + value, 0);
   }
-
-  test = '';
 
   ngOnInit(): void {
     this.dataService.getUsers().subscribe({

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
@@ -8,7 +8,6 @@ import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
 import {TooltipPosition} from "@angular/material/tooltip";
-import {MatTableExporterDirective} from "mat-table-exporter";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -19,7 +18,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   animations: [trigger('fade', [transition('void => *', [style({opacity: 0}), animate(100, style({opacity: 1}))])])]
 })
 export class ManageWorkComponent implements OnInit {
-  @ViewChild('exporter') exporter!: MatTableExporterDirective;
   displayed_columns: string[] = ['operator', 'date', 'client', 'plant', 'duration', 'intervention_type', 'machine', 'cost_center', 'commission', 'location', 'supervisor', 'description', 'actions'];
   user_columns: string[] = ['date', 'client', 'plant', 'duration', 'intervention_type', 'machine', 'commission', 'location', 'supervisor', 'actions'];
   operators = [];
@@ -39,7 +37,8 @@ export class ManageWorkComponent implements OnInit {
   position: TooltipPosition = 'above';
   months = [];
   exp: RegExp = /\r\n|\n\r|\n|\r/g;
-  reports_filename = 'interventi';
+  innerText = '_';
+  reports_filename = '';
   adminForm = this.formBuilder.group({
     operator_id: ['0', Validators.required],
     client_id: ['0', Validators.required],
@@ -105,6 +104,9 @@ export class ManageWorkComponent implements OnInit {
       [value]: selectedValue
     });
     if (this.logged_role === 'admin') {
+      if (value === 'operator_id') {
+        this.innerText = (event.target as HTMLSelectElement).options[(event.target as HTMLSelectElement).options.selectedIndex].innerText.toLowerCase().trim() + '_';
+      }
       if (this.adminForm.value.plant_id !== 'c') {
         if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
           this.dataService.getPlantsByClient(+this.adminForm.value.client_id!).subscribe({
@@ -190,22 +192,14 @@ export class ManageWorkComponent implements OnInit {
           this.months = data;
         }
       });
-      this.reports_filename = 'interventi_' + '_' + this.monthFilterForm.value.month?.replace('/', '-');
+      this.reports_filename = this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month?.replace('/', '-');
     } else if (this.filter === 'interval') {
-      this.reports_filename = 'interventi_' + this.intervalFilterForm.value.start_date + '_' + this.intervalFilterForm.value.end_date;
+      this.reports_filename = this.innerText.trim().replace(' ', '-') + this.intervalFilterForm.value.start_date + this.intervalFilterForm.value.end_date;
     }
   }
 
   checkReports(data: any) {
     data.length === 0 ? this.error = 'Non ci sono interventi da visualizzare' : this.error = '';
-  }
-
-  getLastColumn(): number {
-    if (this.logged_role === 'admin') {
-      return this.displayed_columns.length - 1;
-    } else {
-      return this.user_columns.length - 1;
-    }
   }
 
   printMonthlyReports() {
@@ -218,7 +212,26 @@ export class ManageWorkComponent implements OnInit {
         window.open(fileURL);
       });
     } else {
-      this.dataService.printMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe((response) => {
+      this.dataService.printMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe((response) => {
+        this.loadingPdf = false;
+        const file = new Blob([response], {type: 'application/pdf'});
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      });
+    }
+  }
+
+  printIntervalReports() {
+    this.loadingPdf = true;
+    if (this.adminForm.value.plant_id === 'c') {
+      this.dataService.printIntervalCommissionReports(this.adminForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe((response) => {
+        this.loadingPdf = false;
+        const file = new Blob([response], {type: 'application/pdf'});
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      });
+    } else {
+      this.dataService.printIntervalReports(this.adminForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe((response) => {
         this.loadingPdf = false;
         const file = new Blob([response], {type: 'application/pdf'});
         const fileURL = URL.createObjectURL(file);
@@ -234,20 +247,62 @@ export class ManageWorkComponent implements OnInit {
         binaryData.push(response);
         let downloadLink = document.createElement('a');
         downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
-        downloadLink.setAttribute('download', 'interventi_' + this.monthFilterForm.value.month + '.csv');
+        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
         document.body.appendChild(downloadLink);
         downloadLink.click();
       });
     } else {
-      this.dataService.printCsvMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!).subscribe((response) => {
+      this.dataService.printCsvMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe((response) => {
         let binaryData = [];
         binaryData.push(response);
         let downloadLink = document.createElement('a');
         downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
-        downloadLink.setAttribute('download', 'interventi_' + this.monthFilterForm.value.month + '.csv');
+        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
         document.body.appendChild(downloadLink);
         downloadLink.click();
       });
+    }
+    this.reports_filename = this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month?.replace('/', '-');
+  }
+
+  printCsvIntervalReports() {
+    if (this.adminForm.value.plant_id === 'c') {
+      this.dataService.printCsvIntervalCommissionReports(this.adminForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe((response) => {
+        let binaryData = [];
+        binaryData.push(response);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
+        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      });
+    } else {
+      this.dataService.printCsvIntervalReports(this.adminForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe((response) => {
+        let binaryData = [];
+        binaryData.push(response);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
+        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      });
+    }
+    this.reports_filename = this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month?.replace('/', '-');
+  }
+
+  printPdf() {
+    if (this.filter === 'month') {
+      this.printMonthlyReports();
+    } else {
+      this.printIntervalReports();
+    }
+  }
+
+  printCsv() {
+    if (this.filter === 'month') {
+      this.printCsvMonthlyReports();
+    } else {
+      this.printCsvIntervalReports();
     }
   }
 

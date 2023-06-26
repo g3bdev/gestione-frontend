@@ -145,17 +145,17 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getClients().subscribe((data: any) => {
       this.clients = data;
-    });
-    this.dataService.getInterventionTypes().subscribe((data: any) => {
-      this.intervention_types = data;
-    });
-    this.dataService.getLocations().subscribe((data: any) => {
-      this.intervention_locations = data;
-    });
-    this.dataService.getPlantsByClient(this.data.message['client_id']).subscribe({
-      next: (data: any) => {
-        this.plants = data;
-      }
+      this.dataService.getInterventionTypes().subscribe((data: any) => {
+        this.intervention_types = data;
+        this.dataService.getLocations().subscribe((data: any) => {
+          this.intervention_locations = data;
+          this.dataService.getPlantsByClient(this.data.message['client_id']).subscribe({
+            next: (data: any) => {
+              this.plants = data;
+            }
+          });
+        });
+      });
     });
     if (this.data.message['Report']['type'] === 'machine') {
       this.dataService.getMachineByPlant(this.data.message['plant_id']).subscribe({
