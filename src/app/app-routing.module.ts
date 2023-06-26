@@ -23,7 +23,7 @@ import {ConvertXmlComponent} from "./convert-xml/convert-xml.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
-  {path: 'login', component: LoginComponent},/*
+  {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'profile/change-password', component: ChangePasswordComponent},
@@ -42,8 +42,8 @@ const routes: Routes = [
   {path: 'add/commission', component: CreateCommissionComponent},
   {path: 'add/plant', component: CreatePlantComponent},
   {path: 'add/machine', component: CreateMachineComponent},
-  {path: 'invoices', component: ConvertXmlComponent},*/
-  {path: '**', component: LoginComponent}
+  {path: 'invoices', component: ConvertXmlComponent},
+  {path: '**', component: NotFoundComponent}
 ];
 
 @NgModule({
