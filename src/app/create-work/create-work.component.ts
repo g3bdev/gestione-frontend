@@ -14,6 +14,7 @@ export class CreateWorkComponent implements OnInit {
   commissions = [];
   intervention_types = [];
   intervention_locations = [];
+  supervisors = [];
   message = '';
   fa_arrowLeft = faArrowLeft;
   reportForm = this.formBuilder.group({
@@ -25,7 +26,7 @@ export class CreateWorkComponent implements OnInit {
     plant_id: ['', Validators.required],
     work_id: ['', Validators.required],
     type: ['', Validators.required],
-    supervisor: ['', Validators.required],
+    supervisor_id: ['', Validators.required],
     description: ['', Validators.required],
     notes: [''],
     trip_kms: [''],
@@ -64,11 +65,16 @@ export class CreateWorkComponent implements OnInit {
       this.dataService.getPlantsByClient(+this.reportForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
-        }
-      });
-      this.dataService.getCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
-        next: (data: any) => {
-          this.commissions = data;
+          this.dataService.getCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
+            next: (data: any) => {
+              this.commissions = data;
+              this.dataService.getSupervisorsByClient(+this.reportForm.value.client_id!).subscribe({
+                next: (data: any) => {
+                  this.supervisors = data;
+                }
+              });
+            }
+          });
         }
       });
       this.reportForm.patchValue({

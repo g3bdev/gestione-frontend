@@ -15,8 +15,9 @@
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci utenti</h1>
       <div class="flex items-center justify-center mb-8">
         <div>
-          <select (ngModelChange)="onChange($event)" [ngModel]="selectedID"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <select (change)="select($event, 'user_id')"
+                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="user_id">
             <option disabled hidden selected value="">Seleziona l'utente</option>
             <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
               {{user['first_name']}} {{user['last_name']}}
@@ -30,31 +31,68 @@
               </div>
               <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name}} {{last_name}}</h1>
             </div>
-            <div class="py-4 px-6 flex-col justify-center">
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_envelope"></fa-icon>
-                {{email}}</p>
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_at"></fa-icon>
-                {{username}}</p>
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_phone"></fa-icon>
-                {{phone_number}}</p>
-              <p class="py-2 text-lg text-gray-700">
-                <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
-                {{role}}</p>
-            </div>
+            <form [formGroup]="editUserForm">
+              <div class="py-4 px-6 flex flex-col place-items-start">
+                <div class="py-2 text-gray-700">
+                  <fa-icon [icon]="fa_at"></fa-icon>&nbsp;
+                  {{username}}
+                </div>
+                <div class="py-2 text-gray-700">
+                  <fa-icon [icon]="fa_envelope"></fa-icon>
+                  <input [readonly]="!editing" formControlName="email" maxlength="50"
+                         class="h-8 w-80 ml-2"
+                         [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
+                         [value]="email">
+                </div>
+                <div class="py-2 text-gray-700">
+                  <fa-icon [icon]="fa_phone"></fa-icon>
+                  <input [readonly]="!editing" formControlName="phone_number" maxlength="50"
+                         class="h-8 w-80 ml-2"
+                         [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
+                         [value]="phone_number">
+                </div>
+
+                <div class="py-2 text-gray-700" *ngIf="!editing">
+                  <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
+                  {{client_name}} {{client_city}}
+                </div>
+
+                <div class="py-2 text-gray-700 flex flex-row gap-x-[1.6px]" *ngIf="editing">
+                  <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
+                  <select (change)="select($event, 'client_id')"
+                          class="appearance-none w-full rounded bg-opacity-40 border border-gray-700"
+                          id="client_id">
+                    <option disabled hidden selected value="">{{client_name}} {{client_city}}</option>
+                    <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
+                      {{client['name']}} {{client['city']}}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="py-2 text-gray-700">
+                  <fa-icon [icon]="fa_address"></fa-icon>&nbsp;
+                  {{role}}
+                </div>
+
+              </div>
+            </form>
           </div>
           <div class="flex flex-row justify-evenly gap-4">
-
-            <button *ngIf="clicked" (click)="openSnackBar('In arrivo')"
+            <button *ngIf="clicked && !editing" (click)="write()"
                     class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-6 hover:bg-indigo-600 active:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-400 rounded text-lg mt-10 sm:mt-0">
               <a>Modifica</a>
             </button>
-
-            <button *ngIf="clicked"
+            <button *ngIf="editing" (click)="cancel()"
+                    class="flex-shrink-0 text-white bg-gray-500 border-0 py-2 px-6 hover:bg-gray-600 active:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-400 rounded text-lg mt-10 sm:mt-0">
+              <a>Annulla</a>
+            </button>
+            <button *ngIf="editing" (click)="edit()"
+                    class="flex-shrink-0 text-white bg-green-500 border-0 py-2 px-6 hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-400 rounded text-lg mt-10 sm:mt-0">
+              <a>Salva</a>
+            </button>
+            <button *ngIf="clicked" (click)="deleteUser(+user_id!)"
                     class="flex-shrink-0 text-white bg-red-500 border-0 py-2 px-6 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 rounded text-lg">
-              <a (click)="deleteUser(selectedID)">Elimina</a>
+              <a>Elimina</a>
             </button>
           </div>
           <div *ngIf="message && error"

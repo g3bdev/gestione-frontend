@@ -130,7 +130,7 @@ export class DataService {
     intervention_type: string | null;
     intervention_location: string | null;
     commission_id: string | null;
-    supervisor: string | null;
+    supervisor_id: string | null;
     description: string | null;
     notes: string | null;
     trip_kms: string | null;
@@ -220,7 +220,7 @@ export class DataService {
     client_id: string | null;
     plant_id: string | null;
     work_id: string | null;
-    supervisor: string | null;
+    supervisor_id: string | null;
     description: string | null;
     notes: string | null;
     trip_kms: string | null;
@@ -439,6 +439,12 @@ export class DataService {
     formData.append('file', file);
     return this.httpClient.post(`${environment.apiUrl}/upload-xml`, formData, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`), responseType: 'blob'
+    });
+  }
+
+  getSupervisorsByClient(client_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/supervisors?client_id=${client_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
 }

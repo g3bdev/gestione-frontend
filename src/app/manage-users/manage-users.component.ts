@@ -1,11 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {AuthService} from "../auth.service";
-import {faArrowLeft, faAt, faBuilding, faEnvelope, faPhone, faUser} from '@fortawesome/free-solid-svg-icons';
+import {
+  faAddressBook,
+  faArrowLeft,
+  faAt,
+  faBuilding,
+  faEnvelope,
+  faPhone,
+  faUser
+} from '@fortawesome/free-solid-svg-icons';
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-manage-users',
@@ -15,13 +24,17 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class ManageUsersComponent implements OnInit {
 
   users = [];
+  clients = [];
   first_name = '';
   last_name = '';
   email = '';
   username = '';
   phone_number = '';
   role = '';
-  selectedID = 0;
+  user_id = '';
+  client_id = '';
+  client_name = '';
+  client_city = '';
   logged_role = localStorage.getItem('role');
   fa_arrowLeft = faArrowLeft;
   fa_user = faUser;
@@ -29,13 +42,22 @@ export class ManageUsersComponent implements OnInit {
   fa_at = faAt;
   fa_phone = faPhone;
   fa_building = faBuilding;
+  fa_address = faAddressBook;
   fa_user_size: SizeProp = "2xl";
   clicked = false;
   error = false;
+  editing = false;
   message = '';
 
-  constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
   }
+
+  editUserForm = this.formBuilder.group({
+    user_id: ['', Validators.required],
+    email: ['', Validators.required],
+    phone_number: ['', Validators.required],
+    client_id: ['', Validators.required]
+  });
 
   openSnackBar(message: string) {
     this.snackBar.open(message, void 0, {
@@ -43,22 +65,62 @@ export class ManageUsersComponent implements OnInit {
     });
   }
 
-  onChange(id: number) {
-    this.clicked = true;
-    this.message = '';
-    this.dataService.getUserById(id).subscribe({
-      next: (data: any) => {
-        this.first_name = data.first_name;
-        this.last_name = data.last_name;
-        this.email = data.email;
-        this.username = data.username;
-        this.phone_number = data.phone_number;
-        this.role = data.role;
-        this.selectedID = id;
-      }, error: () => {
-        this.message = 'Errore durante il caricamento dei dati';
+  write() {
+    this.editing = true;
+    this.editUserForm.patchValue({
+      email: this.email,
+      phone_number: this.phone_number,
+      client_id: this.client_id
+    });
+  }
+
+  edit() {
+    this.dataService.editUser(this.editUserForm.value, +this.user_id).subscribe({
+      next: () => {
+        this.editing = false;
+        this.dataService.getUserById(+this.editUserForm.value.user_id!).subscribe({
+          next: (data: any) => {
+            this.role = data.role;
+            this.client_name = data.client_name;
+            this.client_city = data.client_city;
+          }
+        });
+        this.openSnackBar('Profilo modificato con successo!');
+      },
+      error: (error) => {
+        this.editing = false;
+        this.openSnackBar(error.error.detail);
       }
     });
+  }
+
+  cancel() {
+    this.editing = false;
+  }
+
+  select(event: Event, value: string) {
+    this.editUserForm.patchValue({
+      [value]: (event.target as HTMLInputElement).value
+    });
+    if (value === 'user_id') {
+      this.clicked = true;
+      this.editing = false;
+      this.dataService.getUserById(+this.editUserForm.value.user_id!).subscribe({
+        next: (data: any) => {
+          console.log(data)
+          this.first_name = data.User.first_name;
+          this.last_name = data.User.last_name;
+          this.email = data.User.email;
+          this.username = data.User.username;
+          this.phone_number = data.User.phone_number;
+          this.user_id = data.User.id;
+          this.client_id = data.User.client_id;
+          this.client_name = data.client_name;
+          this.client_city = data.client_city;
+          this.role = data.role;
+        }
+      });
+    }
   }
 
   deleteUser(id: number) {
@@ -89,6 +151,9 @@ export class ManageUsersComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getUsers().subscribe((data: any) => {
       this.users = data;
+      this.dataService.getClients().subscribe((data: any) => {
+        this.clients = data;
+      });
     });
   }
 

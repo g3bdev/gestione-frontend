@@ -16,6 +16,7 @@ export class EditComponent implements OnInit {
   machines = [];
   intervention_locations = [];
   users = [];
+  supervisors = [];
   message = '';
   logged_role = localStorage.getItem('role');
 
@@ -29,7 +30,7 @@ export class EditComponent implements OnInit {
     plant_id: [''],
     work_id: ['', Validators.required],
     type: ['', Validators.required],
-    supervisor: ['', Validators.required],
+    supervisor_id: ['', Validators.required],
     description: ['', Validators.required],
     notes: [''],
     trip_kms: [''],
@@ -81,35 +82,42 @@ export class EditComponent implements OnInit {
       this.dataService.getPlantsByClient(+this.editForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
-        }
-      });
-      this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
-        next: (data: any) => {
-          this.commissions = data;
+          this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
+            next: (data: any) => {
+              this.commissions = data;
+              this.dataService.getSupervisorsByClient(+this.editForm.value.client_id!).subscribe({
+                next: (data: any) => {
+                  this.supervisors = data;
+                }
+              });
+            }
+          });
         }
       });
       this.editForm.patchValue({
         plant_id: '0'
       });
     }
-    if (value === 'plant_id' && this.editForm.value.plant_id === '0') {
-      this.editForm.patchValue({
-        type: 'commission'
-      });
-      this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
-        next: (data: any) => {
-          this.commissions = data;
-        }
-      });
-    } else if (value === 'plant_id' && this.editForm.value.plant_id !== '0') {
-      this.editForm.patchValue({
-        type: 'machine', work_id: ''
-      });
-      this.dataService.getMachineByPlant(+this.editForm.value.plant_id!).subscribe({
-        next: (data: any) => {
-          this.machines = data;
-        }
-      });
+    if (value === 'plant_id') {
+      if (this.editForm.value.plant_id === 'c') {
+        this.editForm.patchValue({
+          type: 'commission',
+        });
+        this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
+          next: (data: any) => {
+            this.commissions = data;
+          }
+        });
+      } else {
+        this.editForm.patchValue({
+          type: 'machine',
+        });
+        this.dataService.getMachineByPlant(+this.editForm.value.plant_id!).subscribe({
+          next: (data: any) => {
+            this.machines = data;
+          }
+        });
+      }
     }
   }
 
@@ -152,6 +160,11 @@ export class EditComponent implements OnInit {
           this.dataService.getPlantsByClient(this.data.message['client_id']).subscribe({
             next: (data: any) => {
               this.plants = data;
+              this.dataService.getSupervisorsByClient(this.data.message['client_id']).subscribe({
+                next: (data: any) => {
+                  this.supervisors = data;
+                }
+              });
             }
           });
         });
@@ -181,7 +194,7 @@ export class EditComponent implements OnInit {
       type: this.data.message['Report']['type'],
       intervention_duration: this.data.message['Report']['intervention_duration'],
       intervention_type: this.data.message['Report']['intervention_type'],
-      supervisor: this.data.message['Report']['supervisor'],
+      supervisor_id: this.data.message['Report']['supervisor_id'],
       intervention_location: this.data.message['Report']['intervention_location'],
       description: this.data.message['Report']['description'].trim(),
       notes: this.data.message['Report']['notes'],

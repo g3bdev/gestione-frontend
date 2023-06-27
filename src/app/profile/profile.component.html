@@ -32,7 +32,7 @@
                      [value]="phone_number">
             </div>
             <div class="py-2 text-gray-700"
-                 *ngIf="role === 'admin' || role === 'user' || role ==='accountant' || role === 'client'">
+                 *ngIf="role === 'admin'">
               <fa-icon [icon]="fa_building"></fa-icon>&nbsp;
               {{role}}</div>
           </div>

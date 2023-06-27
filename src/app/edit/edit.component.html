@@ -21,7 +21,7 @@
       <select (change)="select($event, 'client_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="client_id">
-        <option disabled hidden selected>{{data.message['client_name']}}</option>
+        <option disabled hidden selected>{{data.message['client_name']}} {{data.message['client_city']}}</option>
         <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
           {{client['name']}} {{client['city']}}
         </option>
@@ -115,15 +115,21 @@
          *ngIf="submitted && !isDurationValid(editForm.value.intervention_duration!)">{{duration_error}}</p>
     </div>
 
+    {{editForm.value | json}}
+
     <div class="relative w-full">
-      <label class="leading-7 text-sm text-gray-400" for="supervisor">Supervisore</label>
-      <input
-        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-        formControlName="supervisor" id="supervisor"
-        type="text"
-        [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.supervisor.errors}">
-      <p class="text-red-500"
-         *ngIf="submitted && form.supervisor.errors">Questo campo è obbligatorio.</p>
+      <label class="leading-7 text-sm text-gray-400" for="supervisor_id">Supervisore</label>
+      <select (change)="select($event, 'supervisor_id')" [disabled]="supervisors.length === 0"
+              class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              id="supervisor_id"
+              [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.supervisor_id.errors}">
+        <option disabled hidden selected
+                value="">{{data.message['supervisor_last_name']}} {{data.message['supervisor_first_name']}}</option>
+        <option *ngFor="let supervisor of supervisors" [value]="supervisor['id']"
+                class="bg-gray-800">
+          {{supervisor['last_name']}} {{supervisor['first_name']}}
+        </option>
+      </select>
     </div>
 
     <div class="relative w-full">
