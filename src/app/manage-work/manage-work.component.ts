@@ -3,7 +3,14 @@ import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
-import {faArrowLeft, faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faEnvelope,
+  faExclamationCircle,
+  faInfoCircle,
+  faPrint,
+  faTrash
+} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
@@ -28,6 +35,7 @@ export class ManageWorkComponent implements OnInit {
   reports = [];
   logged_role = localStorage.getItem('role');
   error = '';
+  fa_mail = faEnvelope;
   fa_print = faPrint;
   fa_arrowLeft = faArrowLeft;
   fa_trash = faTrash;
@@ -312,6 +320,25 @@ export class ManageWorkComponent implements OnInit {
     });
   }
 
+  sendEmail(supervisor_id: number) {
+    this.dataService.getUserById(supervisor_id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+          data: {
+            title: 'Conferma invio email',
+            message: 'Vuoi mandare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?'
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.openSnackBar('Email inviata con successo!');
+          }
+        });
+      }
+    });
+  }
+
   editReport(id: number) {
     this.dataService.getReportById(id).subscribe({
       next: (data: any) => {
@@ -346,15 +373,20 @@ export class ManageWorkComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.logged_role === 'admin') {
-      this.dataService.getMonths('0').subscribe({
-        next: (data: any) => {
-          this.months = data;
-        }
-      });
       this.dataService.getReports(this.limit).subscribe({
         next: (data: any) => {
           this.reports = data;
           this.checkReports(data);
+          this.dataService.getMonths('0').subscribe({
+            next: (data: any) => {
+              this.months = data;
+              this.dataService.getOperators().subscribe({
+                next: (data: any) => {
+                  this.operators = data;
+                }
+              });
+            }
+          });
         }
       });
     } else {
@@ -375,13 +407,6 @@ export class ManageWorkComponent implements OnInit {
         this.clients = data;
       }
     });
-    if (this.logged_role === 'admin') {
-      this.dataService.getUsers().subscribe({
-        next: (data: any) => {
-          this.operators = data;
-        }
-      });
-    }
   }
 
   protected readonly window = window;

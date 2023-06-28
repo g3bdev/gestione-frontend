@@ -107,6 +107,8 @@ export class ManageUsersComponent implements OnInit {
     if (value === 'user_id') {
       this.clicked = true;
       this.editing = false;
+      this.error = false;
+      this.message = '';
       this.dataService.getUserById(+this.editUserForm.value.user_id!).subscribe({
         next: (data: any) => {
           this.first_name = data.User.first_name;

@@ -25,6 +25,12 @@ export class DataService {
     });
   }
 
+  getOperators() {
+    return this.httpClient.get(`${environment.apiUrl}/operators`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
   getReports(limit: number) {
     return this.httpClient.get(`${environment.apiUrl}/reports?limit=${limit}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
