@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {DataService} from "./data.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,13 @@ import {DataService} from "./data.service";
 export class CommonService {
   loading = false;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private snackbar: MatSnackBar) {
+  }
+
+  openSnackBar(message: string) {
+    this.snackbar.open(message, '', {
+      duration: 3000,
+    });
   }
 
   printReport(id: number) {

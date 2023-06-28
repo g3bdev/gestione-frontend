@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-create-work', templateUrl: './create-work.component.html', styleUrls: ['./create-work.component.css']
@@ -16,6 +17,7 @@ export class CreateWorkComponent implements OnInit {
   intervention_locations = [];
   supervisors = [];
   message = '';
+  email = '';
   fa_arrowLeft = faArrowLeft;
   reportForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
@@ -30,7 +32,8 @@ export class CreateWorkComponent implements OnInit {
     description: ['', Validators.required],
     notes: [''],
     trip_kms: [''],
-    cost: ['']
+    cost: [''],
+    send_email: [false]
   });
   error: any;
   submitted: boolean = false;
@@ -38,7 +41,7 @@ export class CreateWorkComponent implements OnInit {
   today = new Date().toISOString().substring(0, 10);
   oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().substring(0, 10);
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService) {
+  constructor(private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService) {
   }
 
   get isMachinesEmpty() {
@@ -71,6 +74,7 @@ export class CreateWorkComponent implements OnInit {
               this.dataService.getSupervisorsByClient(+this.reportForm.value.client_id!).subscribe({
                 next: (data: any) => {
                   this.supervisors = data;
+                  this.email = '';
                 }
               });
             }
@@ -103,6 +107,14 @@ export class CreateWorkComponent implements OnInit {
         });
       }
     }
+    if (value === 'supervisor_id') {
+      this.dataService.getUserById(+this.reportForm.value.supervisor_id!).subscribe({
+        next: (data: any) => {
+          console.log(data)
+          this.email = data.User.email;
+        }
+      });
+    }
   }
 
   get form() {
@@ -110,6 +122,9 @@ export class CreateWorkComponent implements OnInit {
   }
 
   submitForm() {
+    if (this.reportForm.value.send_email) {
+      this.common.openSnackBar('Invio email in corso...');
+    }
     this.submitted = true;
     if (this.reportForm.invalid || !this.isDurationValid(this.reportForm.value.intervention_duration!)) {
       window.scrollTo({top: 0, behavior: 'smooth'});
