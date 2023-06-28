@@ -3,7 +3,7 @@ import {DataService} from "../data.service";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 import {dropDownAnimation} from "../animations";
-import {faAngleDown, faPlusCircle} from "@fortawesome/free-solid-svg-icons";
+import {faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
@@ -25,7 +25,6 @@ export class DashboardComponent implements OnInit {
   logged_role = localStorage.getItem('role');
   isOpen = false;
   arrowDown = faAngleDown;
-  plus = faPlusCircle;
   state = 'default';
 
   rotate() {
@@ -41,7 +40,7 @@ export class DashboardComponent implements OnInit {
     }
     this.authService.getUserInfo().subscribe({
       next: (data: any) => {
-        this.name = data.first_name + "!";
+        this.name = data.User.first_name + "!";
       }
     });
   }

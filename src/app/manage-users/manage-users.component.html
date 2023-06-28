@@ -1,4 +1,5 @@
-<section *ngIf="logged_role == 'admin'; else error" class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
+<section *ngIf="logged_role == 'admin'; else forbidden"
+         class="min-h-screen text-gray-400 bg-gray-900 body-font font-sans">
   <app-header></app-header>
   <div class="mx-auto px-5 py-4 flex-col">
     <button
@@ -16,14 +17,14 @@
       <div class="flex items-center justify-center mb-8">
         <div>
           <select (change)="select($event, 'user_id')"
-                  class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  class="h-[42px] w-auto bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   id="user_id">
             <option disabled hidden selected value="">Seleziona l'utente</option>
             <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
               {{user['first_name']}} {{user['last_name']}}
             </option>
           </select>
-          <div *ngIf="clicked" class="w-auto bg-white shadow-lg rounded-lg overflow-hidden my-4">
+          <div *ngIf="clicked" class="w-full bg-white shadow-lg rounded-lg overflow-hidden my-4 sm:text-lg text-base">
             <div class="flex items-center px-6 py-3 bg-purple-400">
               <div
                 class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">
@@ -40,14 +41,14 @@
                 <div class="py-2 text-gray-700">
                   <fa-icon [icon]="fa_envelope"></fa-icon>
                   <input [readonly]="!editing" formControlName="email" maxlength="50"
-                         class="h-8 w-80 ml-2"
+                         class="h-8 sm:w-80 w-auto ml-2"
                          [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
                          [value]="email">
                 </div>
                 <div class="py-2 text-gray-700">
                   <fa-icon [icon]="fa_phone"></fa-icon>
                   <input [readonly]="!editing" formControlName="phone_number" maxlength="50"
-                         class="h-8 w-80 ml-2"
+                         class="h-8 sm:w-80 w-auto ml-2"
                          [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
                          [value]="phone_number">
                 </div>
@@ -77,7 +78,7 @@
               </div>
             </form>
           </div>
-          <div class="flex flex-row justify-evenly gap-4">
+          <div class="flex sm:flex-row flex-col justify-evenly sm:gap-4">
             <button *ngIf="clicked && !editing" (click)="write()"
                     class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-6 hover:bg-indigo-600 active:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-400 rounded text-lg mt-10 sm:mt-0">
               <a>Modifica</a>
@@ -91,18 +92,24 @@
               <a>Salva</a>
             </button>
             <button *ngIf="clicked" (click)="deleteUser(+user_id!)"
-                    class="flex-shrink-0 text-white bg-red-500 border-0 py-2 px-6 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 rounded text-lg">
+                    class="flex-shrink-0 text-white bg-red-500 border-0 py-2 px-6 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 rounded text-lg mt-10 sm:mt-0">
               <a>Elimina</a>
             </button>
           </div>
-          <div *ngIf="message && error"
+          <div class="mt-4">
+            <button *ngIf="clicked" (click)="resetPassword(+user_id!)"
+                    class="flex-shrink-0 text-white bg-gray-500 border-0 py-2 px-6 hover:bg-gray-600 active:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-400 rounded text-lg mt-10 sm:mt-0">
+              <a>Reset password</a>
+            </button>
+          </div>
+          <div *ngIf="error"
                class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mb-4 bg-red-500 w-full">
           <span class="inline-block align-middle">
             {{message}}
           </span>
           </div>
           <div *ngIf="message && !error"
-               class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mb-4 bg-red-500 w-full">
+               class="text-white px-6 py-4 mt-5 border-0 rounded flex flex-col mb-4 bg-green-500 w-full">
           <span class="inline-block align-middle">
             {{message}}
           </span>
@@ -113,6 +120,6 @@
   </div>
 </section>
 
-<ng-template #error>
+<ng-template #forbidden>
   <app-forbidden></app-forbidden>
 </ng-template>

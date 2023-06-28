@@ -78,6 +78,8 @@ export class ManageUsersComponent implements OnInit {
     this.dataService.editUser(this.editUserForm.value, +this.user_id).subscribe({
       next: () => {
         this.editing = false;
+        this.error = false;
+        this.message = '';
         this.dataService.getUserById(+this.editUserForm.value.user_id!).subscribe({
           next: (data: any) => {
             this.role = data.role;
@@ -107,7 +109,6 @@ export class ManageUsersComponent implements OnInit {
       this.editing = false;
       this.dataService.getUserById(+this.editUserForm.value.user_id!).subscribe({
         next: (data: any) => {
-          console.log(data)
           this.first_name = data.User.first_name;
           this.last_name = data.User.last_name;
           this.email = data.User.email;
@@ -123,6 +124,29 @@ export class ManageUsersComponent implements OnInit {
     }
   }
 
+  resetPassword(id: number) {
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+      data: {
+        title: 'Conferma reset password',
+        message: 'Sei sicuro di voler resettare la password di questo utente?'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.resetPassword(id).subscribe({
+          next: (data: any) => {
+            this.error = false;
+            this.message = data.detail + '! La nuova password è: ' + data.password;
+          },
+          error: (error) => {
+            this.error = true;
+            this.message = error.error.detail;
+          }
+        });
+      }
+    });
+  }
+
   deleteUser(id: number) {
     const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
       data: {
@@ -134,12 +158,11 @@ export class ManageUsersComponent implements OnInit {
       if (result) {
         this.dataService.deleteUser(id).subscribe({
           next: (data: any) => {
+            this.error = false;
             this.message = data.detail;
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
           },
           error: (error) => {
+            console.log(error)
             this.error = true;
             this.message = error.error.detail;
           }

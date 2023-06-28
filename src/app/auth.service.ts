@@ -28,8 +28,19 @@ export class AuthService {
 
   getRole() {
     return this.getUserInfo().subscribe((data: any) => {
-      if (data.role_id === 1) {
-        localStorage.setItem('role', 'admin');
+      switch (data.User.role_id) {
+        case 1:
+          localStorage.setItem('role', 'admin');
+          break;
+        case 2:
+          localStorage.setItem('role', 'operator');
+          break;
+        case 3:
+          localStorage.setItem('role', 'accountant');
+          break;
+        case 4:
+          localStorage.setItem('role', 'client');
+          break;
       }
     });
   }

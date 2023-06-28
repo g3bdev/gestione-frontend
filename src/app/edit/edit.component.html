@@ -115,8 +115,6 @@
          *ngIf="submitted && !isDurationValid(editForm.value.intervention_duration!)">{{duration_error}}</p>
     </div>
 
-    {{editForm.value | json}}
-
     <div class="relative w-full">
       <label class="leading-7 text-sm text-gray-400" for="supervisor_id">Supervisore</label>
       <select (change)="select($event, 'supervisor_id')" [disabled]="supervisors.length === 0"

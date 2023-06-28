@@ -428,6 +428,7 @@ export class DataService {
   editUser(user: Partial<{
     email: string | null;
     phone_number: string | null;
+    client_id: string | null;
   }>, user_id: number) {
     return this.httpClient.put(`${environment.apiUrl}/user/edit?user_id=${user_id}`, user, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
@@ -444,6 +445,12 @@ export class DataService {
 
   getSupervisorsByClient(client_id: number) {
     return this.httpClient.get(`${environment.apiUrl}/supervisors?client_id=${client_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  resetPassword(user_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/reset-password?user_id=${user_id}`, {}, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

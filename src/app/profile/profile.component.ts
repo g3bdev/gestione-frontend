@@ -19,7 +19,8 @@ export class ProfileComponent implements OnInit {
 
   editUserForm = this.formBuilder.group({
     email: ['', Validators.required],
-    phone_number: ['', Validators.required]
+    phone_number: ['', Validators.required],
+    client_id: ['']
   });
 
   first_name = '';
@@ -27,6 +28,8 @@ export class ProfileComponent implements OnInit {
   email = '';
   username = '';
   phone_number = '';
+  client = '';
+  client_id = '';
   role = localStorage.getItem('role');
   fa_user = faUser;
   fa_envelope = faEnvelope;
@@ -47,7 +50,8 @@ export class ProfileComponent implements OnInit {
     this.editing = true;
     this.editUserForm.patchValue({
       email: this.email,
-      phone_number: this.phone_number
+      phone_number: this.phone_number,
+      client_id: this.client_id
     });
   }
 
@@ -57,8 +61,9 @@ export class ProfileComponent implements OnInit {
         this.editing = false;
         this.authService.getUserInfo().subscribe({
           next: (data: any) => {
-            this.email = data.email;
-            this.phone_number = data.phone_number;
+            this.email = data.User.email;
+            this.phone_number = data.User.phone_number;
+            this.client_id = data.User.client_id;
           }
         });
         this.openSnackBar('Profilo modificato con successo!');
@@ -81,13 +86,14 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getUserInfo().subscribe({
       next: (data: any) => {
-        console.log(data)
-        this.first_name = data.first_name;
-        this.last_name = data.last_name;
-        this.email = data.email;
-        this.username = data.username;
-        this.phone_number = data.phone_number;
-        this.user_id = data.id;
+        this.first_name = data.User.first_name;
+        this.last_name = data.User.last_name;
+        this.email = data.User.email;
+        this.username = data.User.username;
+        this.phone_number = data.User.phone_number;
+        this.user_id = data.User.id;
+        this.client = data.client_name + ' ' + data.client_city;
+        this.client_id = data.User.client_id;
       }
     });
   }
