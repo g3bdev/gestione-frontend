@@ -72,7 +72,8 @@ export class CreateMachineComponent {
           this.router.navigate(['/dashboard']).then();
         }, 2000);
       },
-      error: () => {
+      error: (error) => {
+        console.log(error)
         this.message = '';
       }
     });
