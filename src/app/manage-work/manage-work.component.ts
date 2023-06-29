@@ -46,6 +46,7 @@ export class ManageWorkComponent implements OnInit {
   months = [];
   exp: RegExp = /\r\n|\n\r|\n|\r/g;
   innerText = '_';
+  pdf_filename = '';
   reports_filename = '';
   adminForm = this.formBuilder.group({
     operator_id: ['0', Validators.required],
@@ -321,9 +322,13 @@ export class ManageWorkComponent implements OnInit {
   }
 
   sendEmail(report_id: number, supervisor_id: number) {
+    this.dataService.getReportById(report_id).subscribe({
+      next: (data: any) => {
+        this.pdf_filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '.pdf';
+      }
+    });
     this.dataService.getUserById(supervisor_id).subscribe({
       next: (data: any) => {
-        console.log(data);
         let supervisor_email = data.User.email;
         const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
           data: {
@@ -334,13 +339,10 @@ export class ManageWorkComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
             this.openSnackBar('Invio email in corso...')
-            this.dataService.printReport(report_id).subscribe((response: any) => {
-              console.log(response);
-              let pdf = new File([response], 'report.pdf', {type: 'application/pdf'});
-              console.log(pdf)
+            this.dataService.printReport(report_id).subscribe((response) => {
+              let pdf = new File([response], this.pdf_filename, {type: 'application/pdf'});
               this.dataService.sendEmail(report_id, pdf, supervisor_email).subscribe({
-                next: (data: any) => {
-                  console.log(data);
+                next: () => {
                   this.openSnackBar('Email inviata con successo!');
                 }
               });

@@ -19,11 +19,18 @@ export class CommonService {
 
   printReport(id: number) {
     this.loading = true;
+    let filename = '';
+    this.dataService.getReportById(id).subscribe((data: any) => {
+      filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '.pdf';
+    });
     this.dataService.printReport(id).subscribe((response) => {
       this.loading = false;
       const file = new Blob([response], {type: 'application/pdf'});
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      const url = window.URL.createObjectURL(file);
+      const anchor = document.createElement("a");
+      anchor.download = filename;
+      anchor.href = url;
+      anchor.click();
     });
   }
 }

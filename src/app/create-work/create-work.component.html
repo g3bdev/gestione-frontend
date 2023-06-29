@@ -179,19 +179,20 @@
           </div>
         </div>
 
-        <button
-          class="inline-flex text-white bg-purple-500 border-0 my-5 py-2 px-6 hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
-          type="submit">
-          Aggiungi
+        <button *ngIf="!reportForm.value.send_email"
+                class="inline-flex text-white bg-purple-500 border-0 my-5 py-2 px-6 hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+                type="submit">
+          Salva
         </button>
 
-        <div *ngIf="message"
-             class="text-white px-6 py-4 mt-5 border-0 rounded relative mb-4 bg-green-500 w-full lg:w-1/2">
-          <span class="inline-block align-middle mr-8">
-            {{message}}
-          </span>
-        </div>
-
+        <button *ngIf="reportForm.value.send_email"
+                [ngClass]="sending ? 'cursor-not-allowed bg-opacity-50 bg-gray-800 pointer-events-none' : 'cursor-pointer'"
+                class="inline-flex text-white bg-purple-500 border-0 my-5 py-2 px-6 hover:bg-purple-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 rounded text-lg"
+                type="submit">
+          <span class="relative">
+          Salva e invia
+              </span>
+        </button>
       </div>
     </div>
   </form>
