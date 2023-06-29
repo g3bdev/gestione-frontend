@@ -320,10 +320,11 @@ export class ManageWorkComponent implements OnInit {
     });
   }
 
-  sendEmail(supervisor_id: number) {
+  sendEmail(report_id: number, supervisor_id: number) {
     this.dataService.getUserById(supervisor_id).subscribe({
       next: (data: any) => {
         console.log(data);
+        let supervisor_email = data.User.email;
         const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
           data: {
             title: 'Conferma invio email',
@@ -332,7 +333,18 @@ export class ManageWorkComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            this.openSnackBar('Email inviata con successo!');
+            this.openSnackBar('Invio email in corso...')
+            this.dataService.printReport(report_id).subscribe((response: any) => {
+              console.log(response);
+              let pdf = new File([response], 'report.pdf', {type: 'application/pdf'});
+              console.log(pdf)
+              this.dataService.sendEmail(report_id, pdf, supervisor_email).subscribe({
+                next: (data: any) => {
+                  console.log(data);
+                  this.openSnackBar('Email inviata con successo!');
+                }
+              });
+            });
           }
         });
       }

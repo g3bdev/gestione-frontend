@@ -460,4 +460,13 @@ export class DataService {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
+
+  sendEmail(report_id: number, report: File, supervisor_email: string) {
+    const formData = new FormData();
+    formData.append('file', report);
+    formData.append('email', supervisor_email);
+    return this.httpClient.post(`${environment.apiUrl}/send-email?report_id=${report_id}`, formData, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
 }

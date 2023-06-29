@@ -256,7 +256,7 @@
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-            <a (click)="sendEmail(item['Report']['supervisor_id'])">
+            <a (click)="sendEmail(item['Report']['id'], item['Report']['supervisor_id'])">
               <fa-icon
                 [icon]="fa_mail"
                 [matTooltipPosition]="position"
