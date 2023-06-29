@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from "../data.service";
 import {faArrowLeft, faFileAlt} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-convert-xml',
@@ -11,7 +11,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class ConvertXmlComponent {
 
-  constructor(private dataService: DataService, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private common: CommonService) {
   }
 
   file: File | undefined;
@@ -20,16 +20,10 @@ export class ConvertXmlComponent {
   fa_file = faFileAlt;
   fa_size: SizeProp = 'xl';
 
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 5000
-    });
-  }
-
   onChange(event: any) {
     this.file = event.target.files[0];
     if (this.file?.name.split('.')[1] !== 'xml') {
-      this.openSnackBar('File non valido.');
+      this.common.openSnackBar('File non valido.');
       this.selected = false;
       return;
     } else {
@@ -51,7 +45,7 @@ export class ConvertXmlComponent {
           downloadLink.click();
         }, error: (error) => {
           console.log(error);
-          this.openSnackBar('Errore durante la conversione del file.')
+          this.common.openSnackBar('Errore durante la conversione del file.')
         }
       });
     }

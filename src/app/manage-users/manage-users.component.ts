@@ -13,8 +13,8 @@ import {
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {FormBuilder, Validators} from "@angular/forms";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-manage-users',
@@ -49,7 +49,7 @@ export class ManageUsersComponent implements OnInit {
   editing = false;
   message = '';
 
-  constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+  constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog, private common: CommonService, private formBuilder: FormBuilder) {
   }
 
   editUserForm = this.formBuilder.group({
@@ -58,12 +58,6 @@ export class ManageUsersComponent implements OnInit {
     phone_number: ['', Validators.required],
     client_id: ['', Validators.required]
   });
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, void 0, {
-      duration: 3000
-    });
-  }
 
   write() {
     this.editing = true;
@@ -87,11 +81,11 @@ export class ManageUsersComponent implements OnInit {
             this.client_city = data.client_city;
           }
         });
-        this.openSnackBar('Profilo modificato con successo!');
+        this.common.openSnackBar('Profilo modificato con successo!');
       },
       error: (error) => {
         this.editing = false;
-        this.openSnackBar(error.error.detail);
+        this.common.openSnackBar(error.error.detail);
       }
     });
   }

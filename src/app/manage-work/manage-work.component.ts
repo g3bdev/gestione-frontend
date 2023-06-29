@@ -16,7 +16,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {animate, style, transition, trigger} from "@angular/animations";
-import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-manage-work',
@@ -77,7 +76,7 @@ export class ManageWorkComponent implements OnInit {
     return this.adminForm.value.plant_id !== 'c';
   }
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -315,12 +314,6 @@ export class ManageWorkComponent implements OnInit {
     }
   }
 
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
-    });
-  }
-
   sendEmail(report_id: number, supervisor_id: number) {
     this.dataService.getReportById(report_id).subscribe({
       next: (data: any) => {
@@ -338,12 +331,14 @@ export class ManageWorkComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            this.openSnackBar('Invio email in corso...')
+            this.common.openSnackBar('Invio email in corso...')
             this.dataService.printReport(report_id).subscribe((response) => {
               let pdf = new File([response], this.pdf_filename, {type: 'application/pdf'});
               this.dataService.sendEmail(report_id, pdf, supervisor_email).subscribe({
                 next: () => {
-                  this.openSnackBar('Email inviata con successo!');
+                  this.common.openSnackBar('Email inviata con successo!');
+                }, error: () => {
+                  this.common.openSnackBar('Errore nell\'invio dell\'email, riprovare più tardi');
                 }
               });
             });
@@ -375,7 +370,7 @@ export class ManageWorkComponent implements OnInit {
       if (result) {
         this.dataService.deleteReport(id).subscribe({
           next: (data: any) => {
-            this.openSnackBar(data.detail);
+            this.common.openSnackBar(data.detail);
             setTimeout(() => {
               window.location.reload();
             }, 1000);

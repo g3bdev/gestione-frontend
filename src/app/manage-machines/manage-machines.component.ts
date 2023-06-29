@@ -6,7 +6,7 @@ import {faArrowLeft, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-ic
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-manage-machines',
@@ -25,7 +25,7 @@ export class ManageMachinesComponent implements OnInit {
   limit = 25;
   machine_list = [];
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private common: CommonService) {
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -41,12 +41,6 @@ export class ManageMachinesComponent implements OnInit {
       next: (data: any) => {
         this.machines = data;
       }
-    });
-  }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
     });
   }
 
@@ -74,12 +68,12 @@ export class ManageMachinesComponent implements OnInit {
       if (result) {
         this.dataService.deleteMachine(id).subscribe({
           next: (data: any) => {
-            this.openSnackBar(data.detail);
+            this.common.openSnackBar(data.detail);
             setTimeout(() => {
               window.location.reload();
             }, 2000);
           }, error: (error) => {
-            this.openSnackBar(error.error.detail);
+            this.common.openSnackBar(error.error.detail);
           }
         });
       }

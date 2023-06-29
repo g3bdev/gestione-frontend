@@ -10,3 +10,12 @@ html, body {
 * {
   font-family: "Helvetica Neue", sans-serif !important;
 }
+
+.snackbar {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 32px !important;
+  box-shadow: none;
+}

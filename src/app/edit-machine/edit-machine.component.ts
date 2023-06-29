@@ -2,8 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {EditComponent} from "../edit/edit.component";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-edit-machine',
@@ -43,16 +43,10 @@ export class EditMachineComponent implements OnInit {
     return this.editMachineForm.controls;
   }
 
-  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: {
+  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService, @Inject(MAT_DIALOG_DATA) public data: {
     title: string;
     message: any
   }) {
-  }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
-    });
   }
 
   select(event: Event, value: string) {
@@ -79,12 +73,12 @@ export class EditMachineComponent implements OnInit {
     }
     this.dataService.editMachine(this.editMachineForm.value, this.data.message['Machine']['id']).subscribe({
       next: () => {
-        this.openSnackBar('Macchina modificata con successo!');
+        this.common.openSnackBar('Macchina modificata con successo!');
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       }, error: (error) => {
-        this.openSnackBar(error.error.detail);
+        this.common.openSnackBar(error.error.detail);
       }
     });
     this.dialogRef.close(true);

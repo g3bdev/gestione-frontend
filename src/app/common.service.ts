@@ -12,8 +12,17 @@ export class CommonService {
   }
 
   openSnackBar(message: string) {
+    const ua = navigator.userAgent;
+    let verticalPosition: any;
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(ua)) {
+      verticalPosition = 'top';
+    } else {
+      verticalPosition = 'bottom';
+    }
     this.snackbar.open(message, '', {
       duration: 3000,
+      verticalPosition: verticalPosition,
+      panelClass: 'snackbar'
     });
   }
 

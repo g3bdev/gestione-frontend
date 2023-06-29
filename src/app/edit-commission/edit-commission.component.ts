@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {EditComponent} from "../edit/edit.component";
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-edit-commission',
@@ -20,7 +20,7 @@ export class EditCommissionComponent {
   error: any;
   submitted: boolean = false;
 
-  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: {
+  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService, @Inject(MAT_DIALOG_DATA) public data: {
     title: string;
     message: any
   }) {
@@ -28,12 +28,6 @@ export class EditCommissionComponent {
 
   get form() {
     return this.editCommissionForm.controls;
-  }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
-    });
   }
 
   select(event: Event, value: string) {
@@ -49,12 +43,12 @@ export class EditCommissionComponent {
     }
     this.dataService.editCommission(this.editCommissionForm.value, this.data.message['Commission']['id']).subscribe({
       next: () => {
-        this.openSnackBar('Commessa modificata con successo!');
+        this.common.openSnackBar('Commessa modificata con successo!');
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       }, error: (error) => {
-        this.openSnackBar(error.error.detail);
+        this.common.openSnackBar(error.error.detail);
       }
     });
     this.dialogRef.close(true);
