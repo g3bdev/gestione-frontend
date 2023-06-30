@@ -75,7 +75,7 @@ export class DailyHoursComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getUsers().subscribe({
+    this.dataService.getOperators().subscribe({
       next: (data: any) => {
         this.operators = data;
       }
