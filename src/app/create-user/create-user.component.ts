@@ -29,6 +29,7 @@ export class CreateUserComponent implements OnInit {
     phone_number: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
   });
   is_operator = false;
+  is_admin = false;
   submitted: boolean = false;
 
   constructor(private dataService: DataService, private formBuilder: FormBuilder) {
@@ -44,13 +45,10 @@ export class CreateUserComponent implements OnInit {
       [value]: (event.target as HTMLInputElement).value
     });
     this.is_operator = value === 'role_id' && this.newUserForm.value.role_id === '2';
-    if (this.is_operator) {
+    this.is_admin = value === 'role_id' && this.newUserForm.value.role_id === '1';
+    if (this.is_operator || this.is_admin) {
       this.newUserForm.patchValue({
         client_id: '8' // move automation ID
-      });
-    } else if (this.newUserForm.value.client_id === '8') {
-      this.newUserForm.patchValue({
-        client_id: ''
       });
     }
   }
@@ -79,7 +77,6 @@ export class CreateUserComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getRoles().subscribe({
       next: (data: any) => {
-        console.log(data)
         this.roles = data;
         this.dataService.getClients().subscribe({
           next: (data: any) => {

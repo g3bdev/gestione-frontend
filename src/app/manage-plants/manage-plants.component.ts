@@ -64,7 +64,6 @@ export class ManagePlantsComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getPlants().subscribe({
       next: (data: any) => {
-        console.log(data)
         this.plants = data;
       }
     });

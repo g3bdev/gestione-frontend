@@ -109,7 +109,6 @@ export class EditMachineComponent implements OnInit {
     });
     this.dataService.getPlantsByClient(this.data.message['Client']['id']).subscribe({
       next: (data: any) => {
-        console.log(data)
         this.plants = data;
       }
     });

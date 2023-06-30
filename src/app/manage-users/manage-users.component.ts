@@ -158,7 +158,6 @@ export class ManageUsersComponent implements OnInit {
             this.message = data.detail;
           },
           error: (error) => {
-            console.log(error)
             this.error = true;
             this.message = error.error.detail;
           }
