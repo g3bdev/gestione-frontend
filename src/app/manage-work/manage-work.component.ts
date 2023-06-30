@@ -3,13 +3,20 @@ import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditComponent} from "../edit/edit.component";
-import {faArrowLeft, faExclamationCircle, faInfoCircle, faPrint, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faEnvelope,
+  faExclamationCircle,
+  faInfoCircle,
+  faPrint,
+  faTrash
+} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {animate, style, transition, trigger} from "@angular/animations";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-manage-work',
@@ -28,6 +35,7 @@ export class ManageWorkComponent implements OnInit {
   reports = [];
   logged_role = localStorage.getItem('role');
   error = '';
+  fa_mail = faEnvelope;
   fa_print = faPrint;
   fa_arrowLeft = faArrowLeft;
   fa_trash = faTrash;
@@ -38,6 +46,7 @@ export class ManageWorkComponent implements OnInit {
   months = [];
   exp: RegExp = /\r\n|\n\r|\n|\r/g;
   innerText = '_';
+  pdf_filename = '';
   reports_filename = '';
   adminForm = this.formBuilder.group({
     operator_id: ['0', Validators.required],
@@ -68,7 +77,7 @@ export class ManageWorkComponent implements OnInit {
     return this.adminForm.value.plant_id !== 'c';
   }
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private datePipe: DatePipe) {
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -306,9 +315,48 @@ export class ManageWorkComponent implements OnInit {
     }
   }
 
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
+  email_date: string | null = null;
+
+  sendEmail(report_id: number, supervisor_id: number) {
+    this.dataService.getReportById(report_id).subscribe({
+      next: (data: any) => {
+        this.email_date = data.Report.email_date;
+        this.pdf_filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '.pdf';
+        this.dataService.getUserById(supervisor_id).subscribe({
+          next: (data: any) => {
+            let supervisor_email = data.User.email;
+            let title = 'Conferma invio email';
+            let message = 'Vuoi inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?';
+            if (this.email_date !== null) {
+              title = 'Conferma reinvio email';
+              message = 'Vuoi re-inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?\n' +
+                'Hai già inviato questo intervento il ' + this.datePipe.transform(this.email_date, 'dd/MM/yyyy') + ' alle ' + this.datePipe.transform(this.email_date, 'HH:mm');
+            }
+            const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+              data: {
+                title: title,
+                message: message,
+              }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.common.openSnackBar('Invio email in corso...')
+                this.dataService.printReport(report_id).subscribe((response) => {
+                  let pdf = new File([response], this.pdf_filename, {type: 'application/pdf'});
+                  this.dataService.sendEmail(report_id, pdf, supervisor_email).subscribe({
+                    next: () => {
+                      this.common.openSnackBar('Email inviata con successo!');
+                      this.ngOnInit();
+                    }, error: () => {
+                      this.common.openSnackBar('Errore nell\'invio dell\'email, riprovare più tardi');
+                    }
+                  });
+                });
+              }
+            });
+          }
+        });
+      }
     });
   }
 
@@ -334,9 +382,9 @@ export class ManageWorkComponent implements OnInit {
       if (result) {
         this.dataService.deleteReport(id).subscribe({
           next: (data: any) => {
-            this.openSnackBar(data.detail);
+            this.common.openSnackBar(data.detail);
             setTimeout(() => {
-              window.location.reload();
+              this.ngOnInit();
             }, 1000);
           }
         });
@@ -346,15 +394,25 @@ export class ManageWorkComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.logged_role === 'admin') {
-      this.dataService.getMonths('0').subscribe({
-        next: (data: any) => {
-          this.months = data;
-        }
-      });
       this.dataService.getReports(this.limit).subscribe({
         next: (data: any) => {
           this.reports = data;
           this.checkReports(data);
+          this.dataService.getMonths('0').subscribe({
+            next: (data: any) => {
+              this.months = data;
+              this.dataService.getOperators().subscribe({
+                next: (data: any) => {
+                  this.operators = data;
+                  this.dataService.getClients().subscribe({
+                    next: (data: any) => {
+                      this.clients = data;
+                    }
+                  });
+                }
+              });
+            }
+          });
         }
       });
     } else {
@@ -362,23 +420,11 @@ export class ManageWorkComponent implements OnInit {
         next: (data: any) => {
           this.reports = data;
           this.checkReports(data);
-        }
-      });
-      this.dataService.getMyMonths('0').subscribe({
-        next: (data: any) => {
-          this.months = data;
-        }
-      });
-    }
-    this.dataService.getClients().subscribe({
-      next: (data: any) => {
-        this.clients = data;
-      }
-    });
-    if (this.logged_role === 'admin') {
-      this.dataService.getUsers().subscribe({
-        next: (data: any) => {
-          this.operators = data;
+          this.dataService.getMyMonths('0').subscribe({
+            next: (data: any) => {
+              this.months = data;
+            }
+          });
         }
       });
     }

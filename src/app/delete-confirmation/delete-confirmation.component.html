@@ -1,13 +1,23 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
-<div mat-dialog-content>{{ data.message }}</div>
+<div mat-dialog-content class="whitespace-pre-wrap">{{ data.message }}</div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>
-  <button (click)="onCancel()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  <button (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
     Annulla
   </button>
-  <button *ngIf="data.title === 'Conferma eliminazione'" (click)="onConfirm()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+  <button *ngIf="data.title === 'Conferma eliminazione'" (click)="onConfirm()"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
     Elimina
   </button>
-  <button *ngIf="data.title === 'Conferma reset password'" (click)="onConfirm()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+  <button *ngIf="data.title === 'Conferma reset password'" (click)="onConfirm()"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     Resetta
+  </button>
+  <button *ngIf="data.title === 'Conferma invio email'" (click)="onConfirm()"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Invia
+  </button>
+  <button *ngIf="data.title === 'Conferma reinvio email'" (click)="onConfirm()"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Invia di nuovo
   </button>
 </div>

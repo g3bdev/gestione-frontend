@@ -4,7 +4,7 @@ import {faAt, faBuilding, faEnvelope, faPhone, faUser} from "@fortawesome/free-s
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +14,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService) {
   }
 
   editUserForm = this.formBuilder.group({
@@ -40,12 +40,6 @@ export class ProfileComponent implements OnInit {
   user_id = '';
   editing: boolean = false;
 
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
-    });
-  }
-
   write() {
     this.editing = true;
     this.editUserForm.patchValue({
@@ -66,11 +60,11 @@ export class ProfileComponent implements OnInit {
             this.client_id = data.User.client_id;
           }
         });
-        this.openSnackBar('Profilo modificato con successo!');
+        this.common.openSnackBar('Profilo modificato con successo!');
       },
       error: (error) => {
         this.editing = false;
-        this.openSnackBar(error.error.detail);
+        this.common.openSnackBar(error.error.detail);
       }
     });
   }

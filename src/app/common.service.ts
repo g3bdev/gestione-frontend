@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {DataService} from "./data.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -7,16 +8,38 @@ import {DataService} from "./data.service";
 export class CommonService {
   loading = false;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private snackbar: MatSnackBar) {
+  }
+
+  openSnackBar(message: string) {
+    const ua = navigator.userAgent;
+    let verticalPosition: any;
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(ua)) {
+      verticalPosition = 'top';
+    } else {
+      verticalPosition = 'bottom';
+    }
+    this.snackbar.open(message, '', {
+      duration: 3000,
+      verticalPosition: verticalPosition,
+      panelClass: 'snackbar'
+    });
   }
 
   printReport(id: number) {
     this.loading = true;
+    let filename = '';
+    this.dataService.getReportById(id).subscribe((data: any) => {
+      filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '.pdf';
+    });
     this.dataService.printReport(id).subscribe((response) => {
       this.loading = false;
       const file = new Blob([response], {type: 'application/pdf'});
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      const url = window.URL.createObjectURL(file);
+      const anchor = document.createElement("a");
+      anchor.download = filename;
+      anchor.href = url;
+      anchor.click();
     });
   }
 }

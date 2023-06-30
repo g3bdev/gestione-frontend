@@ -4,9 +4,9 @@ import {faArrowLeft, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-ic
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {EditPlantComponent} from "../edit-plant/edit-plant.component";
 import {TooltipPosition} from "@angular/material/tooltip";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-manage-plants',
@@ -22,13 +22,7 @@ export class ManagePlantsComponent implements OnInit {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
-  }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 5000
-    });
+  constructor(private dataService: DataService, private dialog: MatDialog, private common: CommonService) {
   }
 
   editPlant(id: number) {
@@ -55,12 +49,12 @@ export class ManagePlantsComponent implements OnInit {
       if (result) {
         this.dataService.deletePlant(id).subscribe({
           next: (data: any) => {
-            this.openSnackBar(data.detail);
+            this.common.openSnackBar(data.detail);
             setTimeout(() => {
               window.location.reload();
             }, 2000);
           }, error: (error) => {
-            this.openSnackBar(error.error.detail);
+            this.common.openSnackBar(error.error.detail);
           }
         });
       }

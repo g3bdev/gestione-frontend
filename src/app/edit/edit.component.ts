@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-edit', templateUrl: './edit.component.html',
@@ -43,7 +43,7 @@ export class EditComponent implements OnInit {
   submitted: boolean = false;
   duration_error = '';
 
-  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: {
+  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService, @Inject(MAT_DIALOG_DATA) public data: {
     title: string;
     message: any
   }) {
@@ -121,12 +121,6 @@ export class EditComponent implements OnInit {
     }
   }
 
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: this.duration * 1000
-    });
-  }
-
   onConfirm() {
     this.submitted = true;
     if (this.editForm.invalid || !this.isDurationValid(this.editForm.value.intervention_duration!)) {
@@ -134,12 +128,9 @@ export class EditComponent implements OnInit {
     }
     this.dataService.editReport(this.editForm.value, this.data.message['Report']['id'], +this.editForm.value.operator_id!).subscribe({
       next: () => {
-        this.openSnackBar('Intervento modificato con successo!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        this.common.openSnackBar('Intervento modificato con successo!');
       }, error: () => {
-        this.openSnackBar('C\'è stato un errore, riprova');
+        this.common.openSnackBar('C\'è stato un errore, riprova');
         this.message = '';
       }
     });

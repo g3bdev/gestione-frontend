@@ -3,7 +3,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {EditComponent} from "../edit/edit.component";
 import {DataService} from "../data.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-edit-plant',
@@ -35,16 +35,10 @@ export class EditPlantComponent {
     return this.editPlantForm.controls;
   }
 
-  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: {
+  constructor(private dialogRef: MatDialogRef<EditComponent>, private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService, @Inject(MAT_DIALOG_DATA) public data: {
     title: string;
     message: any
   }) {
-  }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
-    });
   }
 
   select(event: Event, value: string) {
@@ -60,12 +54,12 @@ export class EditPlantComponent {
     }
     this.dataService.editPlant(this.editPlantForm.value, this.data.message['Plant']['id']).subscribe({
       next: () => {
-        this.openSnackBar('Stabilimento modificato con successo!');
+        this.common.openSnackBar('Stabilimento modificato con successo!');
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       }, error: (error) => {
-        this.openSnackBar(error.error.detail);
+        this.common.openSnackBar(error.error.detail);
       }
     });
     this.dialogRef.close(true);

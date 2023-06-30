@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faCircleCheck} from "@fortawesome/free-solid-svg-icons";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-create-work', templateUrl: './create-work.component.html', styleUrls: ['./create-work.component.css']
@@ -15,8 +16,9 @@ export class CreateWorkComponent implements OnInit {
   intervention_types = [];
   intervention_locations = [];
   supervisors = [];
-  message = '';
+  email = '';
   fa_arrowLeft = faArrowLeft;
+  fa_iconOk = faCircleCheck;
   reportForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
     intervention_duration: ['', Validators.required],
@@ -30,15 +32,18 @@ export class CreateWorkComponent implements OnInit {
     description: ['', Validators.required],
     notes: [''],
     trip_kms: [''],
-    cost: ['']
+    cost: [''],
+    send_email: [false]
   });
   error: any;
   submitted: boolean = false;
+  sending: boolean = false;
   duration_error = '';
+  pdf_filename = '';
   today = new Date().toISOString().substring(0, 10);
   oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().substring(0, 10);
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService) {
+  constructor(private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService) {
   }
 
   get isMachinesEmpty() {
@@ -71,6 +76,7 @@ export class CreateWorkComponent implements OnInit {
               this.dataService.getSupervisorsByClient(+this.reportForm.value.client_id!).subscribe({
                 next: (data: any) => {
                   this.supervisors = data;
+                  this.email = '';
                 }
               });
             }
@@ -103,6 +109,13 @@ export class CreateWorkComponent implements OnInit {
         });
       }
     }
+    if (value === 'supervisor_id') {
+      this.dataService.getUserById(+this.reportForm.value.supervisor_id!).subscribe({
+        next: (data: any) => {
+          this.email = data.User.email;
+        }
+      });
+    }
   }
 
   get form() {
@@ -115,17 +128,44 @@ export class CreateWorkComponent implements OnInit {
       window.scrollTo({top: 0, behavior: 'smooth'});
       return;
     }
-    this.dataService.createReport(this.reportForm.value).subscribe({
-      next: () => {
-        this.message = 'Intervento aggiunto con successo!';
-        window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      }, error: () => {
-        this.message = '';
-      }
-    });
+    if (this.reportForm.value.send_email) {
+      this.sending = true;
+      this.common.openSnackBar('Invio email in corso...');
+      this.dataService.createReport(this.reportForm.value).subscribe({
+        next: (data: any) => {
+          let id = data.id;
+          this.dataService.printReport(id).subscribe((response) => {
+            this.dataService.getReportById(id).subscribe({
+              next: (data: any) => {
+                this.pdf_filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '.pdf';
+                let pdf = new File([response], this.pdf_filename, {type: 'application/pdf'});
+                this.dataService.sendEmail(id, pdf, this.email).subscribe({
+                  next: () => {
+                    this.common.openSnackBar('Intervento salvato e inviato con successo!');
+                    this.sending = false;
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 3000);
+                  }
+                });
+              }
+            });
+          });
+        }
+      });
+    } else {
+      this.dataService.createReport(this.reportForm.value).subscribe({
+        next: () => {
+          this.common.openSnackBar('Intervento salvato con successo!');
+          window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'});
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }, error: () => {
+          this.common.openSnackBar('Si è verificato un errore. Riprova più tardi.');
+        }
+      });
+    }
   }
 
   isDurationValid(value: string): boolean {
@@ -148,12 +188,12 @@ export class CreateWorkComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getClients().subscribe((data: any) => {
       this.clients = data;
-    });
-    this.dataService.getInterventionTypes().subscribe((data: any) => {
-      this.intervention_types = data;
-    });
-    this.dataService.getLocations().subscribe((data: any) => {
-      this.intervention_locations = data;
+      this.dataService.getInterventionTypes().subscribe((data: any) => {
+        this.intervention_types = data;
+        this.dataService.getLocations().subscribe((data: any) => {
+          this.intervention_locations = data;
+        });
+      });
     });
   }
 

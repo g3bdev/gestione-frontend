@@ -4,9 +4,9 @@ import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {EditCommissionComponent} from "../edit-commission/edit-commission.component";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-manage-commissions',
@@ -23,13 +23,7 @@ export class ManageCommissionsComponent implements OnInit {
   position: TooltipPosition = 'above';
 
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
-  }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
-    });
+  constructor(private dataService: DataService, private dialog: MatDialog, private common: CommonService) {
   }
 
   editCommission(id: number) {
@@ -56,12 +50,12 @@ export class ManageCommissionsComponent implements OnInit {
       if (result) {
         this.dataService.deleteCommission(id).subscribe({
           next: (data: any) => {
-            this.openSnackBar(data.detail);
+            this.common.openSnackBar(data.detail);
             setTimeout(() => {
               window.location.reload();
             }, 2000);
           }, error: (error) => {
-            this.openSnackBar(error.error.detail);
+            this.common.openSnackBar(error.error.detail);
           }
         });
       }

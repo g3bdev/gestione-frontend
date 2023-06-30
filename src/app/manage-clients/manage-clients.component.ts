@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {faArrowLeft, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {EditClientComponent} from "../edit-client/edit-client.component";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-manage-clients',
@@ -22,13 +22,7 @@ export class ManageClientsComponent implements OnInit {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) {
-  }
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 5000
-    });
+  constructor(private dataService: DataService, private dialog: MatDialog, private common: CommonService) {
   }
 
   editClient(id: number) {
@@ -55,12 +49,12 @@ export class ManageClientsComponent implements OnInit {
       if (result) {
         this.dataService.deleteClient(id).subscribe({
           next: (data: any) => {
-            this.openSnackBar(data.detail);
+            this.common.openSnackBar(data.detail);
             setTimeout(() => {
               window.location.reload();
             }, 2000);
           }, error: (error) => {
-            this.openSnackBar(error.error.detail);
+            this.common.openSnackBar(error.error.detail);
           }
         });
       }

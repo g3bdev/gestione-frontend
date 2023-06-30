@@ -25,6 +25,12 @@ export class DataService {
     });
   }
 
+  getOperators() {
+    return this.httpClient.get(`${environment.apiUrl}/operators`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
   getReports(limit: number) {
     return this.httpClient.get(`${environment.apiUrl}/reports?limit=${limit}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
@@ -451,6 +457,15 @@ export class DataService {
 
   resetPassword(user_id: number) {
     return this.httpClient.put(`${environment.apiUrl}/reset-password?user_id=${user_id}`, {}, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  sendEmail(report_id: number, report: File, supervisor_email: string) {
+    const formData = new FormData();
+    formData.append('file', report);
+    formData.append('email', supervisor_email);
+    return this.httpClient.post(`${environment.apiUrl}/send-email?report_id=${report_id}`, formData, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
