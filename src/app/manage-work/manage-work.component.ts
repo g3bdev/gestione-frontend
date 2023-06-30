@@ -404,6 +404,11 @@ export class ManageWorkComponent implements OnInit {
               this.dataService.getOperators().subscribe({
                 next: (data: any) => {
                   this.operators = data;
+                  this.dataService.getClients().subscribe({
+                    next: (data: any) => {
+                      this.clients = data;
+                    }
+                  });
                 }
               });
             }
@@ -418,11 +423,6 @@ export class ManageWorkComponent implements OnInit {
           this.dataService.getMyMonths('0').subscribe({
             next: (data: any) => {
               this.months = data;
-              this.dataService.getClients().subscribe({
-                next: (data: any) => {
-                  this.clients = data;
-                }
-              });
             }
           });
         }
