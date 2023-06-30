@@ -384,7 +384,7 @@ export class ManageWorkComponent implements OnInit {
           next: (data: any) => {
             this.common.openSnackBar(data.detail);
             setTimeout(() => {
-              window.location.reload();
+              this.ngOnInit();
             }, 1000);
           }
         });
