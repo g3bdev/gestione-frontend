@@ -51,12 +51,13 @@ import {EditCommissionComponent} from './edit-commission/edit-commission.compone
 import {EditPlantComponent} from './edit-plant/edit-plant.component';
 import {MatDividerModule} from "@angular/material/divider";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import { ConvertXmlComponent } from './convert-xml/convert-xml.component';
+import {ConvertXmlComponent} from './convert-xml/convert-xml.component';
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent, DailyHoursComponent, EditMachineComponent, ManageMachinesComponent, EditClientComponent, ManageClientsComponent, ManagePlantsComponent, ManageCommissionsComponent, EditCommissionComponent, EditPlantComponent, ConvertXmlComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule, MatSortModule, MatDividerModule, MatAutocompleteModule],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

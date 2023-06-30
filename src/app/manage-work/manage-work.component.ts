@@ -16,6 +16,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../common.service";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-manage-work',
@@ -76,7 +77,7 @@ export class ManageWorkComponent implements OnInit {
     return this.adminForm.value.plant_id !== 'c';
   }
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private datePipe: DatePipe) {
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -314,33 +315,44 @@ export class ManageWorkComponent implements OnInit {
     }
   }
 
+  email_date: string | null = null;
+
   sendEmail(report_id: number, supervisor_id: number) {
     this.dataService.getReportById(report_id).subscribe({
       next: (data: any) => {
+        this.email_date = data.Report.email_date;
         this.pdf_filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '.pdf';
-      }
-    });
-    this.dataService.getUserById(supervisor_id).subscribe({
-      next: (data: any) => {
-        let supervisor_email = data.User.email;
-        const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
-          data: {
-            title: 'Conferma invio email',
-            message: 'Vuoi mandare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?'
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.common.openSnackBar('Invio email in corso...')
-            this.dataService.printReport(report_id).subscribe((response) => {
-              let pdf = new File([response], this.pdf_filename, {type: 'application/pdf'});
-              this.dataService.sendEmail(report_id, pdf, supervisor_email).subscribe({
-                next: () => {
-                  this.common.openSnackBar('Email inviata con successo!');
-                }, error: () => {
-                  this.common.openSnackBar('Errore nell\'invio dell\'email, riprovare più tardi');
-                }
-              });
+        this.dataService.getUserById(supervisor_id).subscribe({
+          next: (data: any) => {
+            let supervisor_email = data.User.email;
+            let title = 'Conferma invio email';
+            let message = 'Vuoi inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?';
+            if (this.email_date !== null) {
+              title = 'Conferma reinvio email';
+              message = 'Vuoi re-inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?\n' +
+                'Hai già inviato questo intervento il ' + this.datePipe.transform(this.email_date, 'dd/MM/yyyy') + ' alle ' + this.datePipe.transform(this.email_date, 'HH:mm');
+            }
+            const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+              data: {
+                title: title,
+                message: message,
+              }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.common.openSnackBar('Invio email in corso...')
+                this.dataService.printReport(report_id).subscribe((response) => {
+                  let pdf = new File([response], this.pdf_filename, {type: 'application/pdf'});
+                  this.dataService.sendEmail(report_id, pdf, supervisor_email).subscribe({
+                    next: () => {
+                      this.common.openSnackBar('Email inviata con successo!');
+                      this.ngOnInit();
+                    }, error: () => {
+                      this.common.openSnackBar('Errore nell\'invio dell\'email, riprovare più tardi');
+                    }
+                  });
+                });
+              }
             });
           }
         });
@@ -403,19 +415,19 @@ export class ManageWorkComponent implements OnInit {
         next: (data: any) => {
           this.reports = data;
           this.checkReports(data);
-        }
-      });
-      this.dataService.getMyMonths('0').subscribe({
-        next: (data: any) => {
-          this.months = data;
+          this.dataService.getMyMonths('0').subscribe({
+            next: (data: any) => {
+              this.months = data;
+              this.dataService.getClients().subscribe({
+                next: (data: any) => {
+                  this.clients = data;
+                }
+              });
+            }
+          });
         }
       });
     }
-    this.dataService.getClients().subscribe({
-      next: (data: any) => {
-        this.clients = data;
-      }
-    });
   }
 
   protected readonly window = window;

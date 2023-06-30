@@ -168,6 +168,7 @@
                 Esporta PDF
               </span>
             </button>
+
           </div>
           <div @fade *ngIf="adminForm.value.plant_id !== 'c' && logged_role === 'admin'" class="pt-3">
             Verrano esportati solo gli interventi su <span class="text-purple-500">macchine</span>!
@@ -261,8 +262,9 @@
                 [icon]="fa_mail"
                 [matTooltipPosition]="position"
                 [size]="fa_size"
+                [ngClass]="item['Report']['email_date'] ? 'opacity-25 hover:opacity-75' : ''"
                 class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
-                matTooltip="Invia"></fa-icon>
+                [matTooltip]="item['Report']['email_date'] ? 'Reinvia' : 'Invia'"></fa-icon>
             </a>
             <a (click)="common.printReport(item['Report']['id'])">
               <fa-icon
