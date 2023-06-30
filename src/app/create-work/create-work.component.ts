@@ -70,7 +70,7 @@ export class CreateWorkComponent implements OnInit {
       this.dataService.getPlantsByClient(+this.reportForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
-          this.dataService.getCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
+          this.dataService.getOpenCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
             next: (data: any) => {
               this.commissions = data;
               this.dataService.getSupervisorsByClient(+this.reportForm.value.client_id!).subscribe({
@@ -93,7 +93,7 @@ export class CreateWorkComponent implements OnInit {
         this.reportForm.patchValue({
           type: 'commission',
         });
-        this.dataService.getCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
+        this.dataService.getOpenCommissionsByClient(+this.reportForm.value.client_id!).subscribe({
           next: (data: any) => {
             this.commissions = data;
           }

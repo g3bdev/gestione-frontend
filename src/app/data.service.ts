@@ -87,15 +87,27 @@ export class DataService {
   }
 
   getLocations() {
-    return this.httpClient.get(`${environment.apiUrl}/locations`);
+    return this.httpClient.get(`${environment.apiUrl}/locations`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
   }
 
   getClients() {
-    return this.httpClient.get(`${environment.apiUrl}/clients`);
+    return this.httpClient.get(`${environment.apiUrl}/clients`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
   }
 
   getCommissions() {
-    return this.httpClient.get(`${environment.apiUrl}/commissions`);
+    return this.httpClient.get(`${environment.apiUrl}/commissions`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getOpenCommissions() {
+    return this.httpClient.get(`${environment.apiUrl}/commissions/open`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
   }
 
   getInterventionTypes() {
@@ -103,19 +115,27 @@ export class DataService {
   }
 
   getRoles() {
-    return this.httpClient.get(`${environment.apiUrl}/roles`);
+    return this.httpClient.get(`${environment.apiUrl}/roles`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
   }
 
   getPlants() {
-    return this.httpClient.get(`${environment.apiUrl}/plants`);
+    return this.httpClient.get(`${environment.apiUrl}/plants`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
   }
 
   getMachines(limit: number) {
-    return this.httpClient.get(`${environment.apiUrl}/machines?limit=${limit}`);
+    return this.httpClient.get(`${environment.apiUrl}/machines?limit=${limit}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
   }
 
   getMonths(user_id: string) {
-    return this.httpClient.get(`${environment.apiUrl}/months?user_id=${user_id}`);
+    return this.httpClient.get(`${environment.apiUrl}/months?user_id=${user_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
   }
 
   getMyMonths(client_id: string) {
@@ -412,6 +432,12 @@ export class DataService {
 
   getCommissionsByClient(client_id: number) {
     return this.httpClient.get(`${environment.apiUrl}/commissions?client_id=${client_id}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
+
+  getOpenCommissionsByClient(client_id: number) {
+    return this.httpClient.get(`${environment.apiUrl}/commissions/open?client_id=${client_id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

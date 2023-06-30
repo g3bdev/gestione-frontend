@@ -45,7 +45,7 @@ export class ManageWorkComponent implements OnInit {
   position: TooltipPosition = 'above';
   months = [];
   exp: RegExp = /\r\n|\n\r|\n|\r/g;
-  innerText = '_';
+  innerText = 'interventi_';
   pdf_filename = '';
   reports_filename = '';
   adminForm = this.formBuilder.group({
@@ -61,9 +61,11 @@ export class ManageWorkComponent implements OnInit {
     start_date: [''], end_date: ['']
   });
   filter = 'month';
+  email_date: string | null = null;
   loadingPdf = false;
   limit = 25;
   scrolling = true;
+  total = 0;
 
   get isMachinesEmpty() {
     return this.machines.length === 0;
@@ -95,6 +97,7 @@ export class ManageWorkComponent implements OnInit {
       this.dataService.getReports(this.limit).subscribe({
         next: (data: any) => {
           this.reports = data;
+          this.total = data.length;
         }
       });
     } else {
@@ -157,6 +160,7 @@ export class ManageWorkComponent implements OnInit {
             next: (data: any) => {
               this.reports = data;
               this.checkReports(data);
+              this.total = data.length;
             }
           });
         } else if (this.filter === 'interval') {
@@ -164,11 +168,11 @@ export class ManageWorkComponent implements OnInit {
             next: (data: any) => {
               this.reports = data;
               this.checkReports(data);
+              this.total = data.length;
             }
           });
         }
       }
-
       if (this.adminForm.value.plant_id === 'c') {
         if (value !== 'work_id') {
           this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
@@ -182,6 +186,7 @@ export class ManageWorkComponent implements OnInit {
             next: (data: any) => {
               this.reports = data;
               this.checkReports(data);
+              this.total = data.length;
             }
           });
         } else if (this.filter === 'interval') {
@@ -189,6 +194,7 @@ export class ManageWorkComponent implements OnInit {
             next: (data: any) => {
               this.reports = data;
               this.checkReports(data);
+              this.total = data.length;
             }
           });
         }
@@ -201,9 +207,9 @@ export class ManageWorkComponent implements OnInit {
           this.months = data;
         }
       });
-      this.reports_filename = this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month?.replace('/', '-');
+      this.reports_filename = this.monthFilterForm.value.month?.replace('/', '-') + this.innerText.trim().replace(' ', '-').toUpperCase();
     } else if (this.filter === 'interval') {
-      this.reports_filename = this.innerText.trim().replace(' ', '-') + this.intervalFilterForm.value.start_date + this.intervalFilterForm.value.end_date;
+      this.reports_filename = this.intervalFilterForm.value.start_date! + this.intervalFilterForm.value.end_date! + this.innerText.trim().replace(' ', '-').toUpperCase();
     }
   }
 
@@ -211,21 +217,27 @@ export class ManageWorkComponent implements OnInit {
     data.length === 0 ? this.error = 'Non ci sono interventi da visualizzare' : this.error = '';
   }
 
+  saveReports(response: Blob, filename: string) {
+    this.loadingPdf = false;
+    const file = new Blob([response], {type: 'application/pdf'});
+    const url = window.URL.createObjectURL(file);
+    const anchor = document.createElement("a");
+    anchor.download = filename;
+    anchor.href = url;
+    anchor.click();
+  }
+
   printMonthlyReports() {
     this.loadingPdf = true;
     if (this.adminForm.value.plant_id === 'c') {
       this.dataService.printMonthlyCommissionReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe((response) => {
-        this.loadingPdf = false;
-        const file = new Blob([response], {type: 'application/pdf'});
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        this.loadingPdf = true;
+        this.saveReports(response, this.reports_filename)
       });
     } else {
       this.dataService.printMonthlyReports(this.adminForm.value.client_id!, this.monthFilterForm.value.month!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe((response) => {
-        this.loadingPdf = false;
-        const file = new Blob([response], {type: 'application/pdf'});
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        this.loadingPdf = true;
+        this.saveReports(response, this.reports_filename)
       });
     }
   }
@@ -235,16 +247,12 @@ export class ManageWorkComponent implements OnInit {
     if (this.adminForm.value.plant_id === 'c') {
       this.dataService.printIntervalCommissionReports(this.adminForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.operator_id!, this.adminForm.value.work_id!).subscribe((response) => {
         this.loadingPdf = false;
-        const file = new Blob([response], {type: 'application/pdf'});
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        this.saveReports(response, this.reports_filename)
       });
     } else {
       this.dataService.printIntervalReports(this.adminForm.value.client_id!, this.intervalFilterForm.value.start_date!, this.intervalFilterForm.value.end_date!, this.adminForm.value.operator_id!, this.adminForm.value.plant_id!, this.adminForm.value.work_id!).subscribe((response) => {
         this.loadingPdf = false;
-        const file = new Blob([response], {type: 'application/pdf'});
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        this.saveReports(response, this.reports_filename)
       });
     }
   }
@@ -256,7 +264,7 @@ export class ManageWorkComponent implements OnInit {
         binaryData.push(response);
         let downloadLink = document.createElement('a');
         downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
-        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
+        downloadLink.setAttribute('download', this.reports_filename + '.csv');
         document.body.appendChild(downloadLink);
         downloadLink.click();
       });
@@ -266,12 +274,11 @@ export class ManageWorkComponent implements OnInit {
         binaryData.push(response);
         let downloadLink = document.createElement('a');
         downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
-        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
+        downloadLink.setAttribute('download', this.reports_filename + '.csv');
         document.body.appendChild(downloadLink);
         downloadLink.click();
       });
     }
-    this.reports_filename = this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month?.replace('/', '-');
   }
 
   printCsvIntervalReports() {
@@ -281,7 +288,7 @@ export class ManageWorkComponent implements OnInit {
         binaryData.push(response);
         let downloadLink = document.createElement('a');
         downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
-        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
+        downloadLink.setAttribute('download', this.reports_filename + '.csv');
         document.body.appendChild(downloadLink);
         downloadLink.click();
       });
@@ -291,19 +298,36 @@ export class ManageWorkComponent implements OnInit {
         binaryData.push(response);
         let downloadLink = document.createElement('a');
         downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: 'blob'}));
-        downloadLink.setAttribute('download', this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month + '.csv');
+        downloadLink.setAttribute('download', this.reports_filename + '.csv');
         document.body.appendChild(downloadLink);
         downloadLink.click();
       });
     }
-    this.reports_filename = this.innerText.trim().replace(' ', '-') + this.monthFilterForm.value.month?.replace('/', '-');
   }
 
   printPdf() {
-    if (this.filter === 'month') {
-      this.printMonthlyReports();
+    if (this.total > 25) {
+      const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
+        data: {
+          title: 'Attenzione',
+          message: 'Stai per stampare più di 25 interventi e ciò potrebbe richiedere molto tempo.\nVuoi continuare?',
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (this.filter === 'month') {
+            this.printMonthlyReports();
+          } else {
+            this.printIntervalReports();
+          }
+        }
+      });
     } else {
-      this.printIntervalReports();
+      if (this.filter === 'month') {
+        this.printMonthlyReports();
+      } else {
+        this.printIntervalReports();
+      }
     }
   }
 
@@ -315,7 +339,6 @@ export class ManageWorkComponent implements OnInit {
     }
   }
 
-  email_date: string | null = null;
 
   sendEmail(report_id: number, supervisor_id: number) {
     this.dataService.getReportById(report_id).subscribe({
@@ -398,6 +421,7 @@ export class ManageWorkComponent implements OnInit {
         next: (data: any) => {
           this.reports = data;
           this.checkReports(data);
+          this.total = data.length;
           this.dataService.getMonths('0').subscribe({
             next: (data: any) => {
               this.months = data;

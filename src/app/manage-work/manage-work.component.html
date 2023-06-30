@@ -24,8 +24,8 @@
             <div>
               <select (change)="select($event, 'operator_id', adminForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                <option disabled hidden selected value="">Operatore</option>
-                <option value="0">Tutti gli operatori</option>
+                <option class="bg-gray-800" disabled hidden selected value="">Operatore</option>
+                <option class="bg-gray-800" value="0">Tutti gli operatori</option>
                 <option *ngFor="let operator of operators;" [value]="operator['id']" class="bg-gray-800">
                   {{operator['last_name']}} {{operator['first_name']}}
                 </option>
@@ -35,8 +35,8 @@
             <div>
               <select (change)="select($event, 'client_id', adminForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                <option disabled hidden selected value="">Cliente</option>
-                <option value="0">Tutti i clienti</option>
+                <option class="bg-gray-800" disabled hidden selected value="">Cliente</option>
+                <option class="bg-gray-800" value="0">Tutti i clienti</option>
                 <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
                   {{client['name']}}
                 </option>
@@ -46,9 +46,9 @@
             <div>
               <select (change)="select($event, 'plant_id', adminForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                <option disabled hidden selected value="">Stabilimento</option>
-                <option value="0">Tutti gli stabilimenti</option>
-                <option value="c">Commesse</option>
+                <option class="bg-gray-800" disabled hidden selected value="">Stabilimento</option>
+                <option class="bg-gray-800" value="0">Tutti gli stabilimenti</option>
+                <option class="bg-gray-800" value="c">Commesse</option>
                 <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
                   {{plant['city']}}, {{plant['address']}}
                 </option>
@@ -59,8 +59,8 @@
               <select (change)="select($event, 'work_id', adminForm)" [disabled]="isMachinesEmpty"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                       id="work_id">
-                <option disabled hidden selected value="">Macchina</option>
-                <option value="0">Tutte le macchine</option>
+                <option class="bg-gray-800" disabled hidden selected value="">Macchina</option>
+                <option class="bg-gray-800" value="0">Tutte le macchine</option>
                 <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
                   {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
                 </option>
@@ -71,8 +71,8 @@
               <select (change)="select($event, 'work_id', adminForm)" [disabled]="isCommissionsEmpty"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                       id="commission_id">
-                <option disabled hidden selected value="0">Commessa</option>
-                <option value="0">Tutte le commesse</option>
+                <option class="bg-gray-800" disabled hidden selected value="0">Commessa</option>
+                <option class="bg-gray-800" value="0">Tutte le commesse</option>
                 <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']"
                         class="bg-gray-800">
                   {{commission['Commission']['code']}} - {{commission['Commission']['description']}}
@@ -81,13 +81,12 @@
             </div>
           </form>
 
-
           <form *ngIf="filter == 'month' && logged_role === 'admin'" [formGroup]="monthFilterForm">
             <div>
               <select (change)="select($event, 'month', monthFilterForm)"
                       class="h-[42px] w-[290px] bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                <option disabled hidden selected value="">Mese</option>
-                <option value="0">Sempre</option>
+                <option class="bg-gray-800" disabled hidden selected value="">Mese</option>
+                <option class="bg-gray-800" value="0">Sempre</option>
                 <option *ngFor="let month of months;" [value]="month" class="bg-gray-800">
                   {{month}}
                 </option>
@@ -300,11 +299,11 @@
         </div>
       </table>
     </div>
-    <ng-template #e>
-      <div class="flex flex-col items-center">
-        <fa-icon [icon]="fa_exclamation_circle" [size]="fa_size" class="text-red-500"></fa-icon>
-        <p class="text-red-500">{{error}}</p>
-      </div>
-    </ng-template>
   </div>
 </section>
+<ng-template #e>
+  <div class="flex flex-col items-center">
+    <fa-icon [icon]="fa_exclamation_circle" [size]="fa_size" class="text-red-500"></fa-icon>
+    <p class="text-red-500">{{error}}</p>
+  </div>
+</ng-template>

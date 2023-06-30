@@ -23,7 +23,6 @@ export class ManageMachinesComponent implements OnInit {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
   limit = 25;
-  machine_list = [];
 
   constructor(private dataService: DataService, private dialog: MatDialog, private common: CommonService) {
   }
