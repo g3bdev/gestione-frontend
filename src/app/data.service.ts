@@ -37,12 +37,6 @@ export class DataService {
     });
   }
 
-  getReportsLength() {
-    return this.httpClient.get(`${environment.apiUrl}/reports`, {
-      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
-    });
-  }
-
   getReportById(id: number) {
     return this.httpClient.get(`${environment.apiUrl}/report/${id}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
