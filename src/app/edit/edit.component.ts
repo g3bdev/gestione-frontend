@@ -9,15 +9,14 @@ import {CommonService} from "../common.service";
 })
 export class EditComponent implements OnInit {
   report = [];
-  commissions = [];
   clients = [];
   plants = [];
   intervention_types = [];
   machines = [];
+  commissions = [];
   intervention_locations = [];
   users = [];
   supervisors = [];
-  message = '';
   logged_role = localStorage.getItem('role');
 
   editForm = this.formBuilder.group({
@@ -82,7 +81,7 @@ export class EditComponent implements OnInit {
       this.dataService.getPlantsByClient(+this.editForm.value.client_id!).subscribe({
         next: (data: any) => {
           this.plants = data;
-          this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
+          this.dataService.getOpenCommissionsByClient(+this.editForm.value.client_id!).subscribe({
             next: (data: any) => {
               this.commissions = data;
               this.dataService.getSupervisorsByClient(+this.editForm.value.client_id!).subscribe({
@@ -95,15 +94,17 @@ export class EditComponent implements OnInit {
         }
       });
       this.editForm.patchValue({
-        plant_id: '0'
+        plant_id: 'c',
+        work_id: ''
       });
     }
     if (value === 'plant_id') {
       if (this.editForm.value.plant_id === 'c') {
         this.editForm.patchValue({
           type: 'commission',
+          work_id: ''
         });
-        this.dataService.getCommissionsByClient(+this.editForm.value.client_id!).subscribe({
+        this.dataService.getOpenCommissionsByClient(+this.editForm.value.client_id!).subscribe({
           next: (data: any) => {
             this.commissions = data;
           }
@@ -111,6 +112,7 @@ export class EditComponent implements OnInit {
       } else {
         this.editForm.patchValue({
           type: 'machine',
+          work_id: ''
         });
         this.dataService.getMachineByPlant(+this.editForm.value.plant_id!).subscribe({
           next: (data: any) => {
@@ -129,12 +131,15 @@ export class EditComponent implements OnInit {
     this.dataService.editReport(this.editForm.value, this.data.message['Report']['id'], +this.editForm.value.operator_id!).subscribe({
       next: () => {
         this.common.openSnackBar('Intervento modificato con successo!');
+
       }, error: () => {
         this.common.openSnackBar('C\'è stato un errore, riprova');
-        this.message = '';
       }
     });
     this.dialogRef.close(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
   }
 
   onCancel() {

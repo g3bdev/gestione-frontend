@@ -16,6 +16,8 @@
       </div>
     </ng-container>
 
+    {{editForm.value | json}}
+
     <div class="relative w-full">
       <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
       <select (change)="select($event, 'client_id')"
@@ -32,10 +34,11 @@
       <label class="leading-7 text-sm text-gray-400" for="plant_id">Stabilimento</label>
       <select (change)="select($event, 'plant_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              id="plant_id">
+              id="plant_id"
+              [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.plant_id.errors || form.plant_id.value == '0'}">
         <option *ngIf="isMachine && data.message['plant_name']" disabled hidden
                 selected>{{data.message['plant_city']}}, {{data.message['plant_address']}}</option>
-        <option value="0">Commessa</option>
+        <option value="c">Commessa</option>
         <option *ngFor="let plant of plants;" [value]="plant['id']" class="bg-gray-800">
           {{plant['city']}}, {{plant['address']}}
         </option>
@@ -46,7 +49,8 @@
       <label class="leading-7 text-sm text-gray-400" for="work_id">Macchina</label>
       <select (change)="select($event, 'work_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              id="work_id">
+              id="work_id"
+              [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.work_id.errors || form.work_id.value == '0'}">
         <option disabled hidden selected>{{data.message['machine_name']}}</option>
         <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
           {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
@@ -58,7 +62,8 @@
       <label class="leading-7 text-sm text-gray-400" for="commission_id">Commessa</label>
       <select (change)="select($event, 'work_id')"
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              id="commission_id">
+              id="commission_id"
+              [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.work_id.errors}">
         <option disabled hidden selected>{{data.message['commission_code']}}
           - {{data.message['commission_description']}}</option>
         <option *ngFor="let commission of commissions;" [value]="commission['Commission']['id']"
