@@ -353,7 +353,7 @@ export class ManageWorkComponent implements OnInit {
             if (this.email_date !== null) {
               title = 'Conferma reinvio email';
               message = 'Vuoi re-inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?\n' +
-                'Hai già inviato questo intervento il ' + this.datePipe.transform(this.email_date, 'dd/MM/yyyy') + ' alle ' + this.datePipe.transform(this.email_date, 'HH:mm');
+                'Hai già inviato questo intervento il ' + this.datePipe.transform(this.email_date, 'dd/MM/yyyy') + ' alle ' + this.datePipe.transform(this.email_date, 'HH:mm', 'Europe/Rome');
             }
             const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
               data: {

@@ -4,7 +4,7 @@
 
     <div class="my-4" *ngIf="!data.message['Commission']['open']">
       Questa commessa è stata chiusa il {{data.message['Commission']['date_closed'] | date: 'dd/MM/yyyy'}}
-      alle {{data.message['Commission']['date_closed'] | date: 'HH:mm'}}
+      alle {{data.message['Commission']['date_closed'] | date: 'HH:mm': 'Europe/Rome'}}
     </div>
 
     <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
@@ -42,7 +42,7 @@
 </div>
 <div class="text-gray-500 font-medium mt-4 ml-6 text-xs">
   Commessa creata il {{data.message['Commission']['date_created'] | date: 'dd/MM/yyyy'}}
-  alle {{data.message['Commission']['date_created'] | date: 'HH:mm'}}
+  alle {{data.message['Commission']['date_created'] | date: 'HH:mm': 'Europe/Rome'}}
 </div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>
   <button *ngIf="data.message['Commission']['open'] == false" (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Chiudi

@@ -57,7 +57,31 @@ export class ManageCommissionsComponent implements OnInit {
       if (result) {
         this.dataService.closeCommission(id).subscribe({
           next: () => {
-            this.common.openSnackBar('Commessa chiusa con successo');
+            this.common.openSnackBar('Commessa chiusa');
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }, error: (error) => {
+            this.common.openSnackBar(error.error.detail);
+          }
+        });
+      }
+    });
+  }
+
+  reopenCommission(id: number) {
+    let data = {
+      data: {
+        title: 'Conferma riapertura',
+        message: 'Sei sicuro di voler riaprire questa commessa?'
+      }
+    }
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.closeCommission(id).subscribe({
+          next: () => {
+            this.common.openSnackBar('Commessa riaperta');
             setTimeout(() => {
               window.location.reload();
             }, 2000);

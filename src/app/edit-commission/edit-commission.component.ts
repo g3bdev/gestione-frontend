@@ -4,6 +4,7 @@ import {EditComponent} from "../edit/edit.component";
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
 import {CommonService} from "../common.service";
+import {dateTimestampProvider} from "rxjs/internal/scheduler/dateTimestampProvider";
 
 @Component({
   selector: 'app-edit-commission',
@@ -71,4 +72,5 @@ export class EditCommissionComponent {
     });
   }
 
+  protected readonly dateTimestampProvider = dateTimestampProvider;
 }
