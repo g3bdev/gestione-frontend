@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {faArrowLeft, faInfoCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faInfoCircle, faLock, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {DataService} from "../data.service";
@@ -15,15 +15,58 @@ import {CommonService} from "../common.service";
 })
 export class ManageCommissionsComponent implements OnInit {
   commissions = [];
-  commission_columns: string[] = ['code', 'client_id', 'description', 'actions'];
+  commission_columns: string[] = ['code', 'client_id', 'description', 'date_created', 'actions'];
   fa_arrowLeft = faArrowLeft;
   fa_trash = faTrash;
   fa_info = faInfoCircle;
+  fa_lock = faLock;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
-
+  isChecked = false;
 
   constructor(private dataService: DataService, private dialog: MatDialog, private common: CommonService) {
+  }
+
+  handleCheckboxChange(checked: boolean): void {
+    if (checked) {
+      this.commission_columns = ['code', 'client_id', 'description', 'date_created', 'date_closed', 'actions'];
+      this.dataService.getCommissions().subscribe({
+        next: (data: any) => {
+          this.commissions = data;
+        }
+      });
+    } else {
+      this.commission_columns = ['code', 'client_id', 'description', 'date_created', 'actions'];
+      this.dataService.getOpenCommissions().subscribe({
+        next: (data: any) => {
+          this.commissions = data;
+        }
+      });
+    }
+  }
+
+  closeCommission(id: number) {
+    let data = {
+      data: {
+        title: 'Conferma chiusura',
+        message: 'Sei sicuro di voler chiudere questa commessa?'
+      }
+    }
+    const dialogRef = this.dialog.open(DeleteConfirmationComponent, data);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.closeCommission(id).subscribe({
+          next: () => {
+            this.common.openSnackBar('Commessa chiusa con successo');
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }, error: (error) => {
+            this.common.openSnackBar(error.error.detail);
+          }
+        });
+      }
+    });
   }
 
   editCommission(id: number) {
@@ -63,9 +106,8 @@ export class ManageCommissionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataService.getCommissions().subscribe({
+    this.dataService.getOpenCommissions().subscribe({
       next: (data: any) => {
-        console.log(data)
         this.commissions = data;
       }
     });

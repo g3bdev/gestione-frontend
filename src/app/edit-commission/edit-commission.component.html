@@ -2,10 +2,16 @@
 <div mat-dialog-content>
   <form [formGroup]="editCommissionForm">
 
+    <div class="my-4" *ngIf="!data.message['Commission']['open']">
+      Questa commessa è stata chiusa il {{data.message['Commission']['date_closed'] | date: 'dd/MM/yyyy'}}
+      alle {{data.message['Commission']['date_closed'] | date: 'HH:mm'}}
+    </div>
+
     <label class="leading-7 text-sm text-gray-400" for="client_id">Cliente</label>
     <select (change)="select($event, 'client_id')"
             class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             id="client_id"
+            [disabled]="data.message['Commission']['open'] === false"
             [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.client_id.errors}">
       <option disabled selected value="{{data.message['Client']['id']}}">{{data.message['Client']['name']}}</option>
       <option *ngFor="let client of clients;" [value]="client['id']" class="bg-gray-800">
@@ -18,6 +24,7 @@
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
       formControlName="code" id="code"
       type="text"
+      [readonly]="data.message['Commission']['open'] === false"
       [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.code.errors}">
     <p class="text-red-500"
        *ngIf="submitted && form.code.errors">Questo campo è obbligatorio.</p>
@@ -27,15 +34,21 @@
       class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
       formControlName="description" id="description"
       type="text"
+      [readonly]="data.message['Commission']['open'] === false"
       [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.description.errors}">
     <p class="text-red-500"
        *ngIf="submitted && form.description.errors">Questo campo è obbligatorio.</p>
-
   </form>
 </div>
+<div class="text-gray-500 font-medium mt-4 ml-6 text-xs">
+  Commessa creata il {{data.message['Commission']['date_created'] | date: 'dd/MM/yyyy'}}
+  alle {{data.message['Commission']['date_created'] | date: 'HH:mm'}}
+</div>
 <div align="end" class="flex space-x-4" mat-dialog-actions>
-  <button (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Annulla
+  <button *ngIf="data.message['Commission']['open'] == false" (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Chiudi
   </button>
-  <button (click)="onConfirm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Modifica
+  <button *ngIf="data.message['Commission']['open'] == true" (click)="onCancel()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Annulla
+  </button>
+  <button *ngIf="data.message['Commission']['open'] == true" (click)="onConfirm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Modifica
   </button>
 </div>

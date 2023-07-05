@@ -489,4 +489,10 @@ export class DataService {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
+
+  closeCommission(commission_id: number) {
+    return this.httpClient.put(`${environment.apiUrl}/commission/close?commission_id=${commission_id}`, {}, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
 }

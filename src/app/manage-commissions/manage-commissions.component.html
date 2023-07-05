@@ -10,9 +10,16 @@
       Torna indietro
     </button>
   </div>
+
   <div class="mx-auto px-5 py-2 flex-col">
     <div class="text-center">
-      <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci commesse</h1>
+      <h1 class="title-font text-3xl m-2 font-medium text-white">Gestisci commesse</h1>
+
+      <label class="inline-flex items-center">
+        <input type="checkbox" class="text-indigo-600 border" #myCheckbox [(ngModel)]="isChecked"
+               (change)="handleCheckboxChange(myCheckbox.checked)"/>
+        <span class="m-4">Mostra commesse chiuse</span>
+      </label>
 
       <table [dataSource]="commissions"
              class="mat-elevation-z16 bg-gray-800 border-b"
@@ -34,9 +41,29 @@
               mat-cell> {{item['Commission']['description']}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="date_created">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Data inizio</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Commission']['date_created'] | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date_closed" *ngIf="isChecked">
+          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Data fine</th>
+          <td *matCellDef="let item" class="hidden md:table-cell"
+              mat-cell> {{item['Commission']['date_closed'] | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+            <a (click)="item['Commission']['open'] == true ? closeCommission(item['Commission']['id']) : ''">
+              <fa-icon [icon]="fa_lock"
+                       [matTooltipPosition]="position"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       [ngClass]="item['Commission']['open'] == false ? 'pointer-events-none' : ''"
+                       [matTooltip]="item['Commission']['open'] == true ? 'Chiudi' : ''"></fa-icon>
+            </a>
             <a (click)="editCommission(item['Commission']['id'])">
               <fa-icon [icon]="fa_info"
                        [matTooltipPosition]="position"
@@ -45,13 +72,17 @@
                        matTooltip="Info"></fa-icon>
             </a>
             <a (click)="deleteCommission(item['Commission']['id'])">
-              <fa-icon [icon]="fa_trash" [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              <fa-icon [icon]="fa_trash"
+                       [matTooltipPosition]="position"
+                       [size]="fa_size"
+                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                       matTooltip="Elimina"></fa-icon>
             </a>
           </td>
         </ng-container>
         <tr *matHeaderRowDef="commission_columns" mat-header-row></tr>
-        <tr *matRowDef="let row; columns: commission_columns;" mat-row></tr>
+        <tr [style.opacity]="!row['Commission']['open'] ? '0.3' : '1'"
+            *matRowDef="let row; columns: commission_columns;" mat-row></tr>
       </table>
 
     </div>

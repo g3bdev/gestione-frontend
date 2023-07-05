@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../data.service";
-import {faArrowLeft, faCircleCheck} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {CommonService} from "../common.service";
 
 @Component({
@@ -18,7 +18,6 @@ export class CreateWorkComponent implements OnInit {
   supervisors = [];
   email = '';
   fa_arrowLeft = faArrowLeft;
-  fa_iconOk = faCircleCheck;
   reportForm = this.formBuilder.group({
     date: [new Date().toISOString().substring(0, 10), Validators.required],
     intervention_duration: ['', Validators.required],

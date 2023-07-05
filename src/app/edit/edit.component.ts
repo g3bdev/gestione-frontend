@@ -173,7 +173,7 @@ export class EditComponent implements OnInit {
         }
       });
     } else {
-      this.dataService.getCommissionsByClient(this.data.message['client_id']).subscribe({
+      this.dataService.getOpenCommissionsByClient(this.data.message['client_id']).subscribe({
         next: (data: any) => {
           this.commissions = data;
         }

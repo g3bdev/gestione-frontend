@@ -134,7 +134,7 @@ export class ManageWorkComponent implements OnInit {
         }
       } else if (this.adminForm.value.plant_id === 'c') {
         if (value === 'client_id') {
-          this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
+          this.dataService.getOpenCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
             next: (data: any) => {
               this.commissions = data;
             }
@@ -175,7 +175,7 @@ export class ManageWorkComponent implements OnInit {
       }
       if (this.adminForm.value.plant_id === 'c') {
         if (value !== 'work_id') {
-          this.dataService.getCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
+          this.dataService.getOpenCommissionsByClient(+this.adminForm.value.client_id!).subscribe({
             next: (data: any) => {
               this.commissions = data;
             }
