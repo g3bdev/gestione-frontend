@@ -8,7 +8,6 @@ import {CommonService} from "../common.service";
   selector: 'app-create-work', templateUrl: './create-work.component.html', styleUrls: ['./create-work.component.css']
 })
 export class CreateWorkComponent implements OnInit {
-
   clients = [];
   plants = [];
   machines = [];
@@ -19,7 +18,7 @@ export class CreateWorkComponent implements OnInit {
   email = '';
   fa_arrowLeft = faArrowLeft;
   reportForm = this.formBuilder.group({
-    date: [new Date().toISOString().substring(0, 10), Validators.required],
+    date: [new Date().toLocaleString("sv", {timeZone: 'Europe/Rome'}).replace(' ', 'T').substring(0, 10), Validators.required],
     intervention_duration: ['', Validators.required],
     intervention_type: ['', Validators.required],
     intervention_location: ['', Validators.required],
@@ -39,8 +38,8 @@ export class CreateWorkComponent implements OnInit {
   sending: boolean = false;
   duration_error = '';
   pdf_filename = '';
-  today = new Date().toISOString().substring(0, 10);
-  oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().substring(0, 10);
+  today = new Date().toLocaleString("sv", {timeZone: 'Europe/Rome'}).replace(' ', 'T').substring(0, 10);
+  oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleString("sv", {timeZone: 'Europe/Rome'}).replace(' ', 'T').substring(0, 10);
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService) {
   }

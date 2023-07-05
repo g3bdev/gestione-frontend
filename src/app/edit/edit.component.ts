@@ -36,7 +36,7 @@ export class EditComponent implements OnInit {
     cost: ['']
   });
   duration = 5;
-  today = new Date().toISOString().substring(0, 10);
+  today = new Date().toLocaleString("sv", {timeZone: 'Europe/Rome'}).replace(' ', 'T').substring(0, 10);
 
   error: any;
   submitted: boolean = false;
