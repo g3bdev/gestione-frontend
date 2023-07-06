@@ -39,7 +39,7 @@ export class CreateWorkComponent implements OnInit {
   duration_error = '';
   pdf_filename = '';
   today = new Date().toLocaleString("sv", {timeZone: 'Europe/Rome'}).replace(' ', 'T').substring(0, 10);
-  oneMonthAgo = new Date(new Date().setMonth(new Date().getMonth() - 1)).toLocaleString("sv", {timeZone: 'Europe/Rome'}).replace(' ', 'T').substring(0, 10);
+  twoMonthsAgo = new Date(new Date().setMonth(new Date().getMonth() - 2)).toLocaleString("sv", {timeZone: 'Europe/Rome'}).replace(' ', 'T').substring(0, 10);
 
   constructor(private formBuilder: FormBuilder, private dataService: DataService, private common: CommonService) {
   }
