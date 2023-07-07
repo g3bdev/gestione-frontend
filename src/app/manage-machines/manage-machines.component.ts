@@ -46,10 +46,23 @@ export class ManageMachinesComponent implements OnInit {
   editMachine(id: number) {
     this.dataService.getMachineById(id).subscribe({
       next: (data: any) => {
-        this.dialog.open(EditMachineComponent, {
+        const dialogRef = this.dialog.open(EditMachineComponent, {
           data: {
             title: 'Modifica macchina', message: data
           }, width: '50em'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const index = this.machines.findIndex(machine => machine['Machine']['id'] === id);
+            if (index !== -1) {
+              this.dataService.getMachineById(id).subscribe({
+                next: (data: any) => {
+                  Object.assign(this.machines[index], data);
+                  this.machines = [...this.machines];
+                }
+              });
+            }
+          }
         });
       }
     });
@@ -68,9 +81,11 @@ export class ManageMachinesComponent implements OnInit {
         this.dataService.deleteMachine(id).subscribe({
           next: (data: any) => {
             this.common.openSnackBar(data.detail);
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            const index = this.machines.findIndex(machine => machine['Machine']['id'] === id);
+            if (index !== -1) {
+              this.machines.splice(index, 1);
+              this.machines = [...this.machines];
+            }
           }, error: (error) => {
             this.common.openSnackBar(error.error.detail);
           }

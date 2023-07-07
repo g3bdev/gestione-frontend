@@ -45,6 +45,18 @@ export class ManageCommissionsComponent implements OnInit {
     }
   }
 
+  assignCommission(id: number) {
+    const index = this.commissions.findIndex(commission => commission['Commission']['id'] === id);
+    if (index !== -1) {
+      this.dataService.getCommissionById(id).subscribe({
+        next: (data: any) => {
+          Object.assign(this.commissions[index], data);
+          this.commissions = [...this.commissions];
+        }
+      });
+    }
+  }
+
   closeCommission(id: number) {
     let data = {
       data: {
@@ -58,9 +70,15 @@ export class ManageCommissionsComponent implements OnInit {
         this.dataService.closeCommission(id).subscribe({
           next: () => {
             this.common.openSnackBar('Commessa chiusa');
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            const index = this.commissions.findIndex(commission => commission['Commission']['id'] === id);
+            if (index !== -1) {
+              if (this.isChecked) {
+                this.assignCommission(id);
+              } else {
+                this.commissions.splice(index, 1);
+                this.commissions = [...this.commissions];
+              }
+            }
           }, error: (error) => {
             this.common.openSnackBar(error.error.detail);
           }
@@ -82,9 +100,7 @@ export class ManageCommissionsComponent implements OnInit {
         this.dataService.closeCommission(id).subscribe({
           next: () => {
             this.common.openSnackBar('Commessa riaperta');
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            this.assignCommission(id);
           }, error: (error) => {
             this.common.openSnackBar(error.error.detail);
           }
@@ -96,10 +112,15 @@ export class ManageCommissionsComponent implements OnInit {
   editCommission(id: number) {
     this.dataService.getCommissionById(id).subscribe({
       next: (data: any) => {
-        this.dialog.open(EditCommissionComponent, {
+        const dialogRef = this.dialog.open(EditCommissionComponent, {
           data: {
             title: 'Modifica commessa', message: data
           }, width: '50em'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.assignCommission(id);
+          }
         });
       }
     });
@@ -118,9 +139,11 @@ export class ManageCommissionsComponent implements OnInit {
         this.dataService.deleteCommission(id).subscribe({
           next: (data: any) => {
             this.common.openSnackBar(data.detail);
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            const index = this.commissions.findIndex(commission => commission['Commission']['id'] === id);
+            if (index !== -1) {
+              this.commissions.splice(index, 1);
+              this.commissions = [...this.commissions];
+            }
           }, error: (error) => {
             this.common.openSnackBar(error.error.detail);
           }

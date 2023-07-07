@@ -28,10 +28,23 @@ export class ManageClientsComponent implements OnInit {
   editClient(id: number) {
     this.dataService.getClientById(id).subscribe({
       next: (data: any) => {
-        this.dialog.open(EditClientComponent, {
+        const dialogRef = this.dialog.open(EditClientComponent, {
           data: {
             title: 'Modifica cliente', message: data
           }, width: '50em'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const index = this.clients.findIndex(client => client['id'] === id);
+            if (index !== -1) {
+              this.dataService.getClientById(id).subscribe({
+                next: (data: any) => {
+                  Object.assign(this.clients[index], data);
+                  this.clients = [...this.clients];
+                }
+              });
+            }
+          }
         });
       }
     });
@@ -50,9 +63,11 @@ export class ManageClientsComponent implements OnInit {
         this.dataService.deleteClient(id).subscribe({
           next: (data: any) => {
             this.common.openSnackBar(data.detail);
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            const index = this.clients.findIndex(client => client['id'] === id);
+            if (index !== -1) {
+              this.clients.splice(index, 1);
+              this.clients = [...this.clients];
+            }
           }, error: (error) => {
             this.common.openSnackBar(error.error.detail);
           }

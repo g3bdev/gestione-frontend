@@ -28,10 +28,23 @@ export class ManagePlantsComponent implements OnInit {
   editPlant(id: number) {
     this.dataService.getPlantById(id).subscribe({
       next: (data: any) => {
-        this.dialog.open(EditPlantComponent, {
+        const dialogRef = this.dialog.open(EditPlantComponent, {
           data: {
             title: 'Modifica stabilimento', message: data
           }, width: '50em'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const index = this.plants.findIndex(plant => plant['Plant']['id'] === id);
+            if (index !== -1) {
+              this.dataService.getPlantById(id).subscribe({
+                next: (data: any) => {
+                  Object.assign(this.plants[index], data);
+                  this.plants = [...this.plants];
+                }
+              });
+            }
+          }
         });
       }
     });
@@ -50,9 +63,11 @@ export class ManagePlantsComponent implements OnInit {
         this.dataService.deletePlant(id).subscribe({
           next: (data: any) => {
             this.common.openSnackBar(data.detail);
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            const index = this.plants.findIndex(plant => plant['Plant']['id'] === id);
+            if (index !== -1) {
+              this.plants.splice(index, 1);
+              this.plants = [...this.plants];
+            }
           }, error: (error) => {
             this.common.openSnackBar(error.error.detail);
           }

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
 import {DataService} from "../data.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
@@ -45,7 +45,7 @@ export class ManageWorkComponent implements OnInit {
   position: TooltipPosition = 'above';
   months = [];
   exp: RegExp = /\r\n|\n\r|\n|\r/g;
-  innerText = 'interventi_';
+  innerText = 'interventi';
   pdf_filename = '';
   reports_filename = '';
   adminForm = this.formBuilder.group({
@@ -79,7 +79,8 @@ export class ManageWorkComponent implements OnInit {
     return this.adminForm.value.plant_id !== 'c';
   }
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private datePipe: DatePipe) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private datePipe: DatePipe,
+              private cdr: ChangeDetectorRef) {
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -97,6 +98,7 @@ export class ManageWorkComponent implements OnInit {
       this.dataService.getReports(this.limit).subscribe({
         next: (data: any) => {
           this.reports = data;
+          this.cdr.detectChanges();
           this.total = data.length;
         }
       });
@@ -117,7 +119,7 @@ export class ManageWorkComponent implements OnInit {
     });
     if (this.logged_role === 'admin') {
       if (value === 'operator_id') {
-        this.innerText = (event.target as HTMLSelectElement).options[(event.target as HTMLSelectElement).options.selectedIndex].innerText.toLowerCase().trim() + '_';
+        this.innerText = (event.target as HTMLSelectElement).options[(event.target as HTMLSelectElement).options.selectedIndex].innerText.toLowerCase().trim();
       }
       if (this.adminForm.value.plant_id !== 'c') {
         if (value === 'client_id' || this.adminForm.value.plant_id === '0') {
@@ -207,9 +209,9 @@ export class ManageWorkComponent implements OnInit {
           this.months = data;
         }
       });
-      this.reports_filename = this.monthFilterForm.value.month?.replace('/', '-') + this.innerText.trim().replace(' ', '-').toUpperCase();
+      this.reports_filename = this.monthFilterForm.value.month?.replace('/', '-') + '_' + this.innerText.trim().replace(' ', '-').toUpperCase();
     } else if (this.filter === 'interval') {
-      this.reports_filename = this.intervalFilterForm.value.start_date! + this.intervalFilterForm.value.end_date! + this.innerText.trim().replace(' ', '-').toUpperCase();
+      this.reports_filename = this.intervalFilterForm.value.start_date! + this.intervalFilterForm.value.end_date! + '_' + this.innerText.trim().replace(' ', '-').toUpperCase();
     }
   }
 
@@ -306,7 +308,8 @@ export class ManageWorkComponent implements OnInit {
   }
 
   printPdf() {
-    if (this.total > 25) {
+    const isPrintingAllowed = this.total <= 25;
+    if (!isPrintingAllowed) {
       const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
         data: {
           title: 'Attenzione',
@@ -315,19 +318,19 @@ export class ManageWorkComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          if (this.filter === 'month') {
-            this.printMonthlyReports();
-          } else {
-            this.printIntervalReports();
-          }
+          this.printReports();
         }
       });
     } else {
-      if (this.filter === 'month') {
-        this.printMonthlyReports();
-      } else {
-        this.printIntervalReports();
-      }
+      this.printReports();
+    }
+  }
+
+  printReports() {
+    if (this.filter === 'month') {
+      this.printMonthlyReports();
+    } else {
+      this.printIntervalReports();
     }
   }
 
@@ -344,7 +347,7 @@ export class ManageWorkComponent implements OnInit {
     this.dataService.getReportById(report_id).subscribe({
       next: (data: any) => {
         this.email_date = data.Report.email_date;
-        this.pdf_filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '.pdf';
+        this.pdf_filename = data.Report.date.replaceAll('-', '') + '_' + data.last_name.toUpperCase() + '_' + data.first_name.toUpperCase() + '.pdf';
         this.dataService.getUserById(supervisor_id).subscribe({
           next: (data: any) => {
             let supervisor_email = data.User.email;
@@ -369,7 +372,16 @@ export class ManageWorkComponent implements OnInit {
                   this.dataService.sendEmail(report_id, pdf, supervisor_email).subscribe({
                     next: () => {
                       this.common.openSnackBar('Email inviata con successo!');
-                      this.ngOnInit();
+                      const index = this.reports.findIndex(report => report['Report']['id'] === report_id);
+                      if (index !== -1) {
+                        this.dataService.getReportById(report_id).subscribe({
+                          next: (data: any) => {
+                            Object.assign(this.reports[index], data);
+                            this.reports = [...this.reports];
+                            this.cdr.detectChanges();
+                          }
+                        });
+                      }
                     }, error: () => {
                       this.common.openSnackBar('Errore nell\'invio dell\'email, riprovare più tardi');
                     }
@@ -386,10 +398,24 @@ export class ManageWorkComponent implements OnInit {
   editReport(id: number) {
     this.dataService.getReportById(id).subscribe({
       next: (data: any) => {
-        this.dialog.open(EditComponent, {
+        const dialogRef = this.dialog.open(EditComponent, {
           data: {
             title: 'Modifica intervento', message: data
           }, width: '50em'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const index = this.reports.findIndex(report => report['Report']['id'] === id);
+            if (index !== -1) {
+              this.dataService.getReportById(id).subscribe({
+                next: (data: any) => {
+                  Object.assign(this.reports[index], data);
+                  this.reports = [...this.reports];
+                  this.cdr.detectChanges();
+                }
+              });
+            }
+          }
         });
       }
     });
@@ -406,9 +432,13 @@ export class ManageWorkComponent implements OnInit {
         this.dataService.deleteReport(id).subscribe({
           next: (data: any) => {
             this.common.openSnackBar(data.detail);
-            setTimeout(() => {
-              this.ngOnInit();
-            }, 1000);
+            const index = this.reports.findIndex(report => report['Report']['id'] === id);
+            if (index !== -1) {
+              this.reports.splice(index, 1);
+              this.reports = [...this.reports];
+              this.total--;
+              this.cdr.detectChanges();
+            }
           }
         });
       }

@@ -55,9 +55,6 @@ export class EditPlantComponent {
     this.dataService.editPlant(this.editPlantForm.value, this.data.message['Plant']['id']).subscribe({
       next: () => {
         this.common.openSnackBar('Stabilimento modificato con successo!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       }, error: (error) => {
         this.common.openSnackBar(error.error.detail);
       }

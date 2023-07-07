@@ -45,9 +45,6 @@ export class EditCommissionComponent {
     this.dataService.editCommission(this.editCommissionForm.value, this.data.message['Commission']['id']).subscribe({
       next: () => {
         this.common.openSnackBar('Commessa modificata con successo!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       }, error: (error) => {
         this.common.openSnackBar(error.error.detail);
       }

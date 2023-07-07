@@ -74,9 +74,6 @@ export class EditMachineComponent implements OnInit {
     this.dataService.editMachine(this.editMachineForm.value, this.data.message['Machine']['id']).subscribe({
       next: () => {
         this.common.openSnackBar('Macchina modificata con successo!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       }, error: (error) => {
         this.common.openSnackBar(error.error.detail);
       }

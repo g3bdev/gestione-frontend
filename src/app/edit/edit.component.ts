@@ -131,15 +131,11 @@ export class EditComponent implements OnInit {
     this.dataService.editReport(this.editForm.value, this.data.message['Report']['id'], +this.editForm.value.operator_id!).subscribe({
       next: () => {
         this.common.openSnackBar('Intervento modificato con successo!');
-
       }, error: () => {
         this.common.openSnackBar('C\'è stato un errore, riprova');
       }
     });
     this.dialogRef.close(true);
-    setTimeout(() => {
-      window.location.reload();
-    }, 3000);
   }
 
   onCancel() {

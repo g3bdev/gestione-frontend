@@ -43,8 +43,7 @@ export class ConvertXmlComponent {
           downloadLink.setAttribute('download', filename + '.csv');
           document.body.appendChild(downloadLink);
           downloadLink.click();
-        }, error: (error) => {
-          console.log(error);
+        }, error: () => {
           this.common.openSnackBar('Errore durante la conversione del file.')
         }
       });

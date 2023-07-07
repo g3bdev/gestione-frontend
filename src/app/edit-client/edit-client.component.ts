@@ -49,9 +49,6 @@ export class EditClientComponent {
     this.dataService.editClient(this.editClientForm.value, this.data.message['id']).subscribe({
       next: () => {
         this.common.openSnackBar('Cliente modificato con successo!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
       }, error: (error) => {
         this.common.openSnackBar(error.error.detail);
       }
