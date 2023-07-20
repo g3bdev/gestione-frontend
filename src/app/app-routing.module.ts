@@ -20,6 +20,8 @@ import {ManageClientsComponent} from "./manage-clients/manage-clients.component"
 import {ManagePlantsComponent} from "./manage-plants/manage-plants.component";
 import {ManageCommissionsComponent} from "./manage-commissions/manage-commissions.component";
 import {ConvertXmlComponent} from "./convert-xml/convert-xml.component";
+import {CreateTicketComponent} from "./create-ticket/create-ticket.component";
+import {ManageTicketsComponent} from "./manage-tickets/manage-tickets.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -27,6 +29,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'profile/change-password', component: ChangePasswordComponent},
+  {path: 'tickets', component: ManageTicketsComponent},
   {path: 'reports', component: ManageWorkComponent},
   {path: 'reports/daily', component: DailyHoursComponent},
   {path: 'manage', component: ManagementComponent},
@@ -42,6 +45,7 @@ const routes: Routes = [
   {path: 'add/commission', component: CreateCommissionComponent},
   {path: 'add/plant', component: CreatePlantComponent},
   {path: 'add/machine', component: CreateMachineComponent},
+  {path: 'add/ticket', component: CreateTicketComponent},
   {path: 'invoices', component: ConvertXmlComponent},
   {path: '**', component: NotFoundComponent}
 ];

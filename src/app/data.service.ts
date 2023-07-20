@@ -495,4 +495,10 @@ export class DataService {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
+
+  getMyClient() {
+    return this.httpClient.get(`${environment.apiUrl}/client`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
 }

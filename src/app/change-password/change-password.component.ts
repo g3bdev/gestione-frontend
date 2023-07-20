@@ -3,6 +3,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {faArrowLeft, faExclamationTriangle} from "@fortawesome/free-solid-svg-icons";
 import {DataService} from "../data.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-change-password',
@@ -23,7 +24,7 @@ export class ChangePasswordComponent {
     confirm_password: ['', [Validators.required, Validators.pattern(this.passwordRegex)]],
   });
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private dataService: DataService, private router: Router, private authService: AuthService) {
   }
 
   get form() {
@@ -48,8 +49,9 @@ export class ChangePasswordComponent {
         this.error = '';
         this.message = 'Password modificata con successo!';
         setTimeout(() => {
-          this.router.navigate(['/profile']).then();
-        }, 2000);
+          this.authService.logout();
+          this.router.navigate(['/']).then();
+        }, 4000);
       }, error: (error) => {
         this.error = error.error.detail;
       }
