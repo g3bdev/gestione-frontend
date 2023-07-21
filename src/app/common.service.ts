@@ -20,7 +20,7 @@ export class CommonService {
       verticalPosition = 'bottom';
     }
     this.snackbar.open(message, '', {
-      duration: 3000,
+      duration: 4000,
       verticalPosition: verticalPosition,
       panelClass: 'snackbar'
     });

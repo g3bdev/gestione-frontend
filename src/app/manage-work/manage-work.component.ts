@@ -82,15 +82,15 @@ export class ManageWorkComponent implements OnInit {
     return this.adminForm.value.plant_id !== 'c';
   }
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private datePipe: DatePipe,
-              private cdr: ChangeDetectorRef) {
+  constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private datePipe: DatePipe, private cdr: ChangeDetectorRef) {
     this.isMobile = window.matchMedia('(max-width: 991px)').matches;
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
-      this.loadMore();
+  @HostListener('window:scroll', ['$event']) onWindowScroll() {
+    if (this.adminForm.value.client_id === '0' && this.adminForm.value.operator_id === '0' && this.adminForm.value.plant_id === '0' && this.adminForm.value.work_id === '0') {
+      if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
+        this.loadMore();
+      }
     }
   }
 
@@ -310,6 +310,14 @@ export class ManageWorkComponent implements OnInit {
   }
 
   printPdf() {
+    if (this.filter === 'month' && this.monthFilterForm.value.month === '0') {
+      this.common.openSnackBar('Seleziona un mese valido');
+      return;
+    }
+    if (this.filter === 'interval' && (this.intervalFilterForm.value.start_date === '' || this.intervalFilterForm.value.end_date === '')) {
+      this.common.openSnackBar('Seleziona un intervallo di tempo valido');
+      return;
+    }
     const isPrintingAllowed = this.total <= 25;
     if (!isPrintingAllowed) {
       const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
@@ -357,13 +365,11 @@ export class ManageWorkComponent implements OnInit {
             let message = 'Vuoi inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?';
             if (this.email_date !== null) {
               title = 'Conferma reinvio email';
-              message = 'Vuoi re-inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?\n' +
-                'Hai già inviato questo intervento il ' + this.datePipe.transform(this.email_date, 'dd/MM/yyyy') + ' alle ' + this.datePipe.transform(this.email_date, 'HH:mm', 'Europe/Rome');
+              message = 'Vuoi re-inviare questo intervento a ' + data.User.last_name + ' ' + data.User.first_name + '?\n' + 'Hai già inviato questo intervento il ' + this.datePipe.transform(this.email_date, 'dd/MM/yyyy') + ' alle ' + this.datePipe.transform(this.email_date, 'HH:mm', 'Europe/Rome');
             }
             const dialogRef = this.dialog.open(DeleteConfirmationComponent, {
               data: {
-                title: title,
-                message: message,
+                title: title, message: message,
               }
             });
             dialogRef.afterClosed().subscribe(result => {
