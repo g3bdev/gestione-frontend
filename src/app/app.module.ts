@@ -55,10 +55,11 @@ import {ConvertXmlComponent} from './convert-xml/convert-xml.component';
 import {DatePipe} from "@angular/common";
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 import { ManageTicketsComponent } from './manage-tickets/manage-tickets.component';
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [AppComponent, DataComponent, CreateWorkComponent, NotFoundComponent, DashboardComponent, LoginComponent, CreateUserComponent, ManageUsersComponent, ForbiddenComponent, HeaderComponent, ProfileComponent, ManageWorkComponent, AdminManageWorkComponent, FooterComponent, DeleteConfirmationComponent, EditComponent, CreateClientComponent, ManagementComponent, ChangePasswordComponent, CreatePlantComponent, CreateMachineComponent, CreateCommissionComponent, DailyHoursComponent, EditMachineComponent, ManageMachinesComponent, EditClientComponent, ManageClientsComponent, ManagePlantsComponent, ManageCommissionsComponent, EditCommissionComponent, EditPlantComponent, ConvertXmlComponent, CreateTicketComponent, ManageTicketsComponent],
-  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule, MatSortModule, MatDividerModule, MatAutocompleteModule],
+  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, AppRoutingModule, FontAwesomeModule, BrowserAnimationsModule, MatSlideToggleModule, MatProgressBarModule, MatDialogModule, MatButtonModule, MatInputModule, MatTableModule, MatSnackBarModule, MatTooltipModule, MatRadioModule, MatTableExporterModule, MatCheckboxModule, MatSortModule, MatDividerModule, MatAutocompleteModule, MatMenuModule],
   providers: [DatePipe],
   bootstrap: [AppComponent]
 })

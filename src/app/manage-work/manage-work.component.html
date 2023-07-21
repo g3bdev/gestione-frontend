@@ -255,38 +255,69 @@
 
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell></th>
-          <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-            <a (click)="sendEmail(item['Report']['id'], item['Report']['supervisor_id'])">
+          <td *matCellDef="let item" mat-cell>
+            <button [matMenuTriggerFor]="menu" *ngIf="isMobile">
               <fa-icon
-                [icon]="fa_mail"
-                [matTooltipPosition]="position"
+                [icon]="fa_down"
                 [size]="fa_size"
-                [ngClass]="item['Report']['email_date'] ? 'opacity-25 hover:opacity-75' : ''"
-                class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
-                [matTooltip]="item['Report']['email_date'] ? 'Reinvia' : 'Invia'"></fa-icon>
-            </a>
-            <a (click)="common.printReport(item['Report']['id'])">
-              <fa-icon
-                [icon]="fa_print"
-                [matTooltipPosition]="position"
-                [size]="fa_size"
-                class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
-                matTooltip="Stampa"></fa-icon>
-            </a>
-            <a (click)="editReport(item['Report']['id'])">
-              <fa-icon [icon]="fa_info"
-                       [matTooltipPosition]="position"
-                       [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
-                       matTooltip="Info"></fa-icon>
-            </a>
-            <a (click)="deleteReport(item['Report']['id'])">
-              <fa-icon [icon]="fa_trash"
-                       [matTooltipPosition]="position"
-                       [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
-                       matTooltip="Elimina"></fa-icon>
-            </a>
+                class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+            </button>
+            <mat-menu #menu="matMenu" class="menu">
+              <button mat-menu-item (click)="sendEmail(item['Report']['id'], item['Report']['supervisor_id'])">
+                <div class="space-x-2">
+                  <span [textContent]="item['Report']['email_date'] ? 'Reinvia' : 'Invia'"></span>
+                </div>
+              </button>
+              <button mat-menu-item (click)="common.printReport(item['Report']['id'])">
+                <div class="space-x-2">
+                  <span>Stampa</span>
+                </div>
+              </button>
+              <button mat-menu-item (click)="editReport(item['Report']['id'])">
+                <div class="space-x-2">
+                  <span>Modifica</span>
+                </div>
+              </button>
+              <button mat-menu-item (click)="deleteReport(item['Report']['id'])">
+                <div class="space-x-2">
+                  <span>Elimina</span>
+                </div>
+              </button>
+            </mat-menu>
+
+            <div class="space-x-3 whitespace-nowrap" *ngIf="!isMobile">
+              <a (click)="sendEmail(item['Report']['id'], item['Report']['supervisor_id'])">
+                <fa-icon
+                  [icon]="fa_mail"
+                  [matTooltipPosition]="position"
+                  [size]="fa_size"
+                  [ngClass]="item['Report']['email_date'] ? 'opacity-25 hover:opacity-75' : ''"
+                  class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                  [matTooltip]="item['Report']['email_date'] ? 'Reinvia' : 'Invia'"></fa-icon>
+              </a>
+              <a (click)="common.printReport(item['Report']['id'])">
+                <fa-icon
+                  [icon]="fa_print"
+                  [matTooltipPosition]="position"
+                  [size]="fa_size"
+                  class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                  matTooltip="Stampa"></fa-icon>
+              </a>
+              <a (click)="editReport(item['Report']['id'])">
+                <fa-icon [icon]="fa_info"
+                         [matTooltipPosition]="position"
+                         [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                         matTooltip="Info"></fa-icon>
+              </a>
+              <a (click)="deleteReport(item['Report']['id'])">
+                <fa-icon [icon]="fa_trash"
+                         [matTooltipPosition]="position"
+                         [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                         matTooltip="Elimina"></fa-icon>
+              </a>
+            </div>
           </td>
         </ng-container>
         <div *ngIf="logged_role === 'admin'">

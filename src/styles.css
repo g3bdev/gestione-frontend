@@ -19,3 +19,7 @@ html, body {
   margin: 32px !important;
   box-shadow: none;
 }
+
+.menu {
+  background-color: rgb(31 41 55);
+}

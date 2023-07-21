@@ -5,6 +5,7 @@ import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirm
 import {EditComponent} from "../edit/edit.component";
 import {
   faArrowLeft,
+  faCaretDown,
   faEnvelope,
   faExclamationCircle,
   faInfoCircle,
@@ -40,6 +41,7 @@ export class ManageWorkComponent implements OnInit {
   fa_arrowLeft = faArrowLeft;
   fa_trash = faTrash;
   fa_info = faInfoCircle;
+  fa_down = faCaretDown;
   fa_exclamation_circle = faExclamationCircle;
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
@@ -66,6 +68,7 @@ export class ManageWorkComponent implements OnInit {
   limit = 25;
   scrolling = true;
   total = 0;
+  isMobile = false;
 
   get isMachinesEmpty() {
     return this.machines.length === 0;
@@ -81,14 +84,13 @@ export class ManageWorkComponent implements OnInit {
 
   constructor(private dataService: DataService, private dialog: MatDialog, private formBuilder: FormBuilder, public common: CommonService, private datePipe: DatePipe,
               private cdr: ChangeDetectorRef) {
+    this.isMobile = window.matchMedia('(max-width: 991px)').matches;
   }
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
-      if (this.scrolling) {
-        this.loadMore();
-      }
+      this.loadMore();
     }
   }
 
@@ -482,6 +484,7 @@ export class ManageWorkComponent implements OnInit {
         }
       });
     }
+    window.onresize = () => this.isMobile = window.innerWidth <= 991;
   }
 
   protected readonly window = window;
