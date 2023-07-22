@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
 import {DataService} from "./data.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
   loading = false;
+  exp: RegExp = /\r\n|\n\r|\n|\r/g;
+  fa_exclamation_circle = faExclamationCircle;
 
   constructor(private dataService: DataService, private snackbar: MatSnackBar) {
   }

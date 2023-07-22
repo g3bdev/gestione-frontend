@@ -46,7 +46,6 @@ export class ManageWorkComponent implements OnInit {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
   months = [];
-  exp: RegExp = /\r\n|\n\r|\n|\r/g;
   innerText = 'interventi';
   pdf_filename = '';
   reports_filename = '';
@@ -69,6 +68,9 @@ export class ManageWorkComponent implements OnInit {
   scrolling = true;
   total = 0;
   isMobile = false;
+  searchForm = this.formBuilder.group({
+    search: ['']
+  });
 
   get isMachinesEmpty() {
     return this.machines.length === 0;
@@ -405,13 +407,10 @@ export class ManageWorkComponent implements OnInit {
     });
   }
 
-  searchForm = this.formBuilder.group({
-    search: ['']
-  });
 
   searchReports() {
-    this.scrolling = false;
-    let searchValue = this.searchForm.value.search?.trim().replace(this.exp, ' ');
+    this.scrolling = this.searchForm.value.search?.trim().length === 0;
+    let searchValue = this.searchForm.value.search?.trim().replace(this.common.exp, ' ');
     this.dataService.searchReports(searchValue!).subscribe({
       next: (data: any) => {
         this.reports = data;

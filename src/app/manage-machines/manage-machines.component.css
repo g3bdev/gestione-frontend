@@ -1,0 +1,5 @@
+.mat-column-code {
+  width: 10%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

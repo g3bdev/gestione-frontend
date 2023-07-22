@@ -7,6 +7,7 @@ import {SizeProp} from "@fortawesome/fontawesome-svg-core";
 import {TooltipPosition} from "@angular/material/tooltip";
 import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 import {CommonService} from "../common.service";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-manage-machines',
@@ -23,8 +24,16 @@ export class ManageMachinesComponent implements OnInit {
   fa_size: SizeProp = "xl";
   position: TooltipPosition = 'above';
   limit = 25;
+  sort = '';
+  order = '';
+  error = '';
+  sorted = false;
+  scrolling = true;
+  searchForm = this.formBuilder.group({
+    search: ['']
+  });
 
-  constructor(private dataService: DataService, private dialog: MatDialog, private common: CommonService) {
+  constructor(private dataService: DataService, private dialog: MatDialog, public common: CommonService, private formBuilder: FormBuilder) {
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -35,9 +44,29 @@ export class ManageMachinesComponent implements OnInit {
   }
 
   loadMore() {
-    this.limit += 25;
-    this.dataService.getMachines(this.limit).subscribe({
+    if (this.scrolling) {
+      this.limit += 25;
+      this.dataService.getMachines(this.limit, this.sort, this.order, '').subscribe({
+        next: (data: any) => {
+          this.machines = data;
+        }
+      });
+    }
+  }
+
+  sortBy(column: string) {
+    if (this.sorted && column !== this.sort) {
+      this.order = 'desc';
+    }
+    this.sort = column;
+    if (this.order === 'asc') {
+      this.order = 'desc';
+    } else {
+      this.order = 'asc';
+    }
+    this.dataService.getMachines(this.limit, this.sort, this.order, '').subscribe({
       next: (data: any) => {
+        this.sorted = true;
         this.machines = data;
       }
     });
@@ -94,8 +123,19 @@ export class ManageMachinesComponent implements OnInit {
     });
   }
 
+  searchMachines() {
+    this.scrolling = this.searchForm.value.search?.trim().length === 0;
+    let searchValue = this.searchForm.value.search?.trim().replace(this.common.exp, ' ');
+    this.dataService.getMachines(this.limit, this.sort, this.order, searchValue!).subscribe({
+      next: (data: any) => {
+        this.machines = data;
+        this.error = this.machines.length == 0 ? 'Nessun risultato trovato' : '';
+      }
+    });
+  }
+
   ngOnInit() {
-    this.dataService.getMachines(this.limit).subscribe({
+    this.dataService.getMachines(this.limit, this.sort, this.order, '').subscribe({
       next: (data: any) => {
         this.machines = data;
       }

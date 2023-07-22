@@ -190,7 +190,7 @@
       <ng-container *ngTemplateOutlet="search"></ng-container>
     </div>
 
-    <div class="flex justify-center" *ngIf="!error; else e">
+    <div *ngIf="!error; else exception" class="flex justify-center">
       <table [dataSource]="reports" class="mat-elevation-z16 bg-gray-800 border-b" id="table" mat-table>
 
         <ng-container matColumnDef="operator" *ngIf="logged_role === 'admin'">
@@ -261,7 +261,7 @@
         <ng-container matColumnDef="description">
           <th *matHeaderCellDef class="hidden" mat-header-cell>Descrizione</th>
           <td *matCellDef="let item" class="hidden"
-              mat-cell> {{item['Report']['description'].replace(exp, ' ')}} </td>
+              mat-cell> {{item['Report']['description'].replace(common.exp, ' ')}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
@@ -344,26 +344,30 @@
   </div>
 </section>
 
-<ng-template #e>
+<ng-template #exception>
   <div class="flex flex-col items-center">
-    <fa-icon [icon]="fa_exclamation_circle" [size]="fa_size" class="text-red-500"></fa-icon>
+    <fa-icon [icon]="common.fa_exclamation_circle" [size]="fa_size" class="text-red-500"></fa-icon>
     <p class="text-red-500">{{error}}</p>
   </div>
 </ng-template>
 
 <ng-template #search>
   <form (ngSubmit)="searchReports()" [formGroup]="searchForm">
-    <div class="relative mx-auto w-full px-8 py-4">
-      <input
-        class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out placeholder-gray-500"
-        formControlName="search" id="search" placeholder="Cerca" maxlength="45"
-        type="text">
-      <button type="submit" class="absolute right-0 top-0 mr-10" [ngClass]="isMobile ? 'mt-[30px]' : 'mt-8'">
-        <svg class="text-gray-600 h-4 w-4 fill-current" viewBox="0 0 56.966 56.966">
-          <path
-            d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z"/>
-        </svg>
-      </button>
+    <div class="mx-auto my-6 text-gray-500">
+      <section class="flex items-center justify-center">
+        <div class="flex items-center justify-center">
+          <input class="px-6 py-2 -mr-8 font-sans transition-colors duration-300 transform bg-gray-200 border-none rounded-full focus:outline-none focus:bg-gray-300" formControlName="search" placeholder="Cerca..." spellcheck="false"
+                 type="text">
+          <button class="transform border-none" type="submit">
+            <svg class="text-gray-500 duration-200 fill-current hover:text-gray-700 focus:text-gray-700" height="20"
+                 viewBox="0 0 20 20" width="20">
+              <path
+                d="M17.545 15.467l-3.779-3.779c0.57-0.935 0.898-2.035 0.898-3.21 0-3.417-2.961-6.377-6.378-6.377s-6.186 2.769-6.186 6.186c0 3.416 2.961 6.377 6.377 6.377 1.137 0 2.2-0.309 3.115-0.844l3.799 3.801c0.372 0.371 0.975 0.371 1.346 0l0.943-0.943c0.371-0.371 0.236-0.84-0.135-1.211zM4.004 8.287c0-2.366 1.917-4.283 4.282-4.283s4.474 2.107 4.474 4.474c0 2.365-1.918 4.283-4.283 4.283s-4.473-2.109-4.473-4.474z">
+              </path>
+            </svg>
+          </button>
+        </div>
+      </section>
     </div>
   </form>
 </ng-template>

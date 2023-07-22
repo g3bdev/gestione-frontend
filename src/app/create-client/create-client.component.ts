@@ -20,7 +20,7 @@ export class CreateClientComponent {
     address: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     contact: ['', Validators.required],
-    phone_number: ['', Validators.required]
+    phone_number: ['', [Validators.required, Validators.pattern('^\\+?[0-9]{8,}$')]],
   });
   error: any;
   submitted: boolean = false;

@@ -126,8 +126,8 @@ export class DataService {
     });
   }
 
-  getMachines(limit: number) {
-    return this.httpClient.get(`${environment.apiUrl}/machines?limit=${limit}`, {
+  getMachines(limit: number, column: string, order: string, query: string) {
+    return this.httpClient.get(`${environment.apiUrl}/machines?limit=${limit}&sort=${column}&order=${order}&q=${query}`, {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }

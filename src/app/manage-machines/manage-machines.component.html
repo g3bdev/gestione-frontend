@@ -13,76 +13,130 @@
   <div class="mx-auto px-5 py-2 flex-col">
     <div class="text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci macchine</h1>
+      <form (ngSubmit)="searchMachines()" [formGroup]="searchForm">
+        <div class="mx-auto my-6 text-gray-500">
+          <section class="flex items-center justify-center">
+            <div class="flex items-center justify-center">
+              <input class="px-6 py-2 -mr-8 font-sans transition-colors duration-300 transform bg-gray-200 border-none rounded-full focus:outline-none focus:bg-gray-300" formControlName="search" placeholder="Cerca..." spellcheck="false"
+                     type="text">
+              <button class="transform border-none" type="submit">
+                <svg class="text-gray-500 duration-200 fill-current hover:text-gray-700 focus:text-gray-700" height="20"
+                     viewBox="0 0 20 20" width="20">
+                  <path
+                    d="M17.545 15.467l-3.779-3.779c0.57-0.935 0.898-2.035 0.898-3.21 0-3.417-2.961-6.377-6.378-6.377s-6.186 2.769-6.186 6.186c0 3.416 2.961 6.377 6.377 6.377 1.137 0 2.2-0.309 3.115-0.844l3.799 3.801c0.372 0.371 0.975 0.371 1.346 0l0.943-0.943c0.371-0.371 0.236-0.84-0.135-1.211zM4.004 8.287c0-2.366 1.917-4.283 4.282-4.283s4.474 2.107 4.474 4.474c0 2.365-1.918 4.283-4.283 4.283s-4.473-2.109-4.473-4.474z">
+                  </path>
+                </svg>
+              </button>
+            </div>
+          </section>
+        </div>
+      </form>
 
-      <table [dataSource]="machines" class="mat-elevation-z16 bg-gray-800 border-b"
-             mat-table>
+      <div *ngIf="!error; else exception" class="flex justify-center">
+        <table [dataSource]="machines" class="mat-elevation-z16 bg-gray-800 border-b"
+               mat-table>
 
-        <ng-container matColumnDef="client">
-          <th *matHeaderCellDef mat-header-cell>Cliente</th>
-          <td *matCellDef="let item" mat-cell class="hidden md:table-cell"> {{item['Client']['name']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="client">
+            <th *matHeaderCellDef mat-header-cell><span
+              (click)="sortBy('clients.name')"
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Cliente</span>
+            </th>
+            <td *matCellDef="let item" class="hidden md:table-cell" mat-cell> {{item['Client']['name']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="plant">
-          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Stabilimento</th>
-          <td *matCellDef="let item" mat-cell> {{item['Plant']['city']}}, {{item['Plant']['address']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="plant">
+            <th *matHeaderCellDef mat-header-cell>
+            <span
+              (click)="sortBy('plants.city')"
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Stabilimento</span>
+            </th>
+            <td *matCellDef="let item" mat-cell> {{item['Plant']['city']}}, {{item['Plant']['address']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell>Nome</th>
-          <td *matCellDef="let item"
-              mat-cell> {{item['Machine']['name']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="name">
+            <th *matHeaderCellDef mat-header-cell><span
+              (click)="sortBy('machines.name')"
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Nome</span>
+            </th>
+            <td *matCellDef="let item"
+                mat-cell> {{item['Machine']['name']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="code">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Codice</th>
-          <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Machine']['code']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="code">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell><span
+              (click)="sortBy('machines.code')"
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Codice</span>
+            </th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> {{item['Machine']['code']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="cost_center">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Centro di costo</th>
-          <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Machine']['cost_center']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="cost_center">
+            <th *matHeaderCellDef class="hidden lg:table-cell" mat-header-cell>
+            <span
+              (click)="sortBy('machines.cost_center')"
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Centro di costo</span>
+            </th>
+            <td *matCellDef="let item" class="hidden lg:table-cell"
+                mat-cell> {{item['Machine']['cost_center']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="brand">
-          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Brand</th>
-          <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Machine']['brand']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="brand">
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell><span
+              (click)="sortBy('machines.brand')"
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Brand</span>
+            </th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> {{item['Machine']['brand']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="model">
-          <th *matHeaderCellDef mat-header-cell class="hidden md:table-cell">Modello</th>
-          <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Machine']['model']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="model">
+            <th *matHeaderCellDef class="hidden lg:table-cell" mat-header-cell>
+            <span
+              (click)="sortBy('machines.model')"
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Modello</span>
+            </th>
+            <td *matCellDef="let item" class="hidden lg:table-cell"
+                mat-cell> {{item['Machine']['model']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="production_year">
-          <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell>Anno produzione</th>
-          <td *matCellDef="let item" class="hidden md:table-cell"
-              mat-cell> {{item['Machine']['production_year']}} </td>
-        </ng-container>
+          <ng-container matColumnDef="production_year">
+            <th (click)="sortBy('machines.production_year')" *matHeaderCellDef class="hidden md:table-cell"
+                mat-header-cell><span
+              class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Anno produzione</span>
+            </th>
+            <td *matCellDef="let item" class="hidden md:table-cell"
+                mat-cell> {{item['Machine']['production_year']}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <th *matHeaderCellDef mat-header-cell></th>
-          <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
-            <a (click)="editMachine(item['Machine']['id'])">
-              <fa-icon [icon]="fa_info"
-                       [matTooltipPosition]="position"
-                       [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
-                       matTooltip="Info"></fa-icon>
-            </a>
-            <a (click)="deleteMachine(item['Machine']['id'])">
-              <fa-icon [icon]="fa_trash"
-                       [size]="fa_size"
-                       class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
-            </a>
-          </td>
-        </ng-container>
-        <tr *matHeaderRowDef="machine_columns" mat-header-row></tr>
-        <tr *matRowDef="let row; columns: machine_columns;" mat-row></tr>
-      </table>
+          <ng-container matColumnDef="actions">
+            <th *matHeaderCellDef mat-header-cell></th>
+            <td *matCellDef="let item" class="space-x-4 whitespace-nowrap" mat-cell>
+              <a (click)="editMachine(item['Machine']['id'])">
+                <fa-icon [icon]="fa_info"
+                         [matTooltipPosition]="position"
+                         [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"
+                         matTooltip="Info"></fa-icon>
+              </a>
+              <a (click)="deleteMachine(item['Machine']['id'])">
+                <fa-icon [icon]="fa_trash"
+                         [size]="fa_size"
+                         class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-100"></fa-icon>
+              </a>
+            </td>
+          </ng-container>
+          <tr *matHeaderRowDef="machine_columns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: machine_columns;" mat-row></tr>
+        </table>
+      </div>
     </div>
   </div>
 </section>
+
+<ng-template #exception>
+  <div class="flex flex-col items-center">
+    <fa-icon [icon]="common.fa_exclamation_circle" [size]="fa_size" class="text-red-500"></fa-icon>
+    <p class="text-red-500">{{error}}</p>
+  </div>
+</ng-template>
