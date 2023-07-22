@@ -48,7 +48,7 @@ export class ManageUsersComponent implements OnInit {
   error = false;
   editing = false;
   message = '';
-
+  
   constructor(private dataService: DataService, private authService: AuthService, private dialog: MatDialog, private common: CommonService, private formBuilder: FormBuilder) {
   }
 

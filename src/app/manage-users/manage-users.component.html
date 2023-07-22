@@ -11,7 +11,7 @@
       Torna indietro
     </button>
   </div>
-  <div class="mx-auto px-5 py-2 flex-col">
+  <div class="px-5 py-2 flex-col">
     <div class="text-center">
       <h1 class="title-font text-3xl mb-4 font-medium text-white">Gestisci utenti</h1>
       <div class="flex items-center justify-center mb-8">
@@ -20,14 +20,14 @@
                   class="h-[42px] w-auto bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   id="user_id">
             <option disabled hidden selected value="">Seleziona l'utente</option>
-            <option *ngFor="let user of users;" [value]="user['id']" class="bg-gray-800">
+            <option *ngFor="let user of users" [value]="user['id']" class="bg-gray-800">
               {{user['first_name']}} {{user['last_name']}}
             </option>
           </select>
           <div *ngIf="clicked" class="w-full bg-white shadow-lg rounded-lg overflow-hidden my-4 sm:text-lg text-base">
             <div class="flex items-center px-6 py-3 bg-purple-400">
               <div
-                class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0">
+                class="w-16 h-16 inline-flex items-center justify-center rounded-full bg-gray-800 text-purple-400 flex-shrink-0 transition duration-500 hover:scale-110">
                 <fa-icon [icon]="fa_user" [size]="fa_user_size"></fa-icon>
               </div>
               <h1 class="mx-3 pl-3 text-white font-semibold text-lg">{{first_name}} {{last_name}}</h1>
@@ -41,14 +41,14 @@
                 <div class="py-2 text-gray-700">
                   <fa-icon [icon]="fa_envelope"></fa-icon>
                   <input [readonly]="!editing" formControlName="email" maxlength="50"
-                         class="h-8 sm:w-80 w-auto ml-2"
+                         class="h-8 sm:w-80 w-56 ml-2"
                          [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
                          [value]="email">
                 </div>
                 <div class="py-2 text-gray-700">
                   <fa-icon [icon]="fa_phone"></fa-icon>
                   <input [readonly]="!editing" formControlName="phone_number" maxlength="50"
-                         class="h-8 sm:w-80 w-auto ml-2"
+                         class="h-8 sm:w-80 w-56 ml-2"
                          [ngClass]="{'underline decoration-dotted decoration-offset-4' : editing}"
                          [value]="phone_number">
                 </div>
