@@ -3,12 +3,12 @@ import {animate, query, sequence, stagger, style, transition, trigger} from "@an
 export const dropDownAnimation = trigger("dropDownMenu", [
   transition(":enter", [
     style({height: 0, overflow: "hidden"}),
-    query(".menu-item", [
+    query(".dropdown-item", [
       style({opacity: 0, transform: "translateY(-50px)"})
     ]),
     sequence([
       animate("100ms", style({height: "*"})),
-      query(".menu-item", [
+      query(".dropdown-item", [
         stagger(-50, [
           animate("250ms ease", style({opacity: 1, transform: "none"}))
         ])
@@ -18,9 +18,9 @@ export const dropDownAnimation = trigger("dropDownMenu", [
 
   transition(":leave", [
     style({height: "*", overflow: "hidden"}),
-    query(".menu-item", [style({opacity: 1, transform: "none"})]),
+    query(".dropdown-item", [style({opacity: 1, transform: "none"})]),
     sequence([
-      query(".menu-item", [
+      query(".dropdown-item", [
         stagger(50, [
           animate(
             "250ms ease",

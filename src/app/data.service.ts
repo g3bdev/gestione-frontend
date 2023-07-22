@@ -501,4 +501,10 @@ export class DataService {
       headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
     });
   }
+
+  searchReports(query: string) {
+    return this.httpClient.get(`${environment.apiUrl}/reports/search?q=${query}`, {
+      headers: new HttpHeaders().set("Authorization", `Bearer ${localStorage.getItem('token')}`)
+    });
+  }
 }

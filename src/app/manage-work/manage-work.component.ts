@@ -95,21 +95,23 @@ export class ManageWorkComponent implements OnInit {
   }
 
   loadMore() {
-    this.limit += 25;
-    if (this.logged_role === 'admin') {
-      this.dataService.getReports(this.limit).subscribe({
-        next: (data: any) => {
-          this.reports = data;
-          this.cdr.detectChanges();
-          this.total = data.length;
-        }
-      });
-    } else {
-      this.dataService.getMyReports(this.limit).subscribe({
-        next: (data: any) => {
-          this.reports = data;
-        }
-      });
+    if (this.scrolling) {
+      this.limit += 25;
+      if (this.logged_role === 'admin') {
+        this.dataService.getReports(this.limit).subscribe({
+          next: (data: any) => {
+            this.reports = data;
+            this.cdr.detectChanges();
+            this.total = data.length;
+          }
+        });
+      } else {
+        this.dataService.getMyReports(this.limit).subscribe({
+          next: (data: any) => {
+            this.reports = data;
+          }
+        });
+      }
     }
   }
 
@@ -402,6 +404,23 @@ export class ManageWorkComponent implements OnInit {
       }
     });
   }
+
+  searchForm = this.formBuilder.group({
+    search: ['']
+  });
+
+  searchReports() {
+    this.scrolling = false;
+    let searchValue = this.searchForm.value.search?.trim().replace(this.exp, ' ');
+    this.dataService.searchReports(searchValue!).subscribe({
+      next: (data: any) => {
+        this.reports = data;
+        this.total = data.length;
+        this.error = this.reports.length == 0 ? 'Nessun risultato trovato' : '';
+      }
+    });
+  }
+
 
   editReport(id: number) {
     this.dataService.getReportById(id).subscribe({
