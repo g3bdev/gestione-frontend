@@ -49,7 +49,7 @@
               class="h-[42px] w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-purple-900 focus:bg-transparent focus:border-purple-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               id="work_id"
               [ngClass]="{'border-red-500 text-red-500 focus:border-red-500 focus:ring-red-900' : submitted && form.work_id.errors || form.work_id.value == '0'}">
-        <option disabled hidden selected>{{data.message['machine_name']}}</option>
+        <option disabled hidden selected>{{data.message['machine_code']}} - {{data.message['machine_brand']}} {{data.message['machine_name']}}</option>
         <option *ngFor="let machine of machines;" [value]="machine['id']" class="bg-gray-800">
           {{machine['code']}} - {{machine['brand']}} {{machine['name']}}
         </option>
