@@ -17,8 +17,10 @@
         <div class="mx-auto my-6 text-gray-500">
           <section class="flex items-center justify-center">
             <div class="flex items-center justify-center">
-              <input class="px-6 py-2 -mr-8 font-sans transition-colors duration-300 transform bg-gray-200 border-none rounded-full focus:outline-none focus:bg-gray-300" formControlName="search" placeholder="Cerca..." spellcheck="false"
-                     type="text">
+              <input
+                class="px-6 py-2 -mr-8 font-sans transition-colors duration-300 transform bg-gray-200 border-none rounded-full focus:outline-none focus:bg-gray-300"
+                formControlName="search" placeholder="Cerca..." spellcheck="false"
+                type="text">
               <button class="transform border-none" type="submit">
                 <svg class="text-gray-500 duration-200 fill-current hover:text-gray-700 focus:text-gray-700" height="20"
                      viewBox="0 0 20 20" width="20">
@@ -37,7 +39,7 @@
                mat-table>
 
           <ng-container matColumnDef="client">
-            <th *matHeaderCellDef mat-header-cell><span
+            <th *matHeaderCellDef class="hidden md:table-cell" mat-header-cell><span
               (click)="sortBy('clients.name')"
               class="cursor-pointer transition duration-150 ease-in-out hover:bg-opacity-10 hover:text-neutral-400">Cliente</span>
             </th>
