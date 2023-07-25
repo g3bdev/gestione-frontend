@@ -208,7 +208,6 @@ export class ManageWorkComponent implements OnInit {
         }
       }
     }
-
     if (this.filter === 'month') {
       this.dataService.getMonths(this.adminForm.value.operator_id!).subscribe({
         next: (data: any) => {
@@ -217,7 +216,7 @@ export class ManageWorkComponent implements OnInit {
       });
       this.reports_filename = this.monthFilterForm.value.month?.replace('/', '-') + '_' + this.innerText.trim().replace(' ', '-').toUpperCase();
     } else if (this.filter === 'interval') {
-      this.reports_filename = this.intervalFilterForm.value.start_date! + this.intervalFilterForm.value.end_date! + '_' + this.innerText.trim().replace(' ', '-').toUpperCase();
+      this.reports_filename = this.intervalFilterForm.value.start_date! + '_' + this.intervalFilterForm.value.end_date! + '_' + this.innerText.trim().replace(' ', '-').toUpperCase();
     }
   }
 
@@ -407,7 +406,6 @@ export class ManageWorkComponent implements OnInit {
     });
   }
 
-
   searchReports() {
     this.scrolling = this.searchForm.value.search?.trim().length === 0;
     let searchValue = this.searchForm.value.search?.trim().replace(this.common.exp, ' ');
@@ -419,7 +417,6 @@ export class ManageWorkComponent implements OnInit {
       }
     });
   }
-
 
   editReport(id: number) {
     this.dataService.getReportById(id).subscribe({
