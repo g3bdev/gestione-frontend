@@ -96,6 +96,7 @@ export class CreateWorkComponent implements OnInit {
             this.commissions = data;
           }
         });
+        this.email = '';
       } else {
         this.reportForm.patchValue({
           type: 'machine',
@@ -108,11 +109,15 @@ export class CreateWorkComponent implements OnInit {
       }
     }
     if (value === 'supervisor_id') {
-      this.dataService.getUserById(+this.reportForm.value.supervisor_id!).subscribe({
-        next: (data: any) => {
-          this.email = data.User.email;
-        }
-      });
+      if (this.reportForm.value.type === 'commission') {
+        this.email = '';
+      } else {
+        this.dataService.getUserById(+this.reportForm.value.supervisor_id!).subscribe({
+          next: (data: any) => {
+            this.email = data.User.email;
+          }
+        });
+      }
     }
   }
 
